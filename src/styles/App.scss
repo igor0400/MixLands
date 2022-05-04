@@ -1,0 +1,32 @@
+@import 'Header';
+@import 'Footer';
+// pages
+@import 'pages/MainPage';
+@import 'pages/StatsPage';
+
+// fonts
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+h1 {
+  font-weight: 900;
+}
+
+.App {
+  background: #232126;
+}
+
+.wrapper {
+  padding-top: 70px;
+}
+
+a {
+  text-decoration: none;
+  &::after {
+    text-decoration: none;
+  }
+}

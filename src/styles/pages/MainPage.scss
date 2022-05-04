@@ -1,0 +1,113 @@
+.main-page {
+  .main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 30px 0;
+    display: flex;
+    justify-content: space-between;
+    &__descr {
+      padding-top: 160px;
+      width: 600px;
+      h1 {
+        color: #fff;
+        width: 20px;
+        font-size: 60px;
+        margin: 0;
+      }
+      p {
+        font-size: 20px;
+        line-height: 28px;
+        color: #848484;
+        margin: 30px 0;
+      }
+      .buttons {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 271px);
+        gap: 10px;
+        .btn {
+          padding: 20px 0;
+          border-radius: 15px;
+          border: none;
+          color: #fff;
+          font-size: 20px;
+          transition: 0.2s;
+          cursor: pointer;
+        }
+        .purple {
+          background: #9643ff;
+          &:hover {
+            background: #801fff;
+          }
+        }
+        .inline-purple {
+          background: rgba(73, 56, 86, 0.13);
+          border: 1px solid #9643ff;
+          color: rgba(255, 255, 255, 0.767);
+          position: relative;
+          z-index: 1;
+          &:hover {
+            background: rgba(73, 58, 85, 0.13);
+            border: 1px solid #801fff;
+            color: #fff;
+          }
+        }
+      }
+    }
+    &__images {
+      img {
+        width: 100%;
+        margin: 50px 0 0 0;
+      }
+    }
+  }
+  .features {
+    padding: 30px 0 60px;
+    color: #fff;
+    text-align: center;
+    .title {
+      h2 {
+        font-weight: 600;
+        font-size: 30px;
+        margin: 0;
+      }
+    }
+    .cards {
+      margin: 80px auto 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 300px);
+      gap: 100px;
+      width: 1100px;
+      .card {
+        &:nth-child(2) {
+          margin-top: -30px;
+        }
+        h3 {
+          font-size: 22px;
+          margin: 22px 0 10px;
+        }
+        p {
+          color: #acacac;
+          font-size: 17px;
+          line-height: 23px;
+          margin: 0;
+        }
+        .duck {
+          margin-right: -20px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1600px) {
+  .main-page {
+    .main {
+      margin: 0 0 0 120px;
+      &__images {
+        .grey-card {
+          border-radius: 100px;
+        }
+      }
+    }
+  }
+}

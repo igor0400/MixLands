@@ -1,0 +1,16 @@
+.stats-page {
+  max-width: 1400px;
+  margin: 100px auto;
+  &__chart {
+    width: 1000px;
+    border: 1px solid #2c2b32;
+    border-radius: 5px;
+    margin: 0 auto;
+    &__info {
+      border-bottom: 1px solid #2c2b32;
+    }
+    &__canvas {
+      margin: 20px 0 -8px -8px;
+    }
+  }
+}
