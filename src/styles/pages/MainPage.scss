@@ -25,7 +25,7 @@
         grid-template-columns: repeat(auto-fill, 271px);
         gap: 10px;
         .btn {
-          padding: 20px 0;
+          padding: 15px 0;
           border-radius: 15px;
           border: none;
           color: #fff;
@@ -34,29 +34,33 @@
           cursor: pointer;
         }
         .purple {
-          background: #9643ff;
+          font-weight: 900;
+          background: #2562ff;
           &:hover {
-            background: #801fff;
+            background: #1e50d1;
           }
         }
         .inline-purple {
           background: rgba(73, 56, 86, 0.13);
-          border: 1px solid #9643ff;
+          border: 1px solid #2562ff;
           color: rgba(255, 255, 255, 0.767);
           position: relative;
           z-index: 1;
           &:hover {
-            background: rgba(73, 58, 85, 0.13);
-            border: 1px solid #801fff;
+            background: rgba(77, 77, 77, 0.281);
+            border: 1px solid #1e50d1;
             color: #fff;
           }
         }
       }
     }
     &__images {
+      border-bottom: 1px solid #3a374b;
+      display: grid;
+      align-items: end;
       img {
-        width: 100%;
-        margin: 50px 0 0 0;
+        width: 600px;
+        height: 550px;
       }
     }
   }
@@ -64,36 +68,36 @@
     padding: 30px 0 60px;
     color: #fff;
     text-align: center;
-    .title {
+    &__title {
       h2 {
         font-weight: 600;
         font-size: 30px;
         margin: 0;
       }
     }
-    .cards {
+    &__cards {
       margin: 80px auto 0;
       display: grid;
       grid-template-columns: repeat(auto-fill, 300px);
       gap: 100px;
       width: 1100px;
-      .card {
-        &:nth-child(2) {
-          margin-top: -30px;
-        }
-        h3 {
-          font-size: 22px;
-          margin: 22px 0 10px;
-        }
-        p {
-          color: #acacac;
-          font-size: 17px;
-          line-height: 23px;
-          margin: 0;
-        }
-        .duck {
-          margin-right: -20px;
-        }
+    }
+    &__card {
+      &:nth-child(2) {
+        margin-top: -30px;
+      }
+      h3 {
+        font-size: 22px;
+        margin: 22px 0 10px;
+      }
+      p {
+        color: #acacac;
+        font-size: 17px;
+        line-height: 23px;
+        margin: 0;
+      }
+      .duck {
+        margin-right: -20px;
       }
     }
   }

@@ -1,16 +1,128 @@
 .stats-page {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 100px auto;
   &__chart {
-    width: 1000px;
     border: 1px solid #2c2b32;
     border-radius: 5px;
     margin: 0 auto;
     &__info {
+      color: #fff;
       border-bottom: 1px solid #2c2b32;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      p {
+        color: #a8a8a8;
+        margin: 0;
+      }
+      .info__title {
+        padding: 30px;
+        display: flex;
+        border-right: 1px solid #2d2d2d;
+        &__logo {
+          display: grid;
+          align-items: center;
+          img {
+            width: 50px;
+            height: 50px;
+          }
+        }
+        &__descr {
+          margin: 10px 0 0 10px;
+          h3 {
+            font-weight: 700;
+            margin: 0;
+          }
+          &-p {
+            display: flex;
+            span {
+              margin: 0 0 0 20px;
+            }
+            .green,
+            .red {
+              position: relative;
+              &::before {
+                content: '';
+                width: 10px;
+                height: 10px;
+                background: #52ff00;
+                position: absolute;
+                border-radius: 50px;
+                top: 7px;
+                left: -15px;
+              }
+            }
+            .red {
+              &::before {
+                background: red;
+              }
+            }
+          }
+        }
+      }
+      .info__stats {
+        border-right: 1px solid #2d2d2d;
+        &__online {
+          padding: 20px 100px 20px 20px;
+          border-bottom: 1px solid #2d2d2d;
+        }
+        &__tps {
+          padding: 20px;
+        }
+      }
+      .info__detals {
+        &__ip {
+          padding: 20px;
+          border-bottom: 1px solid #2d2d2d;
+        }
+        &__version {
+          padding: 20px;
+        }
+      }
     }
     &__canvas {
       margin: 20px 0 -8px -8px;
+    }
+  }
+  &__players {
+    margin: 50px 0 0 0;
+    .players__cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 285px);
+      gap: 20px;
+    }
+    .player__card {
+      background: #15131b;
+      border: 1px solid #201d2d;
+      border-radius: 5px;
+      display: flex;
+      padding: 20px;
+      cursor: pointer;
+      &:hover {
+        background: rgba(53, 53, 53, 0.288);
+      }
+      &__img {
+        img {
+          width: 75px;
+          height: 75px;
+          border-radius: 5px;
+        }
+      }
+      &__descr {
+        margin-left: 20px;
+        h3,
+        h5 {
+          color: #fff;
+          margin: 0;
+        }
+        h3 {
+          font-size: 22px;
+          color: #d0d0d0;
+        }
+        h5 {
+          font-size: 18px;
+          color: #848484;
+        }
+      }
     }
   }
 }

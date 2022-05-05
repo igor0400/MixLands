@@ -1,8 +1,13 @@
 @import 'Header';
 @import 'Footer';
+@import 'Loading';
 // pages
 @import 'pages/MainPage';
 @import 'pages/StatsPage';
+
+// libraries
+
+@import 'bootstrap/dist/css/bootstrap.min.css';
 
 // fonts
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap');
@@ -17,7 +22,7 @@ h1 {
 }
 
 .App {
-  background: #232126;
+  background: #15131B;
 }
 
 .wrapper {

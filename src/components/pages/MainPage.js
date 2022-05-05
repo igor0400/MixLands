@@ -1,4 +1,4 @@
-import mainImg from '../../images/main.png';
+import mainImg from '../../images/main2.png';
 import player1 from '../../images/card-player1.png';
 import player2 from '../../images/card-player2.png';
 import player3 from '../../images/card-player3.png';
@@ -25,7 +25,7 @@ const MainPage = () => {
 
   return (
     <div className="main-page">
-      <div className="main">
+      <section className="main">
         <div className="main__descr">
           <div className="title">
             <h1>Уникальный Minecraft Сервер</h1>
@@ -54,21 +54,21 @@ const MainPage = () => {
         <div className="main__images">
           <img src={mainImg} alt="mixed" />
         </div>
-      </div>
-      <div className="features">
-        <div className="title">
+      </section>
+      <section className="features">
+        <div className="features__title">
           <h2>Возможности сервера</h2>
         </div>
-        <div className="cards">
-          <div className="card">
-            <img src={player3} alt="player" className='duck'/>
+        <div className="features__cards">
+          <div className="features__card">
+            <img src={player3} alt="player" className="duck" />
             <h3>Торгуйте</h3>
             <p>
               На нашем сервере присутствует система игрового банка, вы сможете
               делать перевеоды из любого места в любое время другому игроку.
             </p>
           </div>
-          <div className="card">
+          <div className="features__card">
             <img src={player2} alt="player" />
             <h3>Выживайте</h3>
             <p>
@@ -77,7 +77,7 @@ const MainPage = () => {
               комфортнее.
             </p>
           </div>
-          <div className="card">
+          <div className="features__card">
             <img src={player1} alt="player" />
             <h3>Ищите друзей</h3>
             <p>
@@ -86,7 +86,7 @@ const MainPage = () => {
             </p>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 };
