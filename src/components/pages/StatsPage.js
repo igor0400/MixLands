@@ -4,6 +4,8 @@ import axios from 'axios';
 import Loading from '../loading/Loading';
 
 import logo from '../../images/icons/logo-big-icon.png';
+import copy from '../../images/icons/copy.svg';
+import bea from '../../images/bea.svg';
 
 const StatsPage = () => {
   const [serverActive, setServerActive] = useState(false);
@@ -36,6 +38,28 @@ const StatsPage = () => {
       })
       .catch(() => setError(true));
   }, []);
+
+  const copyIp = (e) => {
+    const btn = 'play.mixlands.fun';
+    const body = document.querySelector('body');
+    const input = document.createElement('input');
+    body.append(input);
+    input.value = btn;
+    input.select();
+    document.execCommand('copy');
+    input.remove();
+  };
+
+  const copyAlert = () => {
+    const body = document.querySelector('body');
+    const item = document.createElement('div');
+    item.classList.add('copy-alert');
+    item.innerHTML = 'Скопировано'
+    body.append(item);
+    setTimeout(() => {
+      item.remove()
+    }, 2000)
+  };
 
   const searchEmp = (items, term) => {
     if (term.length === 0) {
@@ -73,6 +97,7 @@ const StatsPage = () => {
   return (
     <div className="stats-page">
       <div className="stats-page__chart">
+        <img src={bea} alt="bea" className="bea" />
         <div className="stats-page__chart__info">
           <div className="info__title">
             <div className="info__title__logo">
@@ -107,6 +132,15 @@ const StatsPage = () => {
           <div className="info__detals">
             <p className="info__detals__ip">
               IP: <span style={{ color: '#fff' }}>play.mixlands.fun</span>
+              <img
+                src={copy}
+                alt="copy"
+                className="ip__copy"
+                onClick={(e) => {
+                  copyIp(e);
+                  copyAlert();
+                }}
+              />
             </p>
             <p className="info__detals__version">
               Версия: <span style={{ color: '#fff' }}>1.19</span>
@@ -119,13 +153,29 @@ const StatsPage = () => {
       </div>
       <div className="stats-page__players">
         <div className="players__serch">
-          <button onClick={() => setFilter('all')}>Все игроки</button>
-          <button onClick={() => setFilter('online')}>Игроки онлайн</button>
-          <input type="text" onChange={(e) => setTerm(e.target.value)} />
+          <div className="players__serch__buttons">
+            <button
+              onClick={() => setFilter('all')}
+              className={filter === 'all' ? 'button-active' : null}
+            >
+              Все игроки
+            </button>
+            <button
+              onClick={() => setFilter('online')}
+              className={filter === 'online' ? 'button-active' : null}
+            >
+              Игроки онлайн
+            </button>
+          </div>
+          <input
+            placeholder="Поиск..."
+            type="text"
+            onChange={(e) => setTerm(e.target.value)}
+          />
         </div>
+        {loading ? <Loading /> : null}
+        {error ? 'error' : null}
         <div className="players__cards">
-          {loading ? <Loading /> : null}
-          {error ? 'error' : null}
           {!loading && !error
             ? sortVisibleData.map((item, i) => (
                 <div className="player__card" key={i}>

@@ -35,3 +35,12 @@ a {
     text-decoration: none;
   }
 }
+.copy-alert {
+  position: fixed;
+  bottom: 30px;
+  right: 45%;
+  color: #fff;
+  background: rgba(46, 46, 46, 0.473);
+  padding: 10px;
+  border-radius: 10px;
+}
