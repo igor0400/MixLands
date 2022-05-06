@@ -102,7 +102,7 @@
     }
   }
   .players__serch {
-    margin: 40px 0;
+    margin: 40px 0 20px;
     &__buttons {
       margin-bottom: 10px;
       border: 1px solid #2c2b32;
@@ -134,6 +134,11 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, 285px);
       gap: 20px;
+      .null-players {
+        font-weight: 900;
+        width: 400px;
+        margin-bottom: 100px;
+      }
     }
     .player__card {
       transition: 0.2s;
@@ -185,16 +190,3 @@
     }
   }
 }
-
-// align-items: end;
-//       button {
-//         background: #15131b;
-//         border-top: 1px solid #2c2b32;
-//         border-left: 1px solid #2c2b32;
-//         border-right: 1px solid #2c2b32;
-//         border-bottom: none;
-//         border-radius: 5px 5px 0px 0px;
-//         color: #8d8d8d;
-//         padding: 5px 40px;
-//         font-size: 14px;
-//       }

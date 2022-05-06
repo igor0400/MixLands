@@ -107,7 +107,7 @@ const StatsPage = () => {
   const visibleData = filterPost(searchEmp(players, term), filter);
   const sortVisibleData = visibleData.sort((a, b) => b.hours - a.hours);
   const namePlayer = (name) =>
-    name.length > 13 ? `${name.slice(0, 13)}...` : name;
+    name.length > 11 ? `${name.slice(0, 11)}...` : name;
 
   return (
     <div className="stats-page">
@@ -196,8 +196,9 @@ const StatsPage = () => {
         {loading ? <Loading /> : null}
         {error ? 'error' : null}
         <div className="players__cards">
-          {!loading && !error
-            ? sortVisibleData.map((item, i) => (
+          {!loading && !error ? (
+            sortVisibleData.length > 0 ? (
+              sortVisibleData.map((item, i) => (
                 <div className="player__card" key={i}>
                   <div className="player__card__img">
                     <img
@@ -225,7 +226,10 @@ const StatsPage = () => {
                   </div>
                 </div>
               ))
-            : null}
+            ) : (
+              <h2 className="null-players">Игроков не найдено</h2>
+            )
+          ) : null}
         </div>
       </div>
     </div>

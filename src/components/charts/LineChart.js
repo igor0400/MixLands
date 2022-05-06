@@ -88,7 +88,7 @@ const LineChart = () => {
         type="line"
         options={options}
         height={43}
-      />
+        />
     </>
   );
 };
