@@ -1,41 +1,46 @@
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS } from 'chart.js/auto';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const LineChart = () => {
-  const data = [];
+  const [labels, setLabel] = useState([]);
+  const [data, setData] = useState([]);
 
-  for (let i = 0; i < 60; i++) {
-    const date = i < 10 ? `09:0${i}` : `09:${i}`;
-    data.push(date);
-  }
+  useEffect(() => {
+    axios
+      .get('https://mixlands-3696a-default-rtdb.firebaseio.com/online.json')
+      .then((res) => {
+        const date = [];
+        const online = [];
+        for (let key in res.data) {
+          date.push(res.data[key].date);
+          online.push(res.data[key].onlinePlayers);
+        }
+        setLabel(date);
+        setData(online);
+      });
+  }, []);
 
-  const data2 = [];
-  let prev = 100;
-  for (let i = 0; i < data.length; i++) {
-    prev += 5 - Math.floor(Math.random() * 10);
-    data2.push(prev);
-  }
-
-  const [userData, setUserData] = useState({
-    labels: data,
+  const userData = {
+    labels: labels,
     datasets: [
       {
         label: 'Онлайн',
-        data: data2,
-        backgroundColor: '#103867',
-        borderColor: '#2562FF',
+        data: data,
+        backgroundColor: '#36265A',
+        borderColor: '#9D50FF',
         fill: true,
         borderWidth: 4,
         hoverBorderWidth: 4,
-        pointBorderColor: '#2562FF',
+        pointBorderColor: '#9D50FF',
         pointBackgroundColor: '#fff',
         radius: 0,
         hoverRadius: 7,
         tension: 0.5,
       },
     ],
-  });
+  };
 
   // options
 

@@ -4,6 +4,9 @@ import MainPage from '../pages/MainPage';
 import StatsPage from '../pages/StatsPage';
 import Footer from '../footer/Footer';
 
+// Получение и пост данных для графика
+import '../../service/getStats';
+
 import '../../styles/App.scss';
 
 function App() {

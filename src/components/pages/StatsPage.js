@@ -17,9 +17,12 @@ const StatsPage = () => {
   const [error, setError] = useState(false);
   const [filter, setFilter] = useState('all');
   const [term, setTerm] = useState('');
+  const [loadingServerActive, setLoadingServerActive] = useState(true);
+  const [admins, setAdmins] = useState(['Swingor', 'm1xeee']);
 
   useEffect(() => {
     axios.get('https://api.mcsrvstat.us/2/prp.plo.su').then((res) => {
+      setLoadingServerActive(false);
       setServerActive(res.data.online);
       setOnline(res.data.players.online);
       setMaxOnline(res.data.players.max);
@@ -39,7 +42,7 @@ const StatsPage = () => {
       .catch(() => setError(true));
   }, []);
 
-  const copyIp = (e) => {
+  const copyIp = () => {
     const btn = 'play.mixlands.fun';
     const body = document.querySelector('body');
     const input = document.createElement('input');
@@ -54,11 +57,11 @@ const StatsPage = () => {
     const body = document.querySelector('body');
     const item = document.createElement('div');
     item.classList.add('copy-alert');
-    item.innerHTML = 'Скопировано'
+    item.innerHTML = 'Скопировано';
     body.append(item);
     setTimeout(() => {
-      item.remove()
-    }, 2000)
+      item.remove();
+    }, 2000);
   };
 
   const searchEmp = (items, term) => {
@@ -89,10 +92,22 @@ const StatsPage = () => {
     }
   };
 
+  const getColor = (item) => {
+    let color = '#fff';
+
+    admins.forEach((admin) => {
+      if (item === admin) {
+        color = '#ff4444';
+      }
+    });
+
+    return color;
+  };
+
   const visibleData = filterPost(searchEmp(players, term), filter);
   const sortVisibleData = visibleData.sort((a, b) => b.hours - a.hours);
   const namePlayer = (name) =>
-    name.length > 10 ? `${name.slice(0, 10)}...` : name;
+    name.length > 13 ? `${name.slice(0, 13)}...` : name;
 
   return (
     <div className="stats-page">
@@ -107,11 +122,16 @@ const StatsPage = () => {
               <h3>MixLands</h3>
               <div className="info__title__descr-p">
                 <p style={{ color: '#A8A8A8' }}>Статус:</p>{' '}
-                {serverActive ? (
-                  <span className="green">Работает</span>
-                ) : (
-                  <span className="red">Не работатет</span>
-                )}
+                {loadingServerActive ? (
+                  <span className="blue">Загрузка...</span>
+                ) : null}
+                {!loadingServerActive ? (
+                  serverActive ? (
+                    <span className="green">Работает</span>
+                  ) : (
+                    <span className="red">Не работатет</span>
+                  )
+                ) : null}
               </div>
             </div>
           </div>
@@ -136,8 +156,8 @@ const StatsPage = () => {
                 src={copy}
                 alt="copy"
                 className="ip__copy"
-                onClick={(e) => {
-                  copyIp(e);
+                onClick={() => {
+                  copyIp();
                   copyAlert();
                 }}
               />
@@ -184,9 +204,20 @@ const StatsPage = () => {
                       src={`https://mc-heads.net/avatar/${item.name}`}
                       alt={namePlayer(item.name)}
                     />
+                    {onlinePlayers.map((player, i) =>
+                      item.name === player ? (
+                        <div className="player__active__circle" key={i}></div>
+                      ) : null
+                    )}
                   </div>
                   <div className="player__card__descr">
-                    <h3>{namePlayer(item.name)}</h3>
+                    <h3
+                      style={{
+                        color: getColor(item.name),
+                      }}
+                    >
+                      {namePlayer(item.name)}
+                    </h3>
                     <h5>
                       Наиграно:{' '}
                       <span style={{ color: '#fff' }}>{item.hours}ч.</span>
