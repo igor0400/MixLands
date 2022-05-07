@@ -1,4 +1,4 @@
-import mainImg from '../../images/main2.png';
+import mainImg from '../../images/main3.png';
 import player1 from '../../images/card-player1.png';
 import player2 from '../../images/card-player2.png';
 import player3 from '../../images/card-player3.png';
@@ -15,8 +15,8 @@ const MainPage = () => {
     input.remove();
   };
 
-  const showPopower = (e) => {
-    const btn = document.querySelector('.inline-purple');
+  const showPopower = () => {
+    const btn = document.querySelector('.inline-blue');
     btn.innerHTML = 'Скопировано';
     setTimeout(() => {
       btn.innerHTML = 'play.mixlands.fun';
@@ -38,13 +38,13 @@ const MainPage = () => {
             </p>
           </div>
           <div className="buttons">
-            <button className="btn purple">Играть</button>
+            <button className="btn blue">Играть</button>
             <button
-              className="btn inline-purple"
+              className="btn inline-blue"
               id="btn"
               onClick={(e) => {
                 copyIp(e);
-                showPopower(e);
+                showPopower();
               }}
             >
               play.mixlands.fun
@@ -85,6 +85,24 @@ const MainPage = () => {
               минимализовать количество гриферов и читеров.
             </p>
           </div>
+        </div>
+      </section>
+      <section className="buy">
+        <div className="buy__title">
+          <h2>Заинтересовали?</h2>
+        </div>
+        <div className="buy__descr">
+          <p>
+            Если мы вас заинтересовали нашим сервером - заходите играть к нам!
+            Для
+          </p>
+          <p>
+            Для игры на сервере требуется покупка проходки, это сделано для
+            того, что бы отсеивать гриферов и читеров.
+          </p>
+        </div>
+        <div className="buy__btn">
+          <button className="btn blue">Купить вход</button>
         </div>
       </section>
     </div>
