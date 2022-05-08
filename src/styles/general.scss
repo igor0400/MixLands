@@ -1,0 +1,87 @@
+.wrapper {
+  padding-top: 86px;
+}
+
+h1 {
+  font-weight: 900;
+}
+
+a {
+  text-decoration: none;
+  &::after {
+    text-decoration: none;
+  }
+}
+.copy-alert {
+  position: fixed;
+  bottom: 30px;
+  right: 47%;
+  color: #fff;
+  background: rgba(46, 46, 46, 0.8);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.mw1400 {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.titleh2 {
+  font-weight: 800;
+  margin: 0;
+  color: #fff;
+  font-size: 35px;
+  text-align: center;
+}
+
+.titleh3 {
+  font-size: 22px;
+  margin: 22px 0 10px;
+  color: #fff;
+  text-align: center;
+  font-weight: 900;
+}
+
+.btn {
+  padding: 15px 50px;
+  border-radius: 15px;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  transition: 0.2s;
+  cursor: pointer;
+}
+.btn-blue {
+  font-weight: 900;
+  background: #2562ff;
+  &:hover {
+    background: #1e50d1;
+    color: #fff;
+  }
+}
+.btn-inline-blue {
+  background: rgba(73, 56, 86, 0.13);
+  border: 1px solid #2562ff;
+  color: rgba(255, 255, 255, 0.767);
+  position: relative;
+  z-index: 1;
+  &:hover {
+    background: rgba(77, 77, 77, 0.281);
+    border: 1px solid #1e50d1;
+    color: #fff;
+  }
+}
+
+.grey-p {
+  font-size: 20px;
+  line-height: 28px;
+  color: #848484;
+  margin: 0;
+}
+
+@media (max-width: 1440px) {
+  .mw1400 {
+    margin: 0 20px;
+  }
+}

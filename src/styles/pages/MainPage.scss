@@ -1,43 +1,6 @@
 .main-page {
-  h2 {
-    font-weight: 800;
-    font-size: 30px;
-    margin: 0;
-    color: #fff;
-    font-size: 35px;
-  }
-  .btn {
-    padding: 15px 0;
-    border-radius: 15px;
-    border: none;
-    color: #fff;
-    font-size: 20px;
-    transition: 0.2s;
-    cursor: pointer;
-  }
-  .blue {
-    font-weight: 900;
-    background: #2562ff;
-    &:hover {
-      background: #1e50d1;
-    }
-  }
-  .inline-blue {
-    background: rgba(73, 56, 86, 0.13);
-    border: 1px solid #2562ff;
-    color: rgba(255, 255, 255, 0.767);
-    position: relative;
-    z-index: 1;
-    &:hover {
-      background: rgba(77, 77, 77, 0.281);
-      border: 1px solid #1e50d1;
-      color: #fff;
-    }
-  }
   .main {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 30px 0;
+    padding: 0 0 30px;
     display: flex;
     justify-content: space-between;
     &__descr {
@@ -50,9 +13,6 @@
         margin: 0;
       }
       p {
-        font-size: 20px;
-        line-height: 28px;
-        color: #848484;
         margin: 30px 0;
       }
       .buttons {
@@ -73,7 +33,6 @@
   }
   .features {
     padding: 100px 0;
-    color: #fff;
     text-align: center;
     &__cards {
       margin: 80px auto 0;
@@ -87,14 +46,11 @@
         margin-top: -30px;
       }
       h3 {
-        font-size: 22px;
         margin: 22px 0 10px;
       }
       p {
-        color: #acacac;
-        font-size: 17px;
-        line-height: 23px;
-        margin: 0;
+        font-size: 18px;
+        line-height: 25px;
       }
       .duck {
         margin-right: -20px;
@@ -106,28 +62,17 @@
     margin-bottom: 100px;
     &__descr {
       margin: 30px auto;
-      max-width: 650px;
+      max-width: 730px;
       p {
-        margin: 0;
         color: #c6c6c6;
+        font-size: 18px;
+        line-height: 26px;
       }
     }
+
     &__btn {
       button {
         padding: 15px 100px;
-      }
-    }
-  }
-}
-
-@media (max-width: 1600px) {
-  .main-page {
-    .main {
-      margin: 0 0 0 120px;
-      &__images {
-        .grey-card {
-          border-radius: 100px;
-        }
       }
     }
   }

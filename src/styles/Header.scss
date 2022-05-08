@@ -7,8 +7,6 @@
   &__wrapper {
     display: flex;
     justify-content: space-between;
-    max-width: 1400px;
-    margin: 0 auto;
   }
   &__logo {
     display: grid;
@@ -34,40 +32,21 @@
           }
         }
       }
-      .active {
+      .header-active {
         color: #2562ff;
         border-bottom: 2px solid #2562ff;
         box-shadow: inset 0 -7px 10px -11px #2562ff;
       }
     }
   }
-  .btn {
+  &-btn {
     display: grid;
     align-items: center;
     button {
-      transition: 0.3s;
+      padding: 10px 35px;
       border-radius: 7px;
-      border: none;
-      color: #fff;
-      padding: 12px 35px;
-      font-size: 18px;
-      cursor: pointer;
-    }
-  }
-  .blue {
-    button {
-      background: #2562ff;
-      &:hover {
-        background: #1e50d1;
-      }
+      font-weight: 500;
     }
   }
 }
 
-@media (max-width: 1440px) {
-  .header {
-    &__wrapper {
-      margin: 0 10px;
-    }
-  }
-}

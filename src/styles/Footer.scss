@@ -3,8 +3,6 @@
   color: #fff;
   padding: 20px 0;
   &__wrapper {
-    max-width: 1400px;
-    margin: 0 auto;
     width: 100%;
     display: flex;
   }
@@ -17,11 +15,5 @@
     p {
       margin: 0;
     }
-  }
-}
-
-@media (max-width: 1440px) {
-  .footer {
-    padding: 20px 10px;
   }
 }

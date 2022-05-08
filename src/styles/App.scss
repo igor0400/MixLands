@@ -1,9 +1,11 @@
 @import 'Header';
 @import 'Footer';
 @import 'Loading';
+@import 'general';
 // pages
 @import 'pages/MainPage';
 @import 'pages/StatsPage';
+@import 'pages/WikiPage';
 
 // libraries
 
@@ -19,28 +21,4 @@ body {
 
 .App {
   background: #15131b;
-}
-
-.wrapper {
-  padding-top: 70px;
-}
-
-h1 {
-  font-weight: 900;
-}
-
-a {
-  text-decoration: none;
-  &::after {
-    text-decoration: none;
-  }
-}
-.copy-alert {
-  position: fixed;
-  bottom: 30px;
-  right: 47%;
-  color: #fff;
-  background: rgba(46, 46, 46, 0.8);
-  padding: 10px;
-  border-radius: 10px;
 }

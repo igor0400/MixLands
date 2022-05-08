@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import LineChart from '../charts/LineChart';
 import axios from 'axios';
 import Loading from '../loading/Loading';
+import { Helmet } from 'react-helmet';
 
 import logo from '../../images/icons/logo-big-icon.png';
 import copy from '../../images/icons/copy.svg';
@@ -26,7 +27,7 @@ const StatsPage = () => {
       setServerActive(res.data.online);
       setOnline(res.data.players.online);
       setMaxOnline(res.data.players.max);
-      setOnlinePlayers(res.data.players.list);
+      setOnlinePlayers([...res.data.players.list, 'm1xeee']);
     });
 
     axios
@@ -39,7 +40,7 @@ const StatsPage = () => {
         }
         setPlayers(data);
       })
-      .catch(() => setError(true));
+      .catch(() => {setLoading(false); setError(true)});
   }, []);
 
   const copyIp = () => {
@@ -110,7 +111,10 @@ const StatsPage = () => {
     name.length > 11 ? `${name.slice(0, 11)}...` : name;
 
   return (
-    <div className="stats-page">
+    <div className="stats-page mw1400">
+      <Helmet>
+      <title>{'MixLands > Статистика'}</title>
+      </Helmet>
       <div className="stats-page__chart">
         <img src={bea} alt="bea" className="bea" />
         <div className="stats-page__chart__info">
@@ -194,7 +198,7 @@ const StatsPage = () => {
           />
         </div>
         {loading ? <Loading /> : null}
-        {error ? 'error' : null}
+        {error ? <h2>Error</h2> : null}
         <div className="players__cards">
           {!loading && !error ? (
             sortVisibleData.length > 0 ? (

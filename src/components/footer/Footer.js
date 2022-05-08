@@ -3,7 +3,7 @@ import logo from '../../images/icons/logo-icon.png';
 const Footer = () => {
   return (
     <div className="footer">
-      <div className="footer__wrapper">
+      <div className="footer__wrapper mw1400">
         <div className="logo">
           <img src={logo} alt="logo" />
         </div>
