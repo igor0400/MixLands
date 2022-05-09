@@ -6,6 +6,7 @@
 @import 'pages/MainPage';
 @import 'pages/StatsPage';
 @import 'pages/WikiPage';
+@import 'pages/ShopPage';
 
 // libraries
 
@@ -13,12 +14,3 @@
 
 // fonts
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap');
-
-body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-}
-
-.App {
-  background: #15131b;
-}

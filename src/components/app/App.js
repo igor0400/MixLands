@@ -6,6 +6,9 @@ import StatsPage from '../pages/StatsPage';
 import WikiPage from '../pages/wikiPage/WikiPage';
 import WikiRules from '../pages/wikiPage/WikiRules';
 import WikiMechanics from '../pages/wikiPage/WikiMechanics';
+import WikiFaq from '../pages/wikiPage/WikiFaq';
+import WikiMods from '../pages/wikiPage/WikiMods';
+import ShopPage from '../pages/ShopPage';
 import Footer from '../footer/Footer';
 
 import '../../styles/App.scss';
@@ -43,7 +46,7 @@ function App() {
                 path="faq"
                 element={
                   <WikiPage>
-                    <h1>Hello</h1>
+                    <WikiFaq />
                   </WikiPage>
                 }
               ></Route>
@@ -51,13 +54,30 @@ function App() {
                 path="mods"
                 element={
                   <WikiPage>
-                    <h1>Hello</h1>
+                    <WikiMods />
                   </WikiPage>
                 }
               ></Route>
             </Route>
-            <Route path="shop" element={<h1>shop</h1>} />
-            <Route path="*" element={<h1>404 page</h1>} />
+            <Route path="shop" element={<ShopPage />} />
+            <Route
+              path="*"
+              element={
+                <h2
+                  style={{
+                    height: '86vh',
+                    display: 'grid',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#fff',
+                    fontWeight: 900,
+                    fontSize: '70px',
+                  }}
+                >
+                  404 page
+                </h2>
+              }
+            />
           </Routes>
         </div>
         <Footer />

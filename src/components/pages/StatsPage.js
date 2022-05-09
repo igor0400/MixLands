@@ -27,7 +27,7 @@ const StatsPage = () => {
       setServerActive(res.data.online);
       setOnline(res.data.players.online);
       setMaxOnline(res.data.players.max);
-      setOnlinePlayers([...res.data.players.list, 'm1xeee']);
+      setOnlinePlayers(res.data.players.list);
     });
 
     axios
@@ -40,7 +40,10 @@ const StatsPage = () => {
         }
         setPlayers(data);
       })
-      .catch(() => {setLoading(false); setError(true)});
+      .catch(() => {
+        setLoading(false);
+        setError(true);
+      });
   }, []);
 
   const copyIp = () => {
@@ -113,7 +116,7 @@ const StatsPage = () => {
   return (
     <div className="stats-page mw1400">
       <Helmet>
-      <title>{'MixLands > Статистика'}</title>
+        <title>{'MixLands > Статистика'}</title>
       </Helmet>
       <div className="stats-page__chart">
         <img src={bea} alt="bea" className="bea" />
