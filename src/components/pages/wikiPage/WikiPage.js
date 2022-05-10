@@ -1,4 +1,3 @@
-import { NavLink } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
 const WikiPage = (props) => {
@@ -9,30 +8,30 @@ const WikiPage = (props) => {
       </Helmet>
       <div className="wiki-page__nav-bar">
         <ul>
-          <NavLink
-            to="/wiki/rules"
-            className={({ isActive }) => (isActive ? 'wiki-active' : null)}
+          <li
+            className={props.activeWiki === 'rules' ? 'wiki-active' : null}
+            onClick={() => props.setActiveWiki('rules')}
           >
-            <li>Правила</li>
-          </NavLink>
-          <NavLink
-            to="/wiki/mechanics"
-            className={({ isActive }) => (isActive ? 'wiki-active' : null)}
+            Правила
+          </li>
+          <li
+            className={props.activeWiki === 'mechanics' ? 'wiki-active' : null}
+            onClick={() => props.setActiveWiki('mechanics')}
           >
-            <li>Игровые механики</li>
-          </NavLink>
-          <NavLink
-            to="/wiki/faq"
-            className={({ isActive }) => (isActive ? 'wiki-active' : null)}
+            Игровые механики
+          </li>
+          <li
+            className={props.activeWiki === 'faq' ? 'wiki-active' : null}
+            onClick={() => props.setActiveWiki('faq')}
           >
-            <li>FAQ</li>
-          </NavLink>
-          <NavLink
-            to="/wiki/mods"
-            className={({ isActive }) => (isActive ? 'wiki-active' : null)}
+            FAQ
+          </li>
+          <li
+            className={props.activeWiki === 'mods' ? 'wiki-active' : null}
+            onClick={() => props.setActiveWiki('mods')}
           >
-            <li>Моды</li>
-          </NavLink>
+            Моды
+          </li>
         </ul>
       </div>
       <div className="wiki-page__main">{props.children}</div>

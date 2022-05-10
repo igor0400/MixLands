@@ -15,14 +15,13 @@
         margin: 5px 0;
         white-space: nowrap;
         transition: 0.2s;
-        &:hover {
+        cursor: pointer;
+        &:not(.wiki-active):hover {
           background: rgba(165, 165, 165, 0.1);
         }
       }
       .wiki-active {
-        li {
-          background: #5869ff;
-        }
+        background: #5869ff;
       }
     }
   }

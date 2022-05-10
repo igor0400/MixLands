@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import { useState } from 'react';
+
 import Header from '../header/Header';
 import MainPage from '../pages/MainPage';
 import StatsPage from '../pages/StatsPage';
@@ -14,6 +16,21 @@ import Footer from '../footer/Footer';
 import '../../styles/App.scss';
 
 function App() {
+  const [activeWiki, setActiveWiki] = useState('rules');
+
+  function returnWikiElem() {
+    switch (activeWiki) {
+      case 'rules':
+        return <WikiRules />;
+      case 'mechanics':
+        return <WikiMechanics />;
+      case 'faq':
+        return <WikiFaq />;
+      case 'mods':
+        return <WikiMods />;
+    }
+  }
+
   return (
     <Router>
       <div className="App">
@@ -25,40 +42,14 @@ function App() {
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="stats" element={<StatsPage />} />
-            <Route path="wiki">
-              <Route
-                path="rules"
-                element={
-                  <WikiPage>
-                    <WikiRules />
-                  </WikiPage>
-                }
-              ></Route>
-              <Route
-                path="mechanics"
-                element={
-                  <WikiPage>
-                    <WikiMechanics />
-                  </WikiPage>
-                }
-              ></Route>
-              <Route
-                path="faq"
-                element={
-                  <WikiPage>
-                    <WikiFaq />
-                  </WikiPage>
-                }
-              ></Route>
-              <Route
-                path="mods"
-                element={
-                  <WikiPage>
-                    <WikiMods />
-                  </WikiPage>
-                }
-              ></Route>
-            </Route>
+            <Route
+              path="wiki"
+              element={
+                <WikiPage setActiveWiki={setActiveWiki} activeWiki={activeWiki}>
+                  {returnWikiElem()}
+                </WikiPage>
+              }
+            />
             <Route path="shop" element={<ShopPage />} />
             <Route
               path="*"

@@ -23,15 +23,8 @@ const Header = () => {
               <li>Статистика</li>
             </NavLink>
             <NavLink
-              to="/wiki/rules"
-              className={() =>
-                window.location.pathname === '/wiki/rules' ||
-                window.location.pathname === '/wiki/mechanics' ||
-                window.location.pathname === '/wiki/faq' ||
-                window.location.pathname === '/wiki/mods'
-                  ? 'header-active'
-                  : null
-              }
+              to="/wiki"
+              className={({ isActive }) => (isActive ? 'header-active' : null)}
             >
               <li>Вики</li>
             </NavLink>
