@@ -10,6 +10,7 @@ import WikiRules from '../pages/wikiPage/WikiRules';
 import WikiMechanics from '../pages/wikiPage/WikiMechanics';
 import WikiFaq from '../pages/wikiPage/WikiFaq';
 import WikiMods from '../pages/wikiPage/WikiMods';
+import WikiPacks from '../pages/wikiPage/WikiPacks';
 import ShopPage from '../pages/ShopPage';
 import Footer from '../footer/Footer';
 
@@ -28,6 +29,8 @@ function App() {
         return <WikiFaq />;
       case 'mods':
         return <WikiMods />;
+      case 'packs':
+        return <WikiPacks />;
     }
   }
 

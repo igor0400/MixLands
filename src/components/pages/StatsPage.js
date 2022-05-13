@@ -73,9 +73,7 @@ const StatsPage = () => {
       return items;
     }
 
-    return items.filter((item) => {
-      return item.name.indexOf(term) > -1;
-    });
+    return items.filter((item) => item.name.toLowerCase().indexOf(term) > -1);
   };
 
   const filterPost = (items, filter) => {
@@ -121,43 +119,26 @@ const StatsPage = () => {
       <div className="stats-page__chart">
         <img src={bea} alt="bea" className="bea" />
         <div className="stats-page__chart__info">
-          <div className="info__title">
-            <div className="info__title__logo">
-              <img src={logo} alt="logo" />
-            </div>
-            <div className="info__title__descr">
-              <h3>MixLands</h3>
-              <div className="info__title__descr-p">
-                <p style={{ color: '#A8A8A8' }}>Статус:</p>{' '}
-                {loadingServerActive ? (
-                  <span className="blue">Загрузка...</span>
-                ) : null}
-                {!loadingServerActive ? (
-                  serverActive ? (
-                    <span className="green">Работает</span>
-                  ) : (
-                    <span className="red">Не работатет</span>
-                  )
-                ) : null}
-              </div>
-            </div>
+          <div className="info__logo">
+            <img src={logo} alt="logo" />
           </div>
-          <div className="info__stats">
-            <p className="info__stats__online">
-              Онлайн: <span style={{ color: '#52ff00' }}>{online}</span> из{' '}
+          <div className="info__descr">
+            <div className="info__descr__title">
+              <h3>MixLands</h3>
+              {loadingServerActive ? <span className="blue"></span> : null}
+              {!loadingServerActive ? (
+                serverActive ? (
+                  <div className="green"></div>
+                ) : (
+                  <div className="red"></div>
+                )
+              ) : null}
+            </div>
+            <p className="info__descr__online">
+              Онлайн: <span style={{ color: '#fff' }}>{online}</span> из{' '}
               <span style={{ color: '#fff' }}>{maxOnline}</span>
             </p>
-            <div className="info__stats__tps">
-              <p>
-                TPS:{' '}
-                <span style={{ color: '#52ff00' }}>
-                  {serverActive ? '20' : '0'}
-                </span>
-              </p>
-            </div>
-          </div>
-          <div className="info__detals">
-            <p className="info__detals__ip">
+            <p className="info__descr__ip">
               IP: <span style={{ color: '#fff' }}>play.mixlands.fun</span>
               <img
                 src={copy}
@@ -169,12 +150,9 @@ const StatsPage = () => {
                 }}
               />
             </p>
-            <p className="info__detals__version">
-              Версия: <span style={{ color: '#fff' }}>1.19</span>
-            </p>
           </div>
         </div>
-        <div style={{ width: '1200px' }}>
+        <div style={{ width: '100.2%' }}>
           <LineChart />
         </div>
       </div>
@@ -197,7 +175,7 @@ const StatsPage = () => {
           <input
             placeholder="Поиск..."
             type="text"
-            onChange={(e) => setTerm(e.target.value)}
+            onChange={(e) => setTerm(e.target.value.toLowerCase())}
           />
         </div>
         {loading ? <Loading /> : null}

@@ -32,6 +32,12 @@ const WikiPage = (props) => {
           >
             Моды
           </li>
+          <li
+            className={props.activeWiki === 'packs' ? 'wiki-active' : null}
+            onClick={() => props.setActiveWiki('packs')}
+          >
+            Текстурпак
+          </li>
         </ul>
       </div>
       <div className="wiki-page__main">{props.children}</div>
