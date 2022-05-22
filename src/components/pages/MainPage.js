@@ -6,7 +6,6 @@ import player2 from '../../images/card-player2.png';
 import player3 from '../../images/card-player3.png';
 
 const MainPage = ({ handleShow }) => {
-
   const copyIp = (e) => {
     const btn = e.target.firstChild.data;
     const body = document.querySelector('body');

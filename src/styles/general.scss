@@ -68,6 +68,9 @@ a {
   font-size: 20px;
   transition: 0.2s;
   cursor: pointer;
+  &:focus {
+    box-shadow: none;
+  }
 }
 .btn-blue {
   font-weight: 900;

@@ -1,13 +1,13 @@
 import logo from '../../images/icons/logo.png';
 import { NavLink, Link } from 'react-router-dom';
-import { useState } from 'react';
+import LoginModal from '../modals/LoginModal';
 
-import Modal from 'react-bootstrap/Modal';
-import CloseButton from 'react-bootstrap/CloseButton';
-
-const Header = () => {
+const Header = ({ buyShow, loginShow, setLoginShow }) => {
   return (
-    <header className="header">
+    <header
+      className="header"
+      style={{ paddingRight: buyShow || loginShow ? '10px' : 0 }}
+    >
       <div className="header__wrapper mw1400">
         <div className="header__logo">
           <Link to="/">
@@ -44,45 +44,11 @@ const Header = () => {
           </ul>
         </div>
         <div className="header-btn">
-          <LoginModal />
+          <LoginModal show={loginShow} setShow={setLoginShow} />
         </div>
       </div>
     </header>
   );
 };
-
-function LoginModal() {
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  return (
-    <>
-      <button className="btn btn-blue" onClick={handleShow}>
-        Авторизация
-      </button>
-
-      <Modal show={show} onHide={handleClose} className="header-modal">
-        <Modal.Header>
-          <div></div>
-          <Modal.Title>Авторизация</Modal.Title>
-          <CloseButton variant="white" />
-        </Modal.Header>
-
-        <div className="modal-body">
-          <label htmlFor="name">Никнейм</label>
-          <input type="text" id="name" />
-          <label htmlFor="password">Пароль</label>
-          <input type="text" id="password" />
-        </div>
-
-        <Modal.Footer>
-          <button className="btn btn-blue">Войти</button>
-        </Modal.Footer>
-      </Modal>
-    </>
-  );
-}
 
 export default Header;

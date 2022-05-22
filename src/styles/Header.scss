@@ -80,12 +80,20 @@
           background: #272432;
           border: none;
           border-radius: 5px;
-          margin-top: 8px;
           padding: 10px;
           color: #fff;
+          outline: 0 !important;
+          margin: 10px 2px;
+          &:focus {
+            margin: 8px 0;
+            border: 2px solid #36265a;
+          }
         }
         #name {
           margin-bottom: 15px;
+          &:focus {
+            margin-bottom: 13px;
+          }
         }
       }
       &-footer {

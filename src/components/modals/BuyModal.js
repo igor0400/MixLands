@@ -7,7 +7,7 @@ function BuyModal({ show, handleClose }) {
       <Modal.Header>
         <div></div>
         <Modal.Title>Инструкция</Modal.Title>
-        <CloseButton variant="white" />
+        <CloseButton variant="white" onClick={handleClose}/>
       </Modal.Header>
 
       <div className="modal-body">

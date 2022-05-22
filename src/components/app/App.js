@@ -18,10 +18,11 @@ import BuyModal from '../modals/BuyModal';
 import '../../styles/App.scss';
 
 function App() {
-  const [show, setShow] = useState(false);
+  const [buyShow, setBuyShow] = useState(false);
+  const [loginShow, setLoginShow] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleClose = () => setBuyShow(false);
+  const handleShow = () => setBuyShow(true);
 
   const [activeWiki, setActiveWiki] = useState('rules');
 
@@ -46,7 +47,11 @@ function App() {
         <Helmet>
           <title>MixLands</title>
         </Helmet>
-        <Header />
+        <Header
+          buyShow={buyShow}
+          loginShow={loginShow}
+          setLoginShow={setLoginShow}
+        />
         <div className="wrapper">
           <Routes>
             <Route path="/" element={<MainPage handleShow={handleShow} />} />
@@ -79,7 +84,7 @@ function App() {
               }
             />
           </Routes>
-          <BuyModal show={show} handleClose={handleClose} />
+          <BuyModal show={buyShow} handleClose={handleClose} />
         </div>
         <Footer />
       </div>
