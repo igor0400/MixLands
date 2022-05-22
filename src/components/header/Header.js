@@ -1,5 +1,9 @@
 import logo from '../../images/icons/logo.png';
 import { NavLink, Link } from 'react-router-dom';
+import { useState } from 'react';
+
+import Modal from 'react-bootstrap/Modal';
+import CloseButton from 'react-bootstrap/CloseButton';
 
 const Header = () => {
   return (
@@ -40,11 +44,45 @@ const Header = () => {
           </ul>
         </div>
         <div className="header-btn">
-          <button className="btn btn-blue">Авторизация</button>
+          <LoginModal />
         </div>
       </div>
     </header>
   );
 };
+
+function LoginModal() {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  return (
+    <>
+      <button className="btn btn-blue" onClick={handleShow}>
+        Авторизация
+      </button>
+
+      <Modal show={show} onHide={handleClose} className="header-modal">
+        <Modal.Header>
+          <div></div>
+          <Modal.Title>Авторизация</Modal.Title>
+          <CloseButton variant="white" />
+        </Modal.Header>
+
+        <div className="modal-body">
+          <label htmlFor="name">Никнейм</label>
+          <input type="text" id="name" />
+          <label htmlFor="password">Пароль</label>
+          <input type="text" id="password" />
+        </div>
+
+        <Modal.Footer>
+          <button className="btn btn-blue">Войти</button>
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
+}
 
 export default Header;

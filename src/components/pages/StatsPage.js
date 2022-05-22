@@ -212,7 +212,7 @@ const StatsPage = () => {
                 </div>
               ))
             ) : (
-              <h2 className="null-players">Игроков не найдено</h2>
+              <h3 className="null-players">Игроков не найдено</h3>
             )
           ) : null}
         </div>

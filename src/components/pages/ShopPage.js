@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet';
 
-const ShopPage = () => {
+const ShopPage = ({ handleShow }) => {
   return (
     <div className="shop-page">
       <Helmet>
@@ -32,11 +32,13 @@ const ShopPage = () => {
                 Перед покупкой проходки хорошо обдумайте свой выбор.
               </p>
               <p className="text-accent">Возврат средст невозможен.</p>
-              <p className="text-white">Стоимость: 100рублей/месяц</p>
             </div>
           </div>
           <div className="card__btn">
-            <button>Купить</button>
+            <div>
+              <p className="text-white">Стоимость: 300рублей/навсегда</p>
+              <button onClick={handleShow}>Купить</button>
+            </div>
           </div>
         </div>
         <div className="shop-page__card">
@@ -56,11 +58,13 @@ const ShopPage = () => {
                 добавляет пользователю желтый ник в чате, желтый значок в табе и
                 желтый значок над головой.
               </p>
-              <p className="text-white">Стоимость: 100рублей/месяц</p>
             </div>
           </div>
           <div className="card__btn">
-            <button>Купить</button>
+            <div>
+              <p className="text-white">Стоимость: 100рублей/месяц</p>
+              <button onClick={handleShow}>Купить</button>
+            </div>
           </div>
         </div>
       </section>

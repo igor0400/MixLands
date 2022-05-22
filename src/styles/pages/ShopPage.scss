@@ -22,22 +22,25 @@
 
   &__card {
     border: 2px solid #1f1c2f;
+    background: #15131d;
     border-radius: 10px;
     padding: 30px 40px;
     text-align: center;
     display: grid;
+    transition: 0.3s;
+    &:hover {
+      background: #171520;
+    }
     .card__text {
       padding: 20px 0 30px;
-      p {
-        font-size: 20px;
-      }
-      .text-white {
-        color: #fff;
-      }
       .text-accent {
         color: #807492;
       }
+      p {
+        font-size: 20px;
+      }
     }
+
     .card__btn {
       display: grid;
       align-items: end;
@@ -51,6 +54,11 @@
         padding: 15px 130px;
         width: fit-content;
         height: fit-content;
+      }
+      .text-white {
+        color: #fff;
+        margin: 0 0 10px 0;
+        font-size: 18px;
       }
     }
   }

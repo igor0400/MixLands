@@ -9,9 +9,9 @@ $borderColor: #1f1c2f;
     position: relative;
     .bea {
       position: absolute;
-      right: -120px;
-      top: -100px;
-      width: 250px;
+      right: -100px;
+      top: -90px;
+      width: 200px;
       z-index: 100;
     }
     &__info {
@@ -97,11 +97,17 @@ $borderColor: #1f1c2f;
       width: 100%;
       background: rgba(29, 28, 33, 0.63);
       border: 1px solid $borderColor;
-      border-radius: 0px 5px 5px 5px;
+      border-radius: 5px;
       color: #fff;
       padding: 7px 7px 7px 45px;
       background: url('../../images/icons/serch.svg') no-repeat 10px 7px;
       background-size: auto 65%;
+      outline: 0 !important;
+      margin: 1px;
+      &:focus {
+        margin: 0;
+        border: 2px solid #36265a;
+      }
     }
   }
   &__players {
@@ -110,7 +116,7 @@ $borderColor: #1f1c2f;
       grid-template-columns: repeat(auto-fill, 285px);
       gap: 20px;
       .null-players {
-        font-weight: 900;
+        font-weight: 600;
         width: 400px;
         margin-bottom: 100px;
       }

@@ -5,7 +5,8 @@ import player1 from '../../images/card-player1.png';
 import player2 from '../../images/card-player2.png';
 import player3 from '../../images/card-player3.png';
 
-const MainPage = () => {
+const MainPage = ({ handleShow }) => {
+
   const copyIp = (e) => {
     const btn = e.target.firstChild.data;
     const body = document.querySelector('body');
@@ -43,7 +44,9 @@ const MainPage = () => {
             </p>
           </div>
           <div className="buttons">
-            <button className="btn btn-blue">Играть</button>
+            <button className="btn btn-blue" onClick={handleShow}>
+              Играть
+            </button>
             <button
               className="btn btn-inline-blue main-ip-btn"
               id="btn"
@@ -106,7 +109,9 @@ const MainPage = () => {
           </p>
         </div>
         <div className="buy__btn">
-          <button className="btn btn-blue">Купить вход</button>
+          <button className="btn btn-blue" onClick={handleShow}>
+            Купить вход
+          </button>
         </div>
       </section>
     </div>

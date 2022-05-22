@@ -13,10 +13,16 @@ import WikiMods from '../pages/wikiPage/WikiMods';
 import WikiPacks from '../pages/wikiPage/WikiPacks';
 import ShopPage from '../pages/ShopPage';
 import Footer from '../footer/Footer';
+import BuyModal from '../modals/BuyModal';
 
 import '../../styles/App.scss';
 
 function App() {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   const [activeWiki, setActiveWiki] = useState('rules');
 
   function returnWikiElem() {
@@ -43,7 +49,7 @@ function App() {
         <Header />
         <div className="wrapper">
           <Routes>
-            <Route path="/" element={<MainPage />} />
+            <Route path="/" element={<MainPage handleShow={handleShow} />} />
             <Route path="stats" element={<StatsPage />} />
             <Route
               path="wiki"
@@ -53,7 +59,7 @@ function App() {
                 </WikiPage>
               }
             />
-            <Route path="shop" element={<ShopPage />} />
+            <Route path="shop" element={<ShopPage handleShow={handleShow} />} />
             <Route
               path="*"
               element={
@@ -73,6 +79,7 @@ function App() {
               }
             />
           </Routes>
+          <BuyModal show={show} handleClose={handleClose} />
         </div>
         <Footer />
       </div>
