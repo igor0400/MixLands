@@ -1,8 +1,13 @@
 import logo from '../../images/icons/logo.png';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import LoginModal from '../modals/LoginModal';
 
-const Header = ({ buyShow, loginShow, setLoginShow }) => {
+const Header = ({
+  buyShow,
+  loginShow,
+  setLoginShow,
+  players
+}) => {
   return (
     <header
       className="header"
@@ -10,9 +15,9 @@ const Header = ({ buyShow, loginShow, setLoginShow }) => {
     >
       <div className="header__wrapper mw1400">
         <div className="header__logo">
-          <Link to="/">
+          <NavLink to="/">
             <img src={logo} alt="logo" />
-          </Link>
+          </NavLink>
         </div>
 
         <div className="header__nav">
@@ -44,7 +49,24 @@ const Header = ({ buyShow, loginShow, setLoginShow }) => {
           </ul>
         </div>
         <div className="header-btn">
-          <LoginModal show={loginShow} setShow={setLoginShow} />
+          {localStorage.getItem('user') ? (
+            <NavLink
+              to="/profile"
+              className={({ isActive }) =>
+                isActive
+                  ? 'header-profile__btn profile-active'
+                  : 'header-profile__btn'
+              }
+            >
+              <span>Профиль</span>
+            </NavLink>
+          ) : (
+            <LoginModal
+              show={loginShow}
+              setShow={setLoginShow}
+              players={players}
+            />
+          )}
         </div>
       </div>
     </header>

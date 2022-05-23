@@ -3,7 +3,7 @@ $borderColor: #1f1c2f;
   max-width: 1200px;
   margin: 100px auto;
   &__chart {
-    border: 1px solid #1f1c2f;
+    border: 3px solid $borderColor;
     border-radius: 5px;
     margin: 0 auto;
     position: relative;
@@ -16,13 +16,12 @@ $borderColor: #1f1c2f;
     }
     &__info {
       color: #fff;
-      border-bottom: 1px solid $borderColor;
+      border-bottom: 3px solid $borderColor;
       display: flex;
       align-items: center;
       padding: 20px 30px;
       p {
         color: #a8a8a8;
-        margin: 0;
       }
       .info__logo {
         img {
@@ -80,18 +79,23 @@ $borderColor: #1f1c2f;
     margin: 40px 0 20px;
     &__buttons {
       margin-bottom: 10px;
-      border: 1px solid $borderColor;
       border-radius: 5px;
       width: fit-content;
       button {
         border: none;
+        border-radius: 5px;
         color: #fff;
         background: #15131b;
         padding: 7px 40px;
+        transition: 0.3s;
+        margin: 0 3px;
+        &:not(.button-active):hover {
+          background: rgba(165, 165, 165, 0.1);
+        }
       }
     }
     .button-active {
-      background: #27233c;
+      background: #9D50FF;
     }
     input {
       width: 100%;
@@ -160,7 +164,7 @@ $borderColor: #1f1c2f;
         }
         h3 {
           font-size: 20px;
-          color: #d0d0d0;
+          color: #fff;
           margin-bottom: 5px;
         }
         h5 {

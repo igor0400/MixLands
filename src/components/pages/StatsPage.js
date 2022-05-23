@@ -8,18 +8,14 @@ import logo from '../../images/icons/logo-big-icon.png';
 import copy from '../../images/icons/copy.svg';
 import bea from '../../images/bea.svg';
 
-const StatsPage = () => {
+const StatsPage = ({ players, loading, error, admins, moders }) => {
   const [serverActive, setServerActive] = useState(false);
   const [online, setOnline] = useState(0);
   const [onlinePlayers, setOnlinePlayers] = useState([]);
   const [maxOnline, setMaxOnline] = useState(0);
-  const [players, setPlayers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
   const [filter, setFilter] = useState('all');
   const [term, setTerm] = useState('');
   const [loadingServerActive, setLoadingServerActive] = useState(true);
-  const [admins, setAdmins] = useState(['Swingor', 'm1xeee']);
 
   useEffect(() => {
     axios.get('https://api.mcsrvstat.us/2/prp.plo.su').then((res) => {
@@ -29,21 +25,6 @@ const StatsPage = () => {
       setMaxOnline(res.data.players.max);
       setOnlinePlayers(res.data.players.list);
     });
-
-    axios
-      .get('https://mixlands-3696a-default-rtdb.firebaseio.com/users.json')
-      .then((res) => {
-        setLoading(false);
-        const data = [];
-        for (let key in res.data) {
-          data.push(res.data[key]);
-        }
-        setPlayers(data);
-      })
-      .catch(() => {
-        setLoading(false);
-        setError(true);
-      });
   }, []);
 
   const copyIp = () => {
@@ -92,18 +73,6 @@ const StatsPage = () => {
       default:
         return items;
     }
-  };
-
-  const getColor = (item) => {
-    let color = '#fff';
-
-    admins.forEach((admin) => {
-      if (item === admin) {
-        color = '#ff4444';
-      }
-    });
-
-    return color;
   };
 
   const visibleData = filterPost(searchEmp(players, term), filter);
@@ -197,13 +166,7 @@ const StatsPage = () => {
                     )}
                   </div>
                   <div className="player__card__descr">
-                    <h3
-                      style={{
-                        color: getColor(item.name),
-                      }}
-                    >
-                      {namePlayer(item.name)}
-                    </h3>
+                    <h3>{namePlayer(item.name)}</h3>
                     <h5>
                       Наиграно:{' '}
                       <span style={{ color: '#fff' }}>{item.hours}ч.</span>

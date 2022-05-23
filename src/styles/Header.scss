@@ -97,6 +97,7 @@
         }
       }
       &-footer {
+        display: grid;
         justify-content: center;
         border: none;
         .btn {
@@ -104,6 +105,20 @@
           border-radius: 10px;
         }
       }
+    }
+  }
+  &-profile__btn {
+    color: #b0b0b0;
+    font-size: 18px;
+    transition: 0.2s;
+    &:hover {
+      color: #fff;
+    }
+  }
+  .profile-active {
+    color: #fff;
+    &:hover {
+      color: #fff;
     }
   }
 }

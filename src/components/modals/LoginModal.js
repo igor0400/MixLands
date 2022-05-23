@@ -1,7 +1,11 @@
 import Modal from 'react-bootstrap/Modal';
 import CloseButton from 'react-bootstrap/CloseButton';
+import { useState } from 'react';
 
-function LoginModal({ show, setShow }) {
+function LoginModal({ show, setShow, players }) {
+  const [inputsValue, setInputsValue] = useState({});
+  const [inputsError, setInputsError] = useState(false);
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -20,13 +24,65 @@ function LoginModal({ show, setShow }) {
 
         <div className="modal-body">
           <label htmlFor="name">Никнейм</label>
-          <input type="text" id="name" />
+          <input
+            type="text"
+            id="name"
+            onChange={(e) => {
+              setInputsValue((state) => ({
+                ...state,
+                name: e.target.value,
+              }));
+            }}
+            style={
+              inputsError
+                ? { margin: '8px 0', border: '2px solid #FF002E' }
+                : null
+            }
+          />
           <label htmlFor="password">Пароль</label>
-          <input type="text" id="password" />
+          <input
+            type="password"
+            id="password"
+            onChange={(e) => {
+              setInputsValue((state) => ({
+                ...state,
+                password: e.target.value,
+              }));
+            }}
+            style={
+              inputsError
+                ? { margin: '8px 0', border: '2px solid #FF002E' }
+                : null
+            }
+          />
         </div>
 
         <Modal.Footer>
-          <button className="btn btn-blue">Войти</button>
+          {inputsError ? (
+            <span style={{ color: '#FF002E', margin: '0 0 5px 0' }}>
+              Неверный никнейм или пароль
+            </span>
+          ) : null}
+          <button
+            className="btn btn-blue"
+            onClick={() => {
+              players.forEach((item) => {
+                if (
+                  inputsValue.name === item.name &&
+                  inputsValue.password === `${item.password}`
+                ) {
+                  setInputsError(false);
+                  handleClose();
+                  localStorage.setItem('user', JSON.stringify(item));
+                  console.log(JSON.parse(localStorage.getItem('user')));
+                } else {
+                  setInputsError(true);
+                }
+              });
+            }}
+          >
+            Войти
+          </button>
         </Modal.Footer>
       </Modal>
     </>
