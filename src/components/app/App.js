@@ -15,6 +15,7 @@ import WikiPacks from '../pages/wikiPage/WikiPacks';
 import ShopPage from '../pages/ShopPage';
 import ProfilePage from '../pages/profilePage/ProfilePage';
 import ProfileProfile from '../pages/profilePage/ProfileProfile';
+import ProfileBank from '../pages/profilePage/ProfileBank';
 import Footer from '../footer/Footer';
 import Page404 from '../pages/Page404';
 import BuyModal from '../modals/BuyModal';
@@ -22,8 +23,7 @@ import BuyModal from '../modals/BuyModal';
 import '../../styles/App.scss';
 
 function App() {
-  const [buyShow, setBuyShow] = useState(false);
-  const [loginShow, setLoginShow] = useState(false);
+  const [modal, setModal] = useState(false);
   const [activeWiki, setActiveWiki] = useState('rules');
   const [activeProfile, setActiveProfile] = useState('profile');
   const [admins, setAdmins] = useState(['Swingor', 'm1xeee']);
@@ -33,8 +33,12 @@ function App() {
   const [playersLoading, setPlayersLoading] = useState(true);
   const [playersError, setPlayersError] = useState(false);
 
-  const handleClose = () => setBuyShow(false);
-  const handleShow = () => setBuyShow(true);
+  const [cards, setCards] = useState([]);
+
+  const user = localStorage.getItem('user');
+
+  const handleClose = () => setModal(false);
+  const handleShowBuy = () => setModal('buy');
 
   useEffect(() => {
     axios
@@ -46,10 +50,28 @@ function App() {
           data.push(res.data[key]);
         }
         setPlayers(data);
+
+        if (user) {
+          data.forEach((item) => {
+            if (item.name === JSON.parse(user).name) {
+              localStorage.setItem('user', JSON.stringify(item));
+            }
+          });
+        }
       })
       .catch(() => {
         setPlayersLoading(false);
         setPlayersError(true);
+      });
+
+    axios
+      .get('https://mixlands-3696a-default-rtdb.firebaseio.com/cards.json')
+      .then((res) => {
+        const data = [];
+        for (let key in res.data) {
+          data.push(res.data[key]);
+        }
+        setCards(data);
       });
   }, []);
 
@@ -77,7 +99,7 @@ function App() {
       case 'topPlayers':
         return <h1>topPlayers</h1>;
       case 'bank':
-        return <h1>bank</h1>;
+        return <ProfileBank cards={cards}/>;
     }
   }
 
@@ -87,15 +109,10 @@ function App() {
         <Helmet>
           <title>MixLands</title>
         </Helmet>
-        <Header
-          buyShow={buyShow}
-          loginShow={loginShow}
-          setLoginShow={setLoginShow}
-          players={players}
-        />
-        <div className="wrapper">
+        <Header modal={modal} setModal={setModal} players={players} />
+        <main className="main">
           <Routes>
-            <Route path="/" element={<MainPage handleShow={handleShow} />} />
+            <Route path="/" element={<MainPage handleShow={handleShowBuy} />} />
             <Route
               path="stats"
               element={
@@ -116,7 +133,10 @@ function App() {
                 </WikiPage>
               }
             />
-            <Route path="shop" element={<ShopPage handleShow={handleShow} />} />
+            <Route
+              path="shop"
+              element={<ShopPage handleShow={handleShowBuy} />}
+            />
             {localStorage.getItem('user') ? (
               <Route
                 path="profile"
@@ -133,8 +153,8 @@ function App() {
 
             <Route path="*" element={<Page404 />} />
           </Routes>
-          <BuyModal show={buyShow} handleClose={handleClose} />
-        </div>
+          <BuyModal show={modal} handleClose={handleClose} />
+        </main>
         <Footer />
       </div>
     </Router>

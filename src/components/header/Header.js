@@ -1,18 +1,10 @@
-import logo from '../../images/icons/logo.png';
 import { NavLink } from 'react-router-dom';
 import LoginModal from '../modals/LoginModal';
+import logo from '../../images/icons/logo.png';
 
-const Header = ({
-  buyShow,
-  loginShow,
-  setLoginShow,
-  players
-}) => {
+const Header = ({ modal, setModal, players }) => {
   return (
-    <header
-      className="header"
-      style={{ paddingRight: buyShow || loginShow ? '10px' : 0 }}
-    >
+    <header className="header" style={{ paddingRight: modal ? '10px' : 0 }}>
       <div className="header__wrapper mw1400">
         <div className="header__logo">
           <NavLink to="/">
@@ -61,11 +53,7 @@ const Header = ({
               <span>Профиль</span>
             </NavLink>
           ) : (
-            <LoginModal
-              show={loginShow}
-              setShow={setLoginShow}
-              players={players}
-            />
+            <LoginModal show={modal} setShow={setModal} players={players} />
           )}
         </div>
       </div>

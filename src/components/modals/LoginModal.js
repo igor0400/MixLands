@@ -7,7 +7,7 @@ function LoginModal({ show, setShow, players }) {
   const [inputsError, setInputsError] = useState(false);
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = () => setShow('login');
 
   return (
     <>
@@ -15,7 +15,11 @@ function LoginModal({ show, setShow, players }) {
         Авторизация
       </button>
 
-      <Modal show={show} onHide={handleClose} className="header-modal">
+      <Modal
+        show={show === 'login' ? true : false}
+        onHide={handleClose}
+        className="header-modal"
+      >
         <Modal.Header>
           <div></div>
           <Modal.Title>Авторизация</Modal.Title>
@@ -74,7 +78,6 @@ function LoginModal({ show, setShow, players }) {
                   setInputsError(false);
                   handleClose();
                   localStorage.setItem('user', JSON.stringify(item));
-                  console.log(JSON.parse(localStorage.getItem('user')));
                 } else {
                   setInputsError(true);
                 }

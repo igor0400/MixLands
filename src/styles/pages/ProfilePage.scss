@@ -17,7 +17,7 @@
         white-space: nowrap;
         transition: 0.2s;
         cursor: pointer;
-        &:not(.wiki-active):hover {
+        &:not(.profile-active):hover {
           background: rgba(165, 165, 165, 0.1);
         }
       }
@@ -26,9 +26,11 @@
       }
     }
   }
-  &__profile {
+  &__main {
     width: 100%;
-    margin: 0 60px;
+    margin: 0 0 0 60px;
+  }
+  &__profile {
     &__info {
       display: flex;
       &__logo {
@@ -50,6 +52,106 @@
           font-size: 20px;
           line-height: 32px;
         }
+      }
+    }
+    &__posts {
+      margin-top: 50px;
+      &__top {
+        display: flex;
+        justify-content: space-between;
+        img {
+          background: #49425c;
+          border-radius: 15px;
+          padding: 10px;
+          cursor: pointer;
+        }
+      }
+      &__post {
+        padding: 20px;
+        margin: 30px 0;
+        background: #2b2736;
+        border-radius: 10px;
+        .title {
+          font-size: 15px;
+          color: #776c8f;
+          margin-bottom: 5px;
+        }
+        .text {
+          font-size: 20px;
+          line-height: 27px;
+          color: #cdc0ff;
+        }
+      }
+      .posts-null {
+        color: #454545;
+        margin: 30px 0 0 0;
+        font-weight: 400;
+      }
+    }
+  }
+  &__bank {
+    &__navs {
+      button {
+        border: none;
+        border-radius: 10px;
+        color: #fff;
+        background: none;
+        padding: 7px 40px;
+        transition: 0.2s;
+        margin: 0 3px;
+        &:not(.nav-active):hover {
+          background: rgba(165, 165, 165, 0.1);
+        }
+      }
+    }
+    .nav-active {
+      background: #5869ff;
+    }
+    &__user-cards {
+      margin: 30px 0;
+      .card {
+        padding: 10px;
+        height: 210px;
+        border-radius: 10px;
+        font-weight: 900;
+        display: flex;
+        flex-direction: column;
+        &__top {
+          display: flex;
+          justify-content: space-between;
+          &__title {
+            p {
+              font-size: 25px;
+            }
+          }
+        }
+        &__bottom {
+          &__price {
+            p {
+              font-size: 18px;
+              text-align: right;
+            }
+          }
+        }
+      }
+      .posts-null {
+        margin: 0;
+        color: #454545;
+        font-weight: 400;
+      }
+      .issue-cards {
+        margin: 30px 0 0 0;
+        .cards {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, 370px);
+          gap: 30px;
+          margin-top: 30px;
+        }
+      }
+      .existing-cars {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 370px);
+        gap: 30px;
       }
     }
   }

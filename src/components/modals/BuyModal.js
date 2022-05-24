@@ -3,11 +3,15 @@ import CloseButton from 'react-bootstrap/CloseButton';
 
 function BuyModal({ show, handleClose }) {
   return (
-    <Modal show={show} onHide={handleClose} className="buy__modal">
+    <Modal
+      show={show === 'buy' ? true : false}
+      onHide={handleClose}
+      className="buy__modal"
+    >
       <Modal.Header>
         <div></div>
         <Modal.Title>Инструкция</Modal.Title>
-        <CloseButton variant="white" onClick={handleClose}/>
+        <CloseButton variant="white" onClick={handleClose} />
       </Modal.Header>
 
       <div className="modal-body">

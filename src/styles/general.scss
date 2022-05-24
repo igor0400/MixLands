@@ -1,9 +1,3 @@
-body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  background: #15131b;
-}
-
 ::-webkit-scrollbar {
   height: 100%;
   width: 10px;
@@ -16,8 +10,26 @@ body {
   background: #1f1c2f;
 }
 
-.wrapper {
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: #15131b;
+}
+
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
   padding-top: 86px;
+  flex: 1 1 auto;
 }
 
 h1 {
@@ -140,7 +152,7 @@ a {
         list-style-type: none;
         color: #9d9d9d;
         counter-increment: list2;
-        font-weight: 600;
+        font-weight: 400;
         font-size: 20px;
         line-height: 27px;
         margin: 10px 0;

@@ -2,7 +2,7 @@ import logo from '../../images/icons/logo-icon.png';
 
 const Footer = () => {
   return (
-    <div className="footer">
+    <footer className="footer">
       <div className="footer__wrapper mw1400">
         <div className="logo">
           <img src={logo} alt="logo" />
@@ -12,7 +12,7 @@ const Footer = () => {
           <p>Все права защищены.</p>
         </div>
       </div>
-    </div>
+    </footer>
   );
 };
 

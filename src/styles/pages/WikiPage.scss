@@ -58,7 +58,6 @@
     }
   }
   &__mechanics {
-    height: 86vh;
     h3 {
       margin: 30px 0 5px;
     }
@@ -95,7 +94,6 @@
     }
   }
   &__mods {
-    height: 86vh;
     h3 {
       margin: 30px 0 5px;
     }
@@ -105,7 +103,6 @@
     }
   }
   &__packs {
-    height: 86vh;
     h3 {
       margin: 30px 0 5px;
     }
@@ -116,20 +113,5 @@
   }
   span {
     color: #fff;
-  }
-}
-
-@media (min-height: 900px) {
-  .wiki-page {
-    &__faq {
-      height: 86vh;
-    }
-  }
-}
-@media (min-height: 1230px) {
-  .wiki-page {
-    &__rules {
-      height: 86vh;
-    }
   }
 }
