@@ -109,31 +109,6 @@
     }
     &__user-cards {
       margin: 30px 0;
-      .card {
-        padding: 10px;
-        height: 215px;
-        border-radius: 10px;
-        font-weight: 900;
-        display: flex;
-        flex-direction: column;
-        &__top {
-          display: flex;
-          justify-content: space-between;
-          &__title {
-            p {
-              font-size: 25px;
-            }
-          }
-        }
-        &__bottom {
-          &__price {
-            p {
-              font-size: 18px;
-              text-align: right;
-            }
-          }
-        }
-      }
       .posts-null {
         margin: 0;
         color: #454545;
@@ -154,5 +129,83 @@
         }
       }
     }
+  }
+}
+
+.bank-card {
+  padding: 10px;
+  height: 215px;
+  border-radius: 10px;
+  font-weight: 900;
+  display: flex;
+  flex-direction: column;
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    &__title {
+      p {
+        font-size: 25px;
+        line-height: 28px;
+      }
+    }
+    &__icon {
+      cursor: pointer;
+    }
+  }
+  &__bottom {
+    &__price {
+      p {
+        font-size: 18px;
+        text-align: right;
+      }
+    }
+  }
+}
+
+.card-popover {
+  cursor: default;
+  background: rgba(47, 44, 63, 0.98);
+  border: 2px solid #4f4b76;
+  .popover-body {
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    h6 {
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 16px;
+      line-height: 22px;
+    }
+    .btn-buy,
+    .btn-buy-green {
+      background: #5869ff;
+      padding: 10px 50px;
+      font-size: 18px;
+      margin-top: 15px;
+      border-radius: 10px;
+      justify-content: center;
+      &:hover {
+        background: #4e5de4;
+      }
+    }
+    .btn-buy-green {
+      background: #0c8f33;
+      padding: 10px 80px;
+      &:hover {
+        background: #117730;
+      }
+    }
+  }
+  .popover-arrow::after {
+    border-top-color: rgba(47, 44, 63, 0.98);
+  }
+  .popover-card-buy-error {
+    margin-top: 5px;
+    color: #ff002e;
+    font-weight: 600;
+    text-align: center;
   }
 }

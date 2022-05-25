@@ -6,7 +6,7 @@ function BuyModal({ show, handleClose }) {
     <Modal
       show={show === 'buy' ? true : false}
       onHide={handleClose}
-      className="buy__modal"
+      className="default__modal"
     >
       <Modal.Header>
         <div></div>

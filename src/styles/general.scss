@@ -97,6 +97,16 @@ a {
     color: #fff;
   }
 }
+
+.btn-green {
+  font-weight: 900;
+  background: #0c8f33;
+  &:hover {
+    background: #117730;
+    color: #fff;
+  }
+}
+
 .btn-inline-blue {
   background: rgba(73, 56, 86, 0.13);
   border: 1px solid #2562ff;
@@ -122,8 +132,8 @@ a {
     margin: 0 20px;
   }
 }
-
-.buy__modal {
+.default__modal {
+  z-index: 10000;
   .modal {
     &-content {
       margin-top: 100px;
@@ -162,14 +172,55 @@ a {
         content: counter(list2) ' » ';
         position: relative;
       }
+      .user-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 190px);
+        gap: 20px;
+        justify-content: center;
+      }
+      .bank-card {
+        height: 110px;
+        padding: 5px 8px;
+        cursor: pointer;
+        border: 5px solid #1e1c27;
+        &__top {
+          &__title {
+            p {
+              font-size: 14px;
+              line-height: 18px;
+            }
+          }
+        }
+        &__bottom {
+          &__price {
+            p {
+              font-size: 12px;
+            }
+          }
+        }
+        &__active {
+          border: 5px solid #533a8f;
+        }
+      }
+      .if-cards-0 {
+        margin: 0;
+        text-align: center;
+        color: gray;
+      }
     }
     &-footer {
       justify-content: center;
       border: none;
+      flex-direction: column;
       .btn {
         padding: 10px 80px;
         border-radius: 10px;
       }
     }
+  }
+  .card-buy-error {
+    color: #ff002e;
+    font-weight: 600;
+    text-align: center;
   }
 }

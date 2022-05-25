@@ -34,11 +34,23 @@ function App() {
   const [playersError, setPlayersError] = useState(false);
 
   const [defaultCards, setDefaultCards] = useState([]);
+  const [specialCards, setSpecialCards] = useState([]);
+
+  const [cardBuyError, setCardBuyError] = useState(false);
+  
+  const [isBuy, setIsBuy] = useState(false);
+  const [popoverIsBuy, setPopoverIsBuy] = useState(false);
 
   const user = localStorage.getItem('user');
 
   const handleClose = () => setModal(false);
   const handleShowBuy = () => setModal('buy');
+
+  const handleBuyCardClose = () => {
+    setModal(false);
+    setCardBuyError(false);
+    setIsBuy(false);
+  };
 
   useEffect(() => {
     axios
@@ -67,11 +79,19 @@ function App() {
     axios
       .get('https://mixlands-3696a-default-rtdb.firebaseio.com/cards.json')
       .then((res) => {
-        const data = [];
+        const defaultData = [];
+        const specialData = [];
+
         for (let key in res.data.default) {
-          data.push(res.data.default[key]);
+          defaultData.push(res.data.default[key]);
         }
-        setDefaultCards(data);
+
+        for (let key in res.data.special) {
+          specialData.push(res.data.special[key]);
+        }
+
+        setDefaultCards(defaultData);
+        setSpecialCards(specialData);
       });
   }, []);
 
@@ -99,7 +119,21 @@ function App() {
       case 'topPlayers':
         return <h1>topPlayers</h1>;
       case 'bank':
-        return <ProfileBank defaultCards={defaultCards} />;
+        return (
+          <ProfileBank
+            defaultCards={defaultCards}
+            specialCards={specialCards}
+            setModal={setModal}
+            modal={modal}
+            handleClose={handleBuyCardClose}
+            cardBuyError={cardBuyError}
+            setCardBuyError={setCardBuyError}
+            isBuy={isBuy}
+            setIsBuy={setIsBuy}
+            popoverIsBuy={popoverIsBuy}
+            setPopoverIsBuy={setPopoverIsBuy}
+          />
+        );
     }
   }
 
