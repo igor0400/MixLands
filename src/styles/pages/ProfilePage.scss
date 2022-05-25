@@ -111,7 +111,7 @@
       margin: 30px 0;
       .card {
         padding: 10px;
-        height: 210px;
+        height: 215px;
         border-radius: 10px;
         font-weight: 900;
         display: flex;
@@ -139,19 +139,19 @@
         color: #454545;
         font-weight: 400;
       }
+      .existing-cars {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 370px);
+        gap: 30px;
+      }
       .issue-cards {
-        margin: 30px 0 0 0;
+        margin: 50px auto 0;
         .cards {
           display: grid;
           grid-template-columns: repeat(auto-fill, 370px);
           gap: 30px;
           margin-top: 30px;
         }
-      }
-      .existing-cars {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, 370px);
-        gap: 30px;
       }
     }
   }

@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet';
 
 const ProfilePage = (props) => {
   return (
-    <div className="profile-page mw1400">
+    <section className="profile-page mw1400">
       <Helmet>
         <title>{'MixLands > Профиль'}</title>
       </Helmet>
@@ -39,7 +39,7 @@ const ProfilePage = (props) => {
         </ul>
       </div>
       <div className="profile-page__main">{props.children}</div>
-    </div>
+    </section>
   );
 };
 

@@ -33,7 +33,7 @@ function App() {
   const [playersLoading, setPlayersLoading] = useState(true);
   const [playersError, setPlayersError] = useState(false);
 
-  const [cards, setCards] = useState([]);
+  const [defaultCards, setDefaultCards] = useState([]);
 
   const user = localStorage.getItem('user');
 
@@ -68,10 +68,10 @@ function App() {
       .get('https://mixlands-3696a-default-rtdb.firebaseio.com/cards.json')
       .then((res) => {
         const data = [];
-        for (let key in res.data) {
-          data.push(res.data[key]);
+        for (let key in res.data.default) {
+          data.push(res.data.default[key]);
         }
-        setCards(data);
+        setDefaultCards(data);
       });
   }, []);
 
@@ -99,7 +99,7 @@ function App() {
       case 'topPlayers':
         return <h1>topPlayers</h1>;
       case 'bank':
-        return <ProfileBank cards={cards}/>;
+        return <ProfileBank defaultCards={defaultCards} />;
     }
   }
 
