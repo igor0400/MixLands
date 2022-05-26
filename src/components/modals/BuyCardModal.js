@@ -64,7 +64,7 @@ function BuyCardModal({
                   }
                   key={item.id}
                   style={{
-                    background: `100% bottom / 100% no-repeat url(${cardName.imgUrl})`,
+                    background: `100% center / cover no-repeat url(${cardName.imgUrl})`,
                   }}
                   onClick={() => {
                     setActiveBankCard(item);
@@ -103,7 +103,7 @@ function BuyCardModal({
           </button>
         ) : isBuy === 'succses' ? (
           <button
-            className="btn btn-green"
+            className="btn btn-succses"
             onClick={() => {
               setModal(false);
               setIsBuy(false);

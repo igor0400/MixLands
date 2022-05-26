@@ -98,11 +98,11 @@ a {
   }
 }
 
-.btn-green {
+.btn-succses {
   font-weight: 900;
-  background: #0c8f33;
+  background: #8545d8;
   &:hover {
-    background: #117730;
+    background: #6f39b4;
     color: #fff;
   }
 }
@@ -177,35 +177,6 @@ a {
         grid-template-columns: repeat(auto-fill, 190px);
         gap: 20px;
         justify-content: center;
-      }
-      .bank-card {
-        height: 110px;
-        padding: 5px 8px;
-        cursor: pointer;
-        border: 5px solid #1e1c27;
-        &__top {
-          &__title {
-            p {
-              font-size: 14px;
-              line-height: 18px;
-            }
-          }
-        }
-        &__bottom {
-          &__price {
-            p {
-              font-size: 12px;
-            }
-          }
-        }
-        &__active {
-          border: 5px solid #533a8f;
-        }
-      }
-      .if-cards-0 {
-        margin: 0;
-        text-align: center;
-        color: gray;
       }
     }
     &-footer {

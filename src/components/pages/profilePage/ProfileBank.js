@@ -1,14 +1,11 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { database, ref, set } from '../../../firebase/firebase';
-
-import Overlay from 'react-bootstrap/Overlay';
-import Popover from 'react-bootstrap/Popover';
-import BuyCardModal from '../../modals/BuyCardModal';
-
-import infoIcon from '../../../images/icons/info-icon.svg';
 import axios from 'axios';
 
-const ProfileBank = ({
+import Card from '../../card/Card';
+import CardsInfoPopover from '../../popovers/CardsInfoPopover';
+
+function ProfileBank({
   defaultCards,
   specialCards,
   setModal,
@@ -20,27 +17,25 @@ const ProfileBank = ({
   setIsBuy,
   popoverIsBuy,
   setPopoverIsBuy,
-}) => {
+  getData,
+  cardId,
+  canCardPay,
+  setCanCardPay,
+}) {
   const [bankContent, setBankContent] = useState('userCards');
-  const [cardId, setCardId] = useState(false);
   const [popoverCardBuyError, setPopoverCardBuyError] = useState(false);
 
   const user = JSON.parse(localStorage.getItem('user'));
+
   const userCards = [];
   const filterDefaultCards = [];
 
-  useEffect(() => {
-    axios
-      .get('https://mixlands-3696a-default-rtdb.firebaseio.com/cards.json')
-      .then((res) => {
-        console.log(res.data.cardId);
-        if (res.data.cardId) setCardId(res.data.cardId);
-      });
-  }, []);
-
-  for (let key in user.cards) {
-    userCards.push(user.cards[key]);
-  }
+  const getUserCards = () => {
+    for (let key in user.cards) {
+      userCards.push(user.cards[key]);
+    }
+  };
+  getUserCards();
 
   defaultCards.forEach((item) => {
     if ((user.cards && item.price !== 0) || !user.cards) {
@@ -71,7 +66,18 @@ const ProfileBank = ({
     return cards.sort(filter);
   };
 
-  const buyCard = (player, value, buyedCardName, userCard = null) => {
+  const serchCard = (buyedCardName) => {
+    userCards.forEach((userCard) => {
+      if (buyedCardName === userCard.name) {
+        setCanCardPay(false);
+        setCardBuyError('У вас уже есть данная карта');
+      }
+    });
+  };
+
+  const buyCard = async (player, value, buyedCardName, userCard = null) => {
+    await serchCard(buyedCardName);
+
     const vaidateId = (id) => {
       if (id < 10) {
         return `000${id}`;
@@ -88,46 +94,66 @@ const ProfileBank = ({
       if (userCard.balance < +value) {
         setCardBuyError('Недостаточно средств на выбранной карте');
       } else {
-        if (cardId) {
-          setCardBuyError(false);
-          setIsBuy('loading');
-          set(
-            ref(database, `users/${player.name}/mcoins`),
-            +player.mcoins - +value
-          );
+        if (canCardPay) {
+          if (cardId) {
+            await setCardBuyError(false);
+            await setIsBuy('loading');
+            await set(
+              ref(database, `users/${player.name}/mcoins`),
+              +player.mcoins - +value
+            );
 
-          set(
-            ref(database, `users/${player.name}/cards/${userCard.id}/balance`),
-            +userCard.balance - +value
-          );
+            await set(
+              ref(
+                database,
+                `users/${player.name}/cards/${userCard.id}/balance`
+              ),
+              +userCard.balance - +value
+            );
 
-          set(ref(database, `users/${player.name}/cards/${cardId}`), {
-            name: buyedCardName,
-            balance: 0,
-            id: cardId,
-          });
+            await set(ref(database, `users/${player.name}/cards/${cardId}`), {
+              name: buyedCardName,
+              balance: 0,
+              id: cardId,
+            });
 
-          set(ref(database, `cards/cardId`), vaidateId(+cardId + 1));
+            await set(ref(database, `cards/cardId`), vaidateId(+cardId + 1));
 
-          setIsBuy('succses');
+            await setIsBuy('succses');
+            await setTimeout(() => {
+              getData();
+              getUserCards();
+              setModal(false);
+              setIsBuy(false);
+              console.log(userCards);
+            }, 1000);
+          } else {
+            setCardBuyError('Ошибка сервера');
+          }
         } else {
-          setCardBuyError('Ошибка сервера');
+          console.log('Ошибка');
         }
       }
     } else {
       if (cardId) {
-        setPopoverCardBuyError(false);
-        setPopoverIsBuy('loading');
+        await setPopoverCardBuyError(false);
+        await setPopoverIsBuy('loading');
 
-        set(ref(database, `users/${player.name}/cards/${cardId}`), {
+        await set(ref(database, `users/${player.name}/cards/${cardId}`), {
           name: buyedCardName,
           balance: 0,
           id: cardId,
         });
 
-        set(ref(database, `cards/cardId`), vaidateId(+cardId + 1));
+        await set(ref(database, `cards/cardId`), vaidateId(+cardId + 1));
 
-        setPopoverIsBuy('succses');
+        await setPopoverIsBuy('succses');
+
+        await setTimeout(() => {
+          getData();
+          setModal(false);
+          setIsBuy(false);
+        }, 1000);
       } else {
         setPopoverCardBuyError('Ошибка сервера');
       }
@@ -170,32 +196,13 @@ const ProfileBank = ({
                 });
 
                 return (
-                  <div
-                    className="bank-card"
+                  <Card
                     key={item.id}
-                    style={{
-                      background: `100% bottom / 100% no-repeat url(${cardName.imgUrl})`,
-                    }}
-                  >
-                    <div className="bank-card__top">
-                      <div className="bank-card__top__title">
-                        <p style={{ color: item.color ? item.color : '#fff' }}>
-                          ML - {item.id}
-                        </p>
-                        <p style={{ color: item.color ? item.color : '#fff' }}>
-                          {cardName.ratity}
-                        </p>
-                      </div>
-                    </div>
-                    <div style={{ flex: '1 1 auto' }}></div>
-                    <div className="bank-card__bottom">
-                      <div className="bank-card__bottom__price">
-                        <p style={{ color: item.color ? item.color : '#fff' }}>
-                          Баланс: {getBalance(item.balance)}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                    item={item}
+                    cardName={cardName}
+                    getBalance={getBalance}
+                    ratityBottom={true}
+                  />
                 );
               })}
             </div>
@@ -203,55 +210,37 @@ const ProfileBank = ({
             <h4 className="posts-null">Пока нет карт...</h4>
           )}
           <div className="issue-cards">
-            <h2 className="titleh2">Покупка карт</h2>
+            <h2 className="titleh2" style={{ maxWidth: '770px' }}>
+              Покупка карт
+            </h2>
             <div className="cards">
               {sortCards(filterDefaultCards).map((item, i) => (
-                <div
-                  className="bank-card"
-                  style={{
-                    background: `100% center / 100% no-repeat url(${item.imgUrl})`,
-                  }}
+                <Card
+                  item={item}
                   key={i}
-                >
-                  <div className="bank-card__top">
-                    <div className="bank-card__top__title">
-                      <p>ML</p>
-                      <p>{item.ratity}</p>
-                    </div>
-                    <div className="bank-card__top__icon">
-                      <CardsInfo
-                        item={item}
-                        modal={modal}
-                        handleClose={handleClose}
-                        cardBuyError={cardBuyError}
-                        userCards={userCards}
-                        defaultCards={defaultCards}
-                        specialCards={specialCards}
-                        getBalance={getBalance}
-                        user={user}
-                        buyCard={buyCard}
-                        setModal={setModal}
-                        setCardBuyError={setCardBuyError}
-                        isBuy={isBuy}
-                        setIsBuy={setIsBuy}
-                        popoverCardBuyError={popoverCardBuyError}
-                        popoverIsBuy={popoverIsBuy}
-                        setPopoverIsBuy={setPopoverIsBuy}
-                      />
-                    </div>
-                  </div>
-                  <div style={{ flex: '1 1 auto' }}></div>
-                  <div className="bank-card__bottom">
-                    <div className="bank-card__bottom__price">
-                      <p>
-                        Цена:{' '}
-                        {item.price === 0
-                          ? 'Бесплатно'
-                          : getBalance(item.price)}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                  getBalance={getBalance}
+                  icon={
+                    <CardsInfoPopover
+                      item={item}
+                      modal={modal}
+                      handleClose={handleClose}
+                      cardBuyError={cardBuyError}
+                      userCards={userCards}
+                      defaultCards={defaultCards}
+                      specialCards={specialCards}
+                      getBalance={getBalance}
+                      user={user}
+                      buyCard={buyCard}
+                      setModal={setModal}
+                      setCardBuyError={setCardBuyError}
+                      isBuy={isBuy}
+                      setIsBuy={setIsBuy}
+                      popoverCardBuyError={popoverCardBuyError}
+                      popoverIsBuy={popoverIsBuy}
+                      setPopoverIsBuy={setPopoverIsBuy}
+                    />
+                  }
+                />
               ))}
             </div>
           </div>
@@ -261,115 +250,6 @@ const ProfileBank = ({
       ) : null}
     </div>
   );
-};
-
-const CardsInfo = ({
-  item,
-  modal,
-  handleClose,
-  cardBuyError,
-  userCards,
-  defaultCards,
-  specialCards,
-  getBalance,
-  user,
-  buyCard,
-  setModal,
-  setCardBuyError,
-  setIsBuy,
-  isBuy,
-  popoverCardBuyError,
-  popoverIsBuy,
-  setPopoverIsBuy,
-}) => {
-  const [popoverShow, setPopoverShow] = useState(false);
-  const [target, setTarget] = useState(null);
-  const ref = useRef(null);
-
-  const handlePopoverClick = (event) => {
-    setPopoverShow(!popoverShow);
-    setTarget(event.target);
-  };
-
-  return (
-    <div ref={ref}>
-      <img
-        src={infoIcon}
-        alt="info"
-        onClick={(e) => {
-          handlePopoverClick(e);
-          setPopoverIsBuy(false);
-        }}
-        id="img-trigger"
-      />
-
-      <Overlay
-        show={popoverShow}
-        target={target}
-        placement="top"
-        container={ref}
-        containerPadding={10}
-      >
-        <Popover id="popover-positioned-top" className="card-popover">
-          <Popover.Body>
-            <h6>Покупка карты</h6>
-            <p>
-              <span style={{ color: '#B4B4B4' }}>Текстура:</span> {item.texture}
-            </p>
-            <p>
-              <span style={{ color: '#B4B4B4' }}>Редкость:</span> ML -{' '}
-              {item.ratity}
-            </p>
-            <p>
-              <span style={{ color: '#B4B4B4' }}>Стоимость:</span>{' '}
-              {item.price === 0 ? 'Бесплатно' : getBalance(item.price)}
-            </p>
-            <p className="popover-card-buy-error">{popoverCardBuyError}</p>
-
-            {popoverIsBuy === 'loading' ? (
-              'loading'
-            ) : popoverIsBuy === 'succses' ? (
-              <button className="btn btn-green btn-buy-green">
-                <div className="animate__animated animate__fadeInLeft">
-                  Готово
-                </div>
-              </button>
-            ) : (
-              <button
-                className="btn btn-blue btn-buy"
-                onClick={() => {
-                  if (item.price === 0) {
-                    buyCard(user, item.price, item.name);
-                  } else {
-                    setModal('buyCard');
-                  }
-                }}
-              >
-                Купить карту
-              </button>
-            )}
-
-            <BuyCardModal
-              show={modal}
-              handleClose={handleClose}
-              cardBuyError={cardBuyError}
-              setCardBuyError={setCardBuyError}
-              userCards={userCards}
-              defaultCards={defaultCards}
-              specialCards={specialCards}
-              getBalance={getBalance}
-              buyCard={buyCard}
-              user={user}
-              buyedCard={item}
-              setModal={setModal}
-              setIsBuy={setIsBuy}
-              isBuy={isBuy}
-            />
-          </Popover.Body>
-        </Popover>
-      </Overlay>
-    </div>
-  );
-};
+}
 
 export default ProfileBank;

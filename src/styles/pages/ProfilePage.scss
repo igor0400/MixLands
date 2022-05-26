@@ -120,7 +120,7 @@
         gap: 30px;
       }
       .issue-cards {
-        margin: 50px auto 0;
+        margin: 100px auto 0;
         .cards {
           display: grid;
           grid-template-columns: repeat(auto-fill, 370px);
@@ -132,40 +132,11 @@
   }
 }
 
-.bank-card {
-  padding: 10px;
-  height: 215px;
-  border-radius: 10px;
-  font-weight: 900;
-  display: flex;
-  flex-direction: column;
-  &__top {
-    display: flex;
-    justify-content: space-between;
-    &__title {
-      p {
-        font-size: 25px;
-        line-height: 28px;
-      }
-    }
-    &__icon {
-      cursor: pointer;
-    }
-  }
-  &__bottom {
-    &__price {
-      p {
-        font-size: 18px;
-        text-align: right;
-      }
-    }
-  }
-}
-
 .card-popover {
   cursor: default;
   background: rgba(47, 44, 63, 0.98);
   border: 2px solid #4f4b76;
+  border-radius: 10px;
   .popover-body {
     color: #fff;
     display: flex;
@@ -180,7 +151,7 @@
       line-height: 22px;
     }
     .btn-buy,
-    .btn-buy-green {
+    .btn-buy-succses {
       background: #5869ff;
       padding: 10px 50px;
       font-size: 18px;
@@ -191,11 +162,11 @@
         background: #4e5de4;
       }
     }
-    .btn-buy-green {
-      background: #0c8f33;
+    .btn-buy-succses {
       padding: 10px 80px;
+      background: #8545d8;
       &:hover {
-        background: #117730;
+        background: #6f39b4;
       }
     }
   }

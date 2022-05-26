@@ -29,7 +29,7 @@ const ProfileProfile = () => {
             <span style={{ color: '#B4B4B4' }}>Ранг:</span> {user.rank}
           </p>
           <p className="status">
-            <span style={{ color: '#B4B4B4' }}>Статус:</span> {user.status}
+            <span style={{ color: '#B4B4B4' }}>Статус:</span> {user.status ? user.status : 'Нет статуса'}
           </p>
           <p className="skin">
             <span style={{ color: '#B4B4B4' }}>Скин:</span>{' '}

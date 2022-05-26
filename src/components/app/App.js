@@ -37,11 +37,15 @@ function App() {
   const [specialCards, setSpecialCards] = useState([]);
 
   const [cardBuyError, setCardBuyError] = useState(false);
-  
+
   const [isBuy, setIsBuy] = useState(false);
   const [popoverIsBuy, setPopoverIsBuy] = useState(false);
 
-  const user = localStorage.getItem('user');
+  const [cardId, setCardId] = useState(false);
+
+  const [canCardPay, setCanCardPay] = useState(true);
+
+  const user = JSON.parse(localStorage.getItem('user'));
 
   const handleClose = () => setModal(false);
   const handleShowBuy = () => setModal('buy');
@@ -50,9 +54,12 @@ function App() {
     setModal(false);
     setCardBuyError(false);
     setIsBuy(false);
+    setCanCardPay(true);
   };
 
-  useEffect(() => {
+  useEffect(getData, []);
+
+  function getData() {
     axios
       .get('https://mixlands-3696a-default-rtdb.firebaseio.com/users.json')
       .then((res) => {
@@ -65,7 +72,7 @@ function App() {
 
         if (user) {
           data.forEach((item) => {
-            if (item.name === JSON.parse(user).name) {
+            if (item.name === user.name) {
               localStorage.setItem('user', JSON.stringify(item));
             }
           });
@@ -93,7 +100,13 @@ function App() {
         setDefaultCards(defaultData);
         setSpecialCards(specialData);
       });
-  }, []);
+
+    axios
+      .get('https://mixlands-3696a-default-rtdb.firebaseio.com/cards.json')
+      .then((res) => {
+        if (res.data.cardId) setCardId(res.data.cardId);
+      });
+  }
 
   function returnWikiElem() {
     switch (activeWiki) {
@@ -132,6 +145,10 @@ function App() {
             setIsBuy={setIsBuy}
             popoverIsBuy={popoverIsBuy}
             setPopoverIsBuy={setPopoverIsBuy}
+            getData={getData}
+            cardId={cardId}
+            canCardPay={canCardPay}
+            setCanCardPay={setCanCardPay}
           />
         );
     }
