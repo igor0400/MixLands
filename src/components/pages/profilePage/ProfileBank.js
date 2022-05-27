@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { database, ref, set } from '../../../firebase/firebase';
-import axios from 'axios';
 
 import Card from '../../card/Card';
 import CardsInfoPopover from '../../popovers/CardsInfoPopover';
@@ -29,6 +28,8 @@ function ProfileBank({
 
   const userCards = [];
   const filterDefaultCards = [];
+
+  useEffect(() => console.log(userCards), []);
 
   const getUserCards = () => {
     for (let key in user.cards) {
@@ -67,17 +68,61 @@ function ProfileBank({
   };
 
   const serchCard = (buyedCardName) => {
+    let cardActive = false;
+
     userCards.forEach((userCard) => {
       if (buyedCardName === userCard.name) {
-        setCanCardPay(false);
+        cardActive = true;
         setCardBuyError('У вас уже есть данная карта');
       }
     });
+
+    console.log(buyedCardName)
+    return cardActive;
+  };
+
+  const postBuyedCard = async (
+    player,
+    value,
+    userCard,
+    buyedCardName,
+    vaidateId,
+    cardError
+  ) => {
+    if (cardId) {
+      await setCardBuyError(false);
+      await setIsBuy('loading');
+      await set(
+        ref(database, `users/${player.name}/mcoins`),
+        +player.mcoins - +value
+      );
+
+      await set(
+        ref(database, `users/${player.name}/cards/${userCard.id}/balance`),
+        +userCard.balance - +value
+      );
+
+      await set(ref(database, `users/${player.name}/cards/${cardId}`), {
+        name: buyedCardName,
+        balance: 0,
+        id: cardId,
+      });
+
+      await set(ref(database, `cards/cardId`), vaidateId(+cardId + 1));
+
+      await setIsBuy('succses');
+      await setTimeout(() => {
+        getData();
+        getUserCards();
+        setModal(false);
+        setIsBuy(false);
+      }, 1000);
+    } else {
+      cardError('Ошибка сервера');
+    }
   };
 
   const buyCard = async (player, value, buyedCardName, userCard = null) => {
-    await serchCard(buyedCardName);
-
     const vaidateId = (id) => {
       if (id < 10) {
         return `000${id}`;
@@ -94,68 +139,47 @@ function ProfileBank({
       if (userCard.balance < +value) {
         setCardBuyError('Недостаточно средств на выбранной карте');
       } else {
-        if (canCardPay) {
-          if (cardId) {
-            await setCardBuyError(false);
-            await setIsBuy('loading');
-            await set(
-              ref(database, `users/${player.name}/mcoins`),
-              +player.mcoins - +value
-            );
-
-            await set(
-              ref(
-                database,
-                `users/${player.name}/cards/${userCard.id}/balance`
-              ),
-              +userCard.balance - +value
-            );
-
-            await set(ref(database, `users/${player.name}/cards/${cardId}`), {
-              name: buyedCardName,
-              balance: 0,
-              id: cardId,
-            });
-
-            await set(ref(database, `cards/cardId`), vaidateId(+cardId + 1));
-
-            await setIsBuy('succses');
-            await setTimeout(() => {
-              getData();
-              getUserCards();
-              setModal(false);
-              setIsBuy(false);
-              console.log(userCards);
-            }, 1000);
-          } else {
-            setCardBuyError('Ошибка сервера');
-          }
+        if (!serchCard(buyedCardName)) {
+          console.log(serchCard(buyedCardName));
+          await postBuyedCard(
+            player,
+            value,
+            userCard,
+            buyedCardName,
+            vaidateId,
+            setCardBuyError
+          );
         } else {
-          console.log('Ошибка');
+          console.log(serchCard(buyedCardName));
         }
       }
     } else {
-      if (cardId) {
-        await setPopoverCardBuyError(false);
-        await setPopoverIsBuy('loading');
+      if (serchCard(buyedCardName)) {
+        console.log(serchCard(buyedCardName));
+        if (cardId) {
+          await setPopoverCardBuyError(false);
+          await setPopoverIsBuy('loading');
 
-        await set(ref(database, `users/${player.name}/cards/${cardId}`), {
-          name: buyedCardName,
-          balance: 0,
-          id: cardId,
-        });
+          await set(ref(database, `users/${player.name}/cards/${cardId}`), {
+            name: buyedCardName,
+            balance: 0,
+            id: cardId,
+          });
 
-        await set(ref(database, `cards/cardId`), vaidateId(+cardId + 1));
+          await set(ref(database, `cards/cardId`), vaidateId(+cardId + 1));
 
-        await setPopoverIsBuy('succses');
+          await setPopoverIsBuy('succses');
 
-        await setTimeout(() => {
-          getData();
-          setModal(false);
-          setIsBuy(false);
-        }, 1000);
+          await setTimeout(() => {
+            getData();
+            setModal(false);
+            setIsBuy(false);
+          }, 1000);
+        } else {
+          setPopoverCardBuyError('Ошибка сервера');
+        }
       } else {
-        setPopoverCardBuyError('Ошибка сервера');
+        console.log(serchCard(buyedCardName));
       }
     }
   };
