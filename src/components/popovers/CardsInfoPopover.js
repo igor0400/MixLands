@@ -76,12 +76,18 @@ const CardsInfoPopover = ({
 
             {popoverIsBuy === 'loading' ? (
               <button className="btn btn-blue btn-buy">
-                <Spinner animation="border" size="sm" variant="primary" />
+                <Spinner animation="border" size="sm" variant="light" style={{margin: '0 50px'}} />
               </button>
             ) : popoverIsBuy === 'succses' ? (
               <button className="btn btn-succses btn-buy-succses">
                 <div className="animate__animated animate__fadeInLeft">
                   Готово
+                </div>
+              </button>
+            ) : popoverIsBuy === 'error' ? (
+              <button className="btn btn-error btn-buy-error">
+                <div className="animate__animated animate__fadeInLeft">
+                  Ошибка
                 </div>
               </button>
             ) : (

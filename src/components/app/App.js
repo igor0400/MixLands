@@ -27,13 +27,14 @@ function App() {
   const [activeWiki, setActiveWiki] = useState('rules');
   const [activeProfile, setActiveProfile] = useState('profile');
   const [admins, setAdmins] = useState(['Swingor', 'm1xeee']);
-  const [moders, setModers] = useState(['Ollyse', 'ayori_chan']);
+  const [moders, setModers] = useState(['Ollyse']);
 
   const [players, setPlayers] = useState([]);
   const [playersLoading, setPlayersLoading] = useState(true);
   const [playersError, setPlayersError] = useState(false);
 
   const [defaultCards, setDefaultCards] = useState([]);
+  const [defaultCardsError, setDefaultCardsError] = useState(false);
   const [specialCards, setSpecialCards] = useState([]);
 
   const [cardBuyError, setCardBuyError] = useState(false);
@@ -42,8 +43,6 @@ function App() {
   const [popoverIsBuy, setPopoverIsBuy] = useState(false);
 
   const [cardId, setCardId] = useState(false);
-
-  const [canCardPay, setCanCardPay] = useState(true);
 
   const user = JSON.parse(localStorage.getItem('user'));
 
@@ -54,7 +53,6 @@ function App() {
     setModal(false);
     setCardBuyError(false);
     setIsBuy(false);
-    setCanCardPay(true);
   };
 
   useEffect(getData, []);
@@ -99,6 +97,9 @@ function App() {
 
         setDefaultCards(defaultData);
         setSpecialCards(specialData);
+      })
+      .catch((error) => {
+        setDefaultCardsError(error);
       });
 
     axios
@@ -147,8 +148,7 @@ function App() {
             setPopoverIsBuy={setPopoverIsBuy}
             getData={getData}
             cardId={cardId}
-            canCardPay={canCardPay}
-            setCanCardPay={setCanCardPay}
+            defaultCardsError={defaultCardsError}
           />
         );
     }

@@ -107,6 +107,15 @@ a {
   }
 }
 
+.btn-error {
+  font-weight: 900;
+  background: #dd2c14;
+  &:hover {
+    background: #b6230f;
+    color: #fff;
+  }
+}
+
 .btn-inline-blue {
   background: rgba(73, 56, 86, 0.13);
   border: 1px solid #2562ff;

@@ -1,6 +1,9 @@
 import postsPlus from '../../../images/icons/posts-plus.svg';
+import pencil from '../../../images/icons/pencil.svg';
+import { useState } from 'react';
 
 const ProfileProfile = () => {
+  const [changeStatus, setChangeStatus] = useState(false);
   const user = JSON.parse(localStorage.getItem('user'));
   const posts = [];
 
@@ -29,7 +32,22 @@ const ProfileProfile = () => {
             <span style={{ color: '#B4B4B4' }}>Ранг:</span> {user.rank}
           </p>
           <p className="status">
-            <span style={{ color: '#B4B4B4' }}>Статус:</span> {user.status ? user.status : 'Нет статуса'}
+            <span style={{ color: '#B4B4B4' }}>Статус:</span>{' '}
+            {changeStatus ? (
+              <input
+                type="text"
+                onKeyDown={(e) => (e.key === 'Enter' ? setChangeStatus(false): null)}
+              />
+            ) : user.status ? (
+              user.status
+            ) : (
+              'Нет статуса'
+            )}{' '}
+            <img
+              src={pencil}
+              alt="pencil"
+              onClick={() => setChangeStatus(!changeStatus)}
+            />
           </p>
           <p className="skin">
             <span style={{ color: '#B4B4B4' }}>Скин:</span>{' '}
@@ -53,7 +71,9 @@ const ProfileProfile = () => {
             </div>
           ))
         ) : (
-          <h4 className="posts-null">Пока нет постов <a href="#">написать пост</a></h4>
+          <h4 className="posts-null">
+            Пока нет постов <a href="#">написать пост</a>
+          </h4>
         )}
       </div>
     </div>

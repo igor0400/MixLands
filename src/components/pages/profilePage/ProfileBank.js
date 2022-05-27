@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useState } from 'react';
 import { database, ref, set } from '../../../firebase/firebase';
 
 import Card from '../../card/Card';
@@ -18,8 +19,7 @@ function ProfileBank({
   setPopoverIsBuy,
   getData,
   cardId,
-  canCardPay,
-  setCanCardPay,
+  defaultCardsError,
 }) {
   const [bankContent, setBankContent] = useState('userCards');
   const [popoverCardBuyError, setPopoverCardBuyError] = useState(false);
@@ -28,8 +28,6 @@ function ProfileBank({
 
   const userCards = [];
   const filterDefaultCards = [];
-
-  useEffect(() => console.log(userCards), []);
 
   const getUserCards = () => {
     for (let key in user.cards) {
@@ -77,7 +75,6 @@ function ProfileBank({
       }
     });
 
-    console.log(buyedCardName)
     return cardActive;
   };
 
@@ -86,40 +83,56 @@ function ProfileBank({
     value,
     userCard,
     buyedCardName,
-    vaidateId,
-    cardError
+    vaidateId
   ) => {
-    if (cardId) {
-      await setCardBuyError(false);
-      await setIsBuy('loading');
-      await set(
-        ref(database, `users/${player.name}/mcoins`),
-        +player.mcoins - +value
-      );
+    await setCardBuyError(false);
+    await setIsBuy('loading');
+    await set(
+      ref(database, `users/${player.name}/mcoins`),
+      +player.mcoins - +value
+    );
 
-      await set(
-        ref(database, `users/${player.name}/cards/${userCard.id}/balance`),
-        +userCard.balance - +value
-      );
+    await set(
+      ref(database, `users/${player.name}/cards/${userCard.id}/balance`),
+      +userCard.balance - +value
+    );
 
-      await set(ref(database, `users/${player.name}/cards/${cardId}`), {
-        name: buyedCardName,
-        balance: 0,
-        id: cardId,
-      });
+    await set(ref(database, `users/${player.name}/cards/${cardId}`), {
+      name: buyedCardName,
+      balance: 0,
+      id: cardId,
+    });
 
-      await set(ref(database, `cards/cardId`), vaidateId(+cardId + 1));
+    await set(ref(database, `cards/cardId`), vaidateId(+cardId + 1));
 
-      await setIsBuy('succses');
-      await setTimeout(() => {
-        getData();
-        getUserCards();
-        setModal(false);
-        setIsBuy(false);
-      }, 1000);
-    } else {
-      cardError('Ошибка сервера');
-    }
+    await setIsBuy('succses');
+    await setTimeout(() => {
+      getData();
+      getUserCards();
+      setModal(false);
+      setIsBuy(false);
+    }, 1000);
+  };
+
+  const postBuyedCardPopover = async (player, buyedCardName, vaidateId) => {
+    await setPopoverCardBuyError(false);
+    await setPopoverIsBuy('loading');
+
+    await set(ref(database, `users/${player.name}/cards/${cardId}`), {
+      name: buyedCardName,
+      balance: 0,
+      id: cardId,
+    });
+
+    await set(ref(database, `cards/cardId`), vaidateId(+cardId + 1));
+
+    await setPopoverIsBuy('succses');
+
+    await setTimeout(() => {
+      getData();
+      setModal(false);
+      setIsBuy(false);
+    }, 1000);
   };
 
   const buyCard = async (player, value, buyedCardName, userCard = null) => {
@@ -135,52 +148,54 @@ function ProfileBank({
       }
     };
 
+    if (serchCard(buyedCardName)) return;
+
+    if (userCard && userCard.balance < +value) {
+      setCardBuyError('Недостаточно средств на выбранной карте');
+      return;
+    }
+
+    if (cardBuyError) return;
+
     if (userCard) {
-      if (userCard.balance < +value) {
-        setCardBuyError('Недостаточно средств на выбранной карте');
-      } else {
-        if (!serchCard(buyedCardName)) {
-          console.log(serchCard(buyedCardName));
-          await postBuyedCard(
-            player,
-            value,
-            userCard,
-            buyedCardName,
-            vaidateId,
-            setCardBuyError
-          );
-        } else {
-          console.log(serchCard(buyedCardName));
-        }
+      if (!cardId) {
+        setIsBuy('error');
+        return;
       }
+
+      let response = true;
+
+      await axios
+        .get('https://mixlands-3696a-default-rtdb.firebaseio.com/users.json')
+        .catch(() => {
+          setIsBuy('error');
+          response = false;
+        });
+
+      if (!response) {
+        setTimeout(() => handleClose(), 2000);
+        return;
+      }
+
+      await postBuyedCard(player, value, userCard, buyedCardName, vaidateId);
     } else {
-      if (serchCard(buyedCardName)) {
-        console.log(serchCard(buyedCardName));
-        if (cardId) {
-          await setPopoverCardBuyError(false);
-          await setPopoverIsBuy('loading');
-
-          await set(ref(database, `users/${player.name}/cards/${cardId}`), {
-            name: buyedCardName,
-            balance: 0,
-            id: cardId,
-          });
-
-          await set(ref(database, `cards/cardId`), vaidateId(+cardId + 1));
-
-          await setPopoverIsBuy('succses');
-
-          await setTimeout(() => {
-            getData();
-            setModal(false);
-            setIsBuy(false);
-          }, 1000);
-        } else {
-          setPopoverCardBuyError('Ошибка сервера');
-        }
-      } else {
-        console.log(serchCard(buyedCardName));
+      if (!cardId) {
+        setPopoverIsBuy('error');
+        return;
       }
+
+      let response = true;
+
+      await axios
+        .get('https://mixlands-3696a-default-rtdb.firebaseio.com/users.json')
+        .catch(() => {
+          setPopoverIsBuy('error');
+          response = false;
+        });
+
+      if (!response) return;
+
+      await postBuyedCardPopover(player, buyedCardName, vaidateId);
     }
   };
 
@@ -200,72 +215,83 @@ function ProfileBank({
           Переводы
         </button>
       </div>
+      {defaultCardsError ? (
+        <h2 className="default-cards-error">Ошибка сервера</h2>
+      ) : null}
       {bankContent === 'userCards' ? (
         <div className="profile-page__bank__user-cards">
-          {user.cards ? (
-            <div className="existing-cars">
-              {userCards.map((item) => {
-                let cardName = {};
+          {!defaultCardsError ? (
+            user.cards ? (
+              <div className="existing-cars">
+                {userCards.map((item) => {
+                  let cardName = {};
 
-                defaultCards.forEach((defaultCard) => {
-                  if (defaultCard.name === item.name) {
-                    cardName = defaultCard;
-                  }
-                });
+                  defaultCards.forEach((defaultCard) => {
+                    if (defaultCard.name === item.name) {
+                      cardName = defaultCard;
+                    }
+                  });
 
-                specialCards.forEach((specialCard) => {
-                  if (specialCard.name === item.name) {
-                    cardName = specialCard;
-                  }
-                });
+                  specialCards.forEach((specialCard) => {
+                    if (specialCard.name === item.name) {
+                      cardName = specialCard;
+                    }
+                  });
 
-                return (
-                  <Card
-                    key={item.id}
-                    item={item}
-                    cardName={cardName}
-                    getBalance={getBalance}
-                    ratityBottom={true}
-                  />
-                );
-              })}
-            </div>
-          ) : (
-            <h4 className="posts-null">Пока нет карт...</h4>
-          )}
+                  return (
+                    <Card
+                      key={item.id}
+                      item={item}
+                      cardName={cardName}
+                      getBalance={getBalance}
+                      ratityBottom={true}
+                    />
+                  );
+                })}
+              </div>
+            ) : (
+              <h4 className="posts-null">Пока нет карт...</h4>
+            )
+          ) : null}
+
           <div className="issue-cards">
             <h2 className="titleh2" style={{ maxWidth: '770px' }}>
               Покупка карт
             </h2>
+            {defaultCardsError ? (
+              <h2 className="default-cards-error">Ошибка сервера</h2>
+            ) : null}
             <div className="cards">
-              {sortCards(filterDefaultCards).map((item, i) => (
-                <Card
-                  item={item}
-                  key={i}
-                  getBalance={getBalance}
-                  icon={
-                    <CardsInfoPopover
+              {!defaultCardsError
+                ? sortCards(filterDefaultCards).map((item, i) => (
+                    <Card
                       item={item}
-                      modal={modal}
-                      handleClose={handleClose}
-                      cardBuyError={cardBuyError}
-                      userCards={userCards}
-                      defaultCards={defaultCards}
-                      specialCards={specialCards}
+                      key={i}
                       getBalance={getBalance}
-                      user={user}
-                      buyCard={buyCard}
-                      setModal={setModal}
-                      setCardBuyError={setCardBuyError}
-                      isBuy={isBuy}
-                      setIsBuy={setIsBuy}
-                      popoverCardBuyError={popoverCardBuyError}
-                      popoverIsBuy={popoverIsBuy}
-                      setPopoverIsBuy={setPopoverIsBuy}
+                      icon={
+                        <CardsInfoPopover
+                          item={item}
+                          modal={modal}
+                          handleClose={handleClose}
+                          cardBuyError={cardBuyError}
+                          userCards={userCards}
+                          defaultCards={defaultCards}
+                          specialCards={specialCards}
+                          getBalance={getBalance}
+                          user={user}
+                          buyCard={buyCard}
+                          setModal={setModal}
+                          setCardBuyError={setCardBuyError}
+                          isBuy={isBuy}
+                          setIsBuy={setIsBuy}
+                          popoverCardBuyError={popoverCardBuyError}
+                          popoverIsBuy={popoverIsBuy}
+                          setPopoverIsBuy={setPopoverIsBuy}
+                        />
+                      }
                     />
-                  }
-                />
-              ))}
+                  ))
+                : null}
             </div>
           </div>
         </div>

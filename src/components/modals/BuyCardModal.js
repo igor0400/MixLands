@@ -68,6 +68,7 @@ function BuyCardModal({
                   }}
                   onClick={() => {
                     setActiveBankCard(item);
+                    setCardBuyError(false);
                   }}
                 >
                   <div className="bank-card__top">
@@ -99,7 +100,12 @@ function BuyCardModal({
         <p className="card-buy-error">{cardBuyError}</p>
         {isBuy === 'loading' ? (
           <button className="btn btn-blue">
-            <Spinner animation="border" size="sm" variant="primary" />
+            <Spinner
+              animation="border"
+              size="sm"
+              variant="light"
+              style={{ margin: '0 25px' }}
+            />
           </button>
         ) : isBuy === 'succses' ? (
           <button
@@ -110,6 +116,10 @@ function BuyCardModal({
             }}
           >
             <div className="animate__animated animate__fadeInLeft">Готово</div>
+          </button>
+        ) : isBuy === 'error' ? (
+          <button className="btn btn-error btn-buy-error">
+            <div className="animate__animated animate__fadeInLeft">Ошибка</div>
           </button>
         ) : (
           <button

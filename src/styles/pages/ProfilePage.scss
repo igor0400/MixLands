@@ -52,6 +52,21 @@
           font-size: 20px;
           line-height: 32px;
         }
+        .status {
+          img {
+            background: rgb(95, 95, 95);
+            border-radius: 5px;
+            margin-bottom: 3px;
+            cursor: pointer;
+          }
+          input {
+            font-size: 20px;
+            border-radius: 5px;
+            height: 24px;
+            font-size: 18px;
+            padding: 12px 5px;
+          }
+        }
       }
     }
     &__posts {
@@ -129,6 +144,25 @@
         }
       }
     }
+    &__transfers {
+      margin: 30px 0;
+      .select-search {
+        .css-1s2u09g-control {
+          background: #292535;
+          border: none;
+          .css-1okebmr-indicatorSeparator {
+          background: none;
+        }
+        }
+        
+      }
+    }
+  }
+  .default-cards-error {
+    text-align: center;
+    color: rgb(87, 87, 87);
+    margin: 50px 0 0 0;
+    max-width: 770px;
   }
 }
 
@@ -151,7 +185,8 @@
       line-height: 22px;
     }
     .btn-buy,
-    .btn-buy-succses {
+    .btn-buy-succses,
+    .btn-buy-error {
       background: #5869ff;
       padding: 10px 50px;
       font-size: 18px;
@@ -167,6 +202,13 @@
       background: #8545d8;
       &:hover {
         background: #6f39b4;
+      }
+    }
+    .btn-buy-error {
+      padding: 10px 70px;
+      background: #dd2c14;
+      &:hover {
+        background: #b6230f;
       }
     }
   }
