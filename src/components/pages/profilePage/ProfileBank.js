@@ -47,8 +47,8 @@ function ProfileBank({
       ? `${item} MK`
       : item >= 64
       ? item % 64 === 0
-        ? `${(item / 64).toFixed(0)} CMK`
-        : `${(item / 64).toFixed(0)} CMK ${(item % 64).toFixed(0)} MK`
+        ? `${Math.floor(item / 64)} CMK`
+        : `${Math.floor(item / 64)} CMK ${Math.floor(item % 64)} MK`
       : '0 MK';
 
   const sortCards = (cards) => {
@@ -244,7 +244,7 @@ function ProfileBank({
                       item={item}
                       cardName={cardName}
                       getBalance={getBalance}
-                      ratityBottom={true}
+                      ratityBottom={item.balance > 6400 ? false : true}
                     />
                   );
                 })}

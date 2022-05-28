@@ -26,8 +26,6 @@ function App() {
   const [modal, setModal] = useState(false);
   const [activeWiki, setActiveWiki] = useState('rules');
   const [activeProfile, setActiveProfile] = useState('profile');
-  const [admins, setAdmins] = useState(['Swingor', 'm1xeee']);
-  const [moders, setModers] = useState(['Ollyse']);
 
   const [players, setPlayers] = useState([]);
   const [playersLoading, setPlayersLoading] = useState(true);
@@ -127,7 +125,7 @@ function App() {
   function returnProfileElem() {
     switch (activeProfile) {
       case 'profile':
-        return <ProfileProfile />;
+        return <ProfileProfile getData={getData} />;
       case 'news':
         return <h1>news</h1>;
       case 'topPlayers':
@@ -171,8 +169,6 @@ function App() {
                   players={players}
                   loading={playersLoading}
                   error={playersError}
-                  admins={admins}
-                  moders={moders}
                 />
               }
             />

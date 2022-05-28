@@ -42,30 +42,88 @@
       }
       &__descr {
         margin: 0 30px;
+
+        .profile-p {
+          font-weight: 400;
+          font-size: 20px;
+          line-height: 32px;
+        }
+
         .name {
           font-size: 30px;
           line-height: 36px;
           margin-bottom: 30px;
         }
-        p {
-          font-weight: 400;
-          font-size: 20px;
-          line-height: 32px;
-        }
+
         .status {
-          img {
-            background: rgb(95, 95, 95);
-            border-radius: 5px;
-            margin-bottom: 3px;
-            cursor: pointer;
+          display: flex;
+          &__change {
+            margin: auto 0;
+            svg {
+              margin: 0 0 3px 5px;
+              cursor: pointer;
+              path {
+                stroke: #727272;
+                stroke-width: 2;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+              }
+            }
+            button {
+              background: none;
+              font-size: 18px;
+              color: #0d6efd;
+              border: none;
+              line-height: 18px;
+              padding: 0 5px;
+              &:hover {
+                color: #0a58ca;
+              }
+            }
+            p {
+              color: #ff002e;
+              font-size: 16px;
+              line-height: 20px;
+              margin-left: 3px;
+            }
           }
+
+          &__text {
+            margin-left: 5px;
+          }
+
           input {
+            margin: 1px 1px 1px 6px;
             font-size: 20px;
             border-radius: 5px;
             height: 24px;
-            font-size: 18px;
-            padding: 12px 5px;
+            font-size: 16px;
+            padding: 15px 7px;
+            background: #232435;
+            border: none;
+            color: #fff;
+            &:focus-visible {
+              margin: 0 0 0 5px;
+              border: 1px solid #4f4b76;
+              outline: none;
+            }
           }
+        }
+        .skin {
+          button {
+            background: none;
+            font-size: 20px;
+            color: #0d6efd;
+            border: none;
+            line-height: 20px;
+            padding: 0 3px;
+            &:hover {
+              color: #0a58ca;
+            }
+          }
+        }
+        #user-status__text {
+          animation-duration: 0.3s;
         }
       }
     }
@@ -151,10 +209,9 @@
           background: #292535;
           border: none;
           .css-1okebmr-indicatorSeparator {
-          background: none;
+            background: none;
+          }
         }
-        }
-        
       }
     }
   }
