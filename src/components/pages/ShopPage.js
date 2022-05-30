@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet';
 
 const ShopPage = ({ handleShow }) => {
   return (
-    <div className="shop-page">
+    <div className="shop-page animate__animated animate__fadeIn">
       <Helmet>
         <title>{'MixLands > Магазин'}</title>
       </Helmet>

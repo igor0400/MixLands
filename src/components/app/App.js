@@ -18,11 +18,13 @@ import ProfileProfile from '../pages/profilePage/ProfileProfile';
 import ProfileBank from '../pages/profilePage/ProfileBank';
 import Footer from '../footer/Footer';
 import Page404 from '../pages/Page404';
-import BuyModal from '../modals/BuyModal';
+import Modals from '../modals/Modals';
 
 import '../../styles/App.scss';
 
 function App() {
+  const user = JSON.parse(localStorage.getItem('user'));
+
   const [modal, setModal] = useState(false);
   const [activeWiki, setActiveWiki] = useState('rules');
   const [activeProfile, setActiveProfile] = useState('profile');
@@ -42,7 +44,11 @@ function App() {
 
   const [cardId, setCardId] = useState(false);
 
-  const user = JSON.parse(localStorage.getItem('user'));
+  const userHeadColor = user && user.headColor ? user.headColor : '#1f1c27';
+
+  const [changeStatus, setChangeStatus] = useState(false);
+  const [headColor, setHeadColor] = useState(userHeadColor);
+  const [changeHeadColor, setChangeHeadColor] = useState(false);
 
   const handleClose = () => setModal(false);
   const handleShowBuy = () => setModal('buy');
@@ -53,9 +59,7 @@ function App() {
     setIsBuy(false);
   };
 
-  useEffect(getData, []);
-
-  function getData() {
+  const getData = () => {
     axios
       .get('https://mixlands-3696a-default-rtdb.firebaseio.com/users.json')
       .then((res) => {
@@ -105,7 +109,9 @@ function App() {
       .then((res) => {
         if (res.data.cardId) setCardId(res.data.cardId);
       });
-  }
+  };
+
+  useEffect(getData, []);
 
   function returnWikiElem() {
     switch (activeWiki) {
@@ -125,7 +131,18 @@ function App() {
   function returnProfileElem() {
     switch (activeProfile) {
       case 'profile':
-        return <ProfileProfile getData={getData} />;
+        return (
+          <ProfileProfile
+            getData={getData}
+            setModal={setModal}
+            changeStatus={changeStatus}
+            setChangeStatus={setChangeStatus}
+            headColor={headColor}
+            setHeadColor={setHeadColor}
+            changeHeadColor={changeHeadColor}
+            setChangeHeadColor={setChangeHeadColor}
+          />
+        );
       case 'news':
         return <h1>news</h1>;
       case 'topPlayers':
@@ -152,13 +169,31 @@ function App() {
     }
   }
 
+  const onClickSomething = (e) => {
+    if (e.target.id !== 'change-status' && changeStatus) setChangeStatus(false);
+
+    if (
+      e.target.id !== 'change-color-trigger' &&
+      e.target.id !== 'head-color-input'
+    ) {
+      const input = document.querySelector('#head-color-input');
+
+      setChangeHeadColor(false);
+
+      if (user && headColor !== user.headColor) {
+        input.value = userHeadColor;
+        setHeadColor(userHeadColor);
+      }
+    }
+  };
+
   return (
     <Router>
-      <div className="App">
+      <div className="App" onClick={(e) => onClickSomething(e)}>
         <Helmet>
           <title>MixLands</title>
         </Helmet>
-        <Header modal={modal} setModal={setModal} players={players} />
+        <Header modal={modal} setModal={setModal} />
         <main className="main">
           <Routes>
             <Route path="/" element={<MainPage handleShow={handleShowBuy} />} />
@@ -200,7 +235,7 @@ function App() {
 
             <Route path="*" element={<Page404 />} />
           </Routes>
-          <BuyModal show={modal} handleClose={handleClose} />
+          <Modals show={modal} handleClose={handleClose} players={players} />
         </main>
         <Footer />
       </div>

@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet';
 
 const WikiPage = (props) => {
   return (
-    <div className="wiki-page mw1400">
+    <div className="wiki-page mw1400 animate__animated animate__fadeIn">
       <Helmet>
         <title>{'MixLands > Вики'}</title>
       </Helmet>

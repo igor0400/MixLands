@@ -1,8 +1,7 @@
 import { NavLink } from 'react-router-dom';
-import LoginModal from '../modals/LoginModal';
 import logo from '../../images/icons/logo.png';
 
-const Header = ({ modal, setModal, players }) => {
+const Header = ({ modal, setModal }) => {
   return (
     <header className="header" style={{ paddingRight: modal ? '10px' : 0 }}>
       <div className="header__wrapper mw1400">
@@ -53,7 +52,9 @@ const Header = ({ modal, setModal, players }) => {
               <span>Профиль</span>
             </NavLink>
           ) : (
-            <LoginModal show={modal} setShow={setModal} players={players} />
+            <button className="btn btn-blue" onClick={() => setModal('login')}>
+              Авторизация
+            </button>
           )}
         </div>
       </div>

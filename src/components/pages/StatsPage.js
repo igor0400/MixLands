@@ -3,12 +3,13 @@ import LineChart from '../charts/LineChart';
 import axios from 'axios';
 import Loading from '../loading/Loading';
 import { Helmet } from 'react-helmet';
+import { Link } from 'react-router-dom';
 
 import logo from '../../images/icons/logo-big-icon.png';
 import copy from '../../images/icons/copy.svg';
 import bea from '../../images/bea.svg';
 
-const StatsPage = ({ players, loading, error, admins, moders }) => {
+const StatsPage = ({ players, loading, error }) => {
   const [serverActive, setServerActive] = useState(false);
   const [online, setOnline] = useState(0);
   const [onlinePlayers, setOnlinePlayers] = useState([]);
@@ -16,6 +17,8 @@ const StatsPage = ({ players, loading, error, admins, moders }) => {
   const [filter, setFilter] = useState('all');
   const [term, setTerm] = useState('');
   const [loadingServerActive, setLoadingServerActive] = useState(true);
+
+  const user = JSON.parse(localStorage.getItem('user'));
 
   useEffect(() => {
     axios.get('https://api.mcsrvstat.us/2/prp.plo.su').then((res) => {
@@ -43,10 +46,16 @@ const StatsPage = ({ players, loading, error, admins, moders }) => {
     const item = document.createElement('div');
     item.classList.add('copy-alert');
     item.innerHTML = 'Скопировано';
+    item.classList.add('animate__animated');
+    item.classList.add('animate__fadeIn');
     body.append(item);
     setTimeout(() => {
-      item.remove();
+      item.classList.remove('animate__fadeIn');
+      item.classList.add('animate__fadeOut');
     }, 2000);
+    setTimeout(() => {
+      item.remove();
+    }, 3000);
   };
 
   const searchEmp = (items, term) => {
@@ -81,7 +90,7 @@ const StatsPage = ({ players, loading, error, admins, moders }) => {
     name.length > 11 ? `${name.slice(0, 11)}...` : name;
 
   return (
-    <div className="stats-page mw1400">
+    <div className="stats-page mw1400 animate__animated animate__fadeIn">
       <Helmet>
         <title>{'MixLands > Статистика'}</title>
       </Helmet>
@@ -153,26 +162,31 @@ const StatsPage = ({ players, loading, error, admins, moders }) => {
           {!loading && !error ? (
             sortVisibleData.length > 0 ? (
               sortVisibleData.map((item, i) => (
-                <div className="player__card" key={i}>
-                  <div className="player__card__img">
-                    <img
-                      src={`https://mc-heads.net/avatar/${item.name}`}
-                      alt={namePlayer(item.name)}
-                    />
-                    {onlinePlayers.map((player, i) =>
-                      item.name === player ? (
-                        <div className="player__active__circle" key={i}></div>
-                      ) : null
-                    )}
+                <Link
+                  to={user.name === item.name ? '/profile' : item.name}
+                  key={i}
+                >
+                  <div className="player__card">
+                    <div className="player__card__img">
+                      <img
+                        src={`https://mc-heads.net/avatar/${item.name}`}
+                        alt={namePlayer(item.name)}
+                      />
+                      {onlinePlayers.map((player, i) =>
+                        item.name === player ? (
+                          <div className="player__active__circle" key={i}></div>
+                        ) : null
+                      )}
+                    </div>
+                    <div className="player__card__descr">
+                      <h3>{namePlayer(item.name)}</h3>
+                      <h5>
+                        Наиграно:{' '}
+                        <span style={{ color: '#fff' }}>{item.hours}ч.</span>
+                      </h5>
+                    </div>
                   </div>
-                  <div className="player__card__descr">
-                    <h3>{namePlayer(item.name)}</h3>
-                    <h5>
-                      Наиграно:{' '}
-                      <span style={{ color: '#fff' }}>{item.hours}ч.</span>
-                    </h5>
-                  </div>
-                </div>
+                </Link>
               ))
             ) : (
               <h3 className="null-players">Игроков не найдено</h3>

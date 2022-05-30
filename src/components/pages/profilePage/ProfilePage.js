@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet';
 
 const ProfilePage = (props) => {
   return (
-    <section className="profile-page mw1400">
+    <section className="profile-page mw1400 animate__animated animate__fadeIn">
       <Helmet>
         <title>{'MixLands > Профиль'}</title>
       </Helmet>

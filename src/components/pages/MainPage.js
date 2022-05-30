@@ -6,8 +6,8 @@ import player2 from '../../images/card-player2.png';
 import player3 from '../../images/card-player3.png';
 
 const MainPage = ({ handleShow }) => {
-  const copyIp = (e) => {
-    const btn = e.target.firstChild.data;
+  const copyIp = () => {
+    const btn = 'play.mixlands.fun';
     const body = document.querySelector('body');
     const input = document.createElement('input');
     body.append(input);
@@ -18,19 +18,28 @@ const MainPage = ({ handleShow }) => {
   };
 
   const showPopower = () => {
-    const btn = document.querySelector('.main-ip-btn');
+    const btn = document.querySelector('#ip-btn');
+    btn.classList.add('animate__animated');
+    btn.classList.add('animate__fadeIn');
     btn.innerHTML = 'Скопировано';
     setTimeout(() => {
-      btn.innerHTML = 'play.mixlands.fun';
+      btn.classList.remove('animate__fadeIn');
+      btn.classList.add('animate__fadeOut');
     }, 2000);
+    setTimeout(() => {
+      btn.classList.remove('animate__fadeOut');
+      btn.innerHTML = 'play.mixlands.fun';
+      btn.classList.remove('animate__fadeIn');
+      btn.classList.remove('animate__animated');
+    }, 2600);
   };
 
   return (
-    <div className="main-page mw1400">
+    <div className="main-page mw1400 animate__animated animate__fadeIn">
       <Helmet>
         <title>MixLands</title>
       </Helmet>
-      <section className="main">
+      <section className="main-page__main">
         <div className="main__descr">
           <div className="title">
             <h1>Уникальный Minecraft Сервер</h1>
@@ -48,13 +57,20 @@ const MainPage = ({ handleShow }) => {
             </button>
             <button
               className="btn btn-inline-blue main-ip-btn"
-              id="btn"
-              onClick={(e) => {
-                copyIp(e);
+              onClick={() => {
+                copyIp();
                 showPopower();
               }}
             >
-              play.mixlands.fun
+              <span
+                id="ip-btn"
+                onClick={() => {
+                  copyIp();
+                  showPopower();
+                }}
+              >
+                play.mixlands.fun
+              </span>
             </button>
           </div>
         </div>

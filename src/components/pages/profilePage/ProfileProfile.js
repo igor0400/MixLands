@@ -1,16 +1,27 @@
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import { database, ref, set } from '../../../firebase/firebase';
 import axios from 'axios';
 
 import Spinner from 'react-bootstrap/Spinner';
+import Form from 'react-bootstrap/Form';
 
 import postsPlus from '../../../images/icons/posts-plus.svg';
 
-const ProfileProfile = ({ getData }) => {
-  const [changeStatus, setChangeStatus] = useState(false);
-  const [statsValue, setStatusValue] = useState('');
-
+const ProfileProfile = ({
+  getData,
+  setModal,
+  changeStatus,
+  setChangeStatus,
+  headColor,
+  setHeadColor,
+  changeHeadColor,
+  setChangeHeadColor,
+}) => {
   const user = JSON.parse(localStorage.getItem('user'));
+  const userHeadColor = user.headColor ? user.headColor : '#1f1c27';
+
+  const [statsValue, setStatusValue] = useState(user.status);
+
   const posts = [];
 
   if (user.posts) {
@@ -37,34 +48,111 @@ const ProfileProfile = ({ getData }) => {
   };
 
   const postStatus = async () => {
-    setChangeStatus('loading');
+    if (statsValue === user.status) {
+      setChangeStatus(false);
+    } else {
+      setChangeStatus('loading');
+      let response = true;
+
+      await axios
+        .get('https://mixlands-3696a-default-rtdb.firebaseio.com/users.json')
+        .catch(() => {
+          setChangeStatus('error');
+          response = false;
+          setTimeout(() => setChangeStatus(false), 2000);
+        });
+
+      if (response) {
+        await set(ref(database, `/users/${user.name}/status`), statsValue);
+        await getData();
+        setChangeStatus(false);
+      }
+    }
+  };
+
+  const postHeadColor = async () => {
+    setHeadColor('loading');
+
     let response = true;
 
     await axios
       .get('https://mixlands-3696a-default-rtdb.firebaseio.com/users.json')
       .catch(() => {
-        setChangeStatus('error');
+        setHeadColor('error');
         response = false;
-        setTimeout(() => setChangeStatus(false), 2000);
       });
 
     if (response) {
-      await set(ref(database, `/users/${user.name}/status`), statsValue);
+      await set(ref(database, `/users/${user.name}/headColor`), headColor);
       await getData();
-      setChangeStatus(false);
+      await setTimeout(() => {
+        setHeadColor(headColor);
+        setChangeHeadColor(false);
+      }, 1000);
     }
   };
 
   return (
-    <div
-      className="profile-page__profile"
-      onClick={(e) => {
-        if (e.target.id !== 'change-status') setChangeStatus(false);
-      }}
-    >
+    <div className="profile-page__profile">
       <div className="profile-page__profile__info">
         <div className="profile-page__profile__info__logo">
-          <img src={`https://mc-heads.net/head/${user.name}`} alt="head" />
+          {user.nitro ||
+          user.rank === 'Администратор' ||
+          user.rank === 'Модератор' ? (
+            <div
+              className="head-color"
+              style={{
+                right:
+                  changeHeadColor &&
+                  headColor !== 'loading' &&
+                  headColor !== 'error'
+                    ? -98
+                    : 0,
+              }}
+            >
+              {headColor === 'loading' ? (
+                <Spinner
+                  animation="border"
+                  variant="primary"
+                  size="sm"
+                  style={{ margin: '5px' }}
+                />
+              ) : (
+                <div className="change-color" id="change-color-trigger">
+                  <Form.Control
+                    type="color"
+                    id="head-color-input"
+                    defaultValue={headColor}
+                    title="Сменить цвет"
+                    onChange={(e) => setHeadColor(e.target.value)}
+                    onClick={() => setChangeHeadColor(true)}
+                  />
+                  {changeHeadColor ? (
+                    <div>
+                      <button
+                        id="change-color-trigger"
+                        className="change-color__btn"
+                        onClick={() => {
+                          if (headColor !== user.headColor) {
+                            postHeadColor();
+                          } else {
+                            setChangeHeadColor(false);
+                          }
+                        }}
+                      >
+                        Сохранить
+                      </button>
+                    </div>
+                  ) : null}
+                </div>
+              )}
+            </div>
+          ) : null}
+          <img
+            style={{ background: headColor }}
+            src={`https://mc-heads.net/head/${user.name}`}
+            alt="head"
+          />
         </div>
         <div className="profile-page__profile__info__descr">
           <p className="name profile-p">{user.name}</p>
@@ -98,11 +186,10 @@ const ProfileProfile = ({ getData }) => {
                 id="change-status"
                 type="text"
                 placeholder="Введите статус..."
+                maxLength="60"
                 onChange={(e) => setStatusValue(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    postStatus();
-                  }
+                  if (e.key === 'Enter') postStatus();
                 }}
               />
             ) : user.status ? (
@@ -150,7 +237,7 @@ const ProfileProfile = ({ getData }) => {
           </div>
           <p className="skin profile-p">
             <span style={{ color: '#B4B4B4' }}>Скин:</span>{' '}
-            <button>открыть</button>
+            <button onClick={() => setModal('skin')}>открыть</button>
           </p>
         </div>
       </div>

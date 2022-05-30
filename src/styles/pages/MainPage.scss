@@ -1,8 +1,10 @@
 .main-page {
-  .main {
+  &__main {
     padding: 0 0 30px;
     display: flex;
     justify-content: space-between;
+  }
+  .main {
     &__descr {
       padding-top: 160px;
       width: 600px;

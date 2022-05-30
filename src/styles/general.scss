@@ -28,6 +28,7 @@ body {
 }
 
 .main {
+  min-height: 100vh;
   padding-top: 86px;
   flex: 1 1 auto;
 }
@@ -54,6 +55,7 @@ a {
   background: rgba(46, 46, 46, 0.8);
   padding: 10px;
   border-radius: 10px;
+  animation-duration: 0.5s;
 }
 
 .mw1400 {
@@ -123,7 +125,7 @@ a {
   position: relative;
   z-index: 1;
   &:hover {
-    background: rgba(77, 77, 77, 0.281);
+    background: rgba(43, 43, 43, 0.281);
     border: 1px solid #1e50d1;
     color: #fff;
   }
@@ -151,13 +153,15 @@ a {
       border-radius: 20px;
     }
     &-header {
+      align-items: start;
       padding-top: 0;
       border: none;
       .btn-close {
-        margin: 0;
+        margin: 10px 0 0 0;
         padding: 0;
       }
       .modal-title {
+        text-align: center;
         margin-left: 16px;
         font-weight: 900;
         color: #fff;
@@ -196,6 +200,16 @@ a {
         padding: 10px 80px;
         border-radius: 10px;
       }
+      .skin-btn {
+        padding: 5px 40px;
+        margin: 0;
+        background: #5869ff;
+        font-weight: 800;
+        &:hover {
+          color: #fff;
+          background: #525fd8;
+        }
+      }
     }
   }
   .card-buy-error {
@@ -203,4 +217,11 @@ a {
     font-weight: 600;
     text-align: center;
   }
+}
+
+.modal-backdrop {
+  z-index: 1000000;
+}
+.modal {
+  z-index: 1000001;
 }
