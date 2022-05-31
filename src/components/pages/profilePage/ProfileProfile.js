@@ -93,6 +93,15 @@ const ProfileProfile = ({
     }
   };
 
+  const getBalance = (item) =>
+    item < 64
+      ? `${item} MK`
+      : item >= 64
+      ? item % 64 === 0
+        ? `${Math.floor(item / 64)} CMK`
+        : `${Math.floor(item / 64)} CMK ${Math.floor(item % 64)} MK`
+      : '0 MK';
+
   return (
     <div className="profile-page__profile">
       <div className="profile-page__profile__info">
@@ -164,7 +173,8 @@ const ProfileProfile = ({
             {user.hours}ч.
           </p>
           <p className="mcoins profile-p">
-            <span style={{ color: '#B4B4B4' }}>Баланс:</span> {user.mcoins} МК
+            <span style={{ color: '#B4B4B4' }}>Баланс:</span>{' '}
+            {getBalance(user.mcoins)}
           </p>
           <p
             className="rank profile-p"
@@ -240,7 +250,11 @@ const ProfileProfile = ({
           </div>
           <p className="skin profile-p">
             <span style={{ color: '#B4B4B4' }}>Скин:</span>{' '}
-            <button onClick={() => setModal('skin')}>открыть</button>
+            <a
+              href={`https://ru.namemc.com/profile/${user ? user.name : null}`}
+            >
+              открыть
+            </a>
           </p>
         </div>
       </div>

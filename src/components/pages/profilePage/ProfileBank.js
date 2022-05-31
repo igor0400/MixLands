@@ -328,7 +328,7 @@ const ProfileBank = ({
       return;
     }
     if (+inputValue > activeTransferCards.userActiveCard.balance) {
-      setTransferError('Не достаточно средств');
+      setTransferError('Недостаточно средств');
       return;
     }
     if (!response()) {
@@ -591,7 +591,7 @@ const ProfileBank = ({
                     setTransferError(false);
 
                     if (value > activeTransferCards.userActiveCard.balance) {
-                      setTransferError('Не достаточно средств');
+                      setTransferError('Недостаточно средств');
                     }
 
                     if (value <= 0) {
