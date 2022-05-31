@@ -169,7 +169,7 @@ const StatsPage = ({ players, loading, error }) => {
             sortVisibleData.length > 0 ? (
               sortVisibleData.map((item, i) => (
                 <Link
-                  to={user.name === item.name ? '/profile' : item.name}
+                  to={user && user.name === item.name ? '/profile' : item.name}
                   key={i}
                 >
                   <div className="player__card">
