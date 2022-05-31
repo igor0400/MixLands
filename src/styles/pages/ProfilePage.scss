@@ -3,6 +3,7 @@
   display: flex;
   color: #ffffff;
   &__nav-bar {
+    position: relative;
     ul {
       text-align: center;
       list-style: none;
@@ -16,12 +17,22 @@
         white-space: nowrap;
         transition: 0.2s;
         cursor: pointer;
-        &:not(.profile-active):hover {
+        &:not(.profile-active):not(.out):hover {
           background: rgba(165, 165, 165, 0.1);
         }
       }
       .profile-active {
         background: #5869ff;
+      }
+      .out {
+        font-weight: 900;
+        background: #e1362b;
+        position: fixed;
+        bottom: 100px;
+        width: 255px;
+        &:hover {
+          background: #b12d24;
+        }
       }
     }
   }
@@ -56,6 +67,10 @@
               line-height: 14px;
               padding: 10px;
             }
+          }
+          &__error {
+            color: #ff002e;
+            margin-right: 5px;
           }
         }
         img {
@@ -226,15 +241,92 @@
       }
     }
     &__transfers {
+      max-width: fit-content;
       margin: 30px 0;
-      .select-search {
-        .css-1s2u09g-control {
-          background: #292535;
+      select {
+        border-radius: 10px;
+        padding: 10px;
+        color: #8f77c3;
+        font-weight: 700;
+        border: none;
+        appearance: none;
+        background: url('../../images/icons/select-arrow.svg') no-repeat right,
+          #292535;
+        background-position-x: calc(100% - 8px);
+        &:focus-visible {
+          outline-color: #4f4b76;
+        }
+      }
+      &__cards {
+        display: grid;
+        grid-template-columns: 370px 50px 370px;
+        gap: 15px 0px;
+      }
+
+      &__form {
+        margin-top: 15px;
+        display: grid;
+        gap: 15px 0;
+        input {
+          background: #232435;
+          border-radius: 10px;
           border: none;
-          .css-1okebmr-indicatorSeparator {
-            background: none;
+          padding: 7px 10px;
+          color: #8f77c3;
+          margin: 2px;
+          &:focus-visible {
+            outline: none;
+            margin: 0;
+            border: 2px solid #4f4b76;
           }
         }
+        .textarea {
+          position: relative;
+          display: grid;
+          color: #8f77c3;
+          textarea {
+            margin: 2px;
+            color: #8f77c3;
+            min-height: 130px;
+            background: #232435;
+            border-radius: 10px;
+            border: none;
+            padding: 7px 10px;
+            &:focus-visible {
+              outline: none;
+              margin: 0;
+              border: 2px solid #4f4b76;
+            }
+          }
+          span {
+            position: absolute;
+            bottom: 5px;
+            right: 10px;
+            color: gray;
+          }
+        }
+        .transfers {
+          &-error {
+            color: #ff002e;
+            font-weight: 700;
+          }
+          &-btn {
+            background: #5869ff;
+            margin: 2px;
+            border-radius: 10px;
+            font-weight: 900;
+            &:hover {
+              background: #4e5de4;
+              color: #fff;
+            }
+          }
+        }
+      }
+
+      .arrow-transfers {
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
   }
@@ -294,11 +386,18 @@
   }
   .popover-arrow::after {
     border-top-color: rgba(47, 44, 63, 0.98);
+    border-bottom-color: rgba(47, 44, 63, 0.98);
   }
   .popover-card-buy-error {
     margin-top: 5px;
     color: #ff002e;
     font-weight: 600;
     text-align: center;
+  }
+
+  &__transfer {
+    .popover-body {
+      padding: 5px;
+    }
   }
 }

@@ -1,11 +1,14 @@
 import axios from 'axios';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { database, ref, set } from '../../../firebase/firebase';
 
 import Card from '../../card/Card';
 import CardsInfoPopover from '../../popovers/CardsInfoPopover';
+import TransferPopover from '../../popovers/TransferPopover';
 
-function ProfileBank({
+import arrowTransfers from '../../../images/icons/arrow-transfers.svg';
+
+const ProfileBank = ({
   defaultCards,
   specialCards,
   setModal,
@@ -20,14 +23,83 @@ function ProfileBank({
   getData,
   cardId,
   defaultCardsError,
-}) {
+  players,
+  objPlayers,
+}) => {
   const [bankContent, setBankContent] = useState('userCards');
   const [popoverCardBuyError, setPopoverCardBuyError] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+  const [textareaValue, setTextareaValue] = useState('');
+  const [transferError, setTransferError] = useState(false);
+  const [transferLoading, setTransferLoading] = useState(false);
 
   const user = JSON.parse(localStorage.getItem('user'));
 
+  const allCardsById = {};
   const userCards = [];
   const filterDefaultCards = [];
+  const allUsersCards = {};
+
+  players.forEach((player) => {
+    const cards = player.cards;
+
+    if (cards) {
+      allUsersCards[player.name] = [];
+    }
+
+    for (let key in cards) {
+      allUsersCards[player.name].push({
+        ...cards[key],
+        owner: player.name,
+      });
+
+      allCardsById[key] = cards[key];
+    }
+  });
+
+  const userCardsKeys = Object.keys(user.cards);
+  const allUsersCardsKeys = Object.keys(allUsersCards);
+  const allUsersCardKeys = Object.keys(allUsersCards[allUsersCardsKeys[0]]);
+  const [activeTransferCards, setActiveTransferCards] = useState({
+    userActiveCard: user.cards[userCardsKeys[0]],
+    allUsersActiveCard:
+      allUsersCards[allUsersCardsKeys[0]][allUsersCardKeys[0]],
+  });
+
+  // useEffect(() => {
+  //  userCardsKeys && allUsersCardsKeys && allUsersCardKeys
+  //    ? setActiveTransferCards({
+  //        userActiveCard: user.cards[userCardsKeys[0]],
+  //        allUsersActiveCard:
+  //          allUsersCards[allUsersCardsKeys[0]][allUsersCardKeys[0]],
+  //      })
+  //    : window.location.reload();
+  // }, [])
+
+  useEffect(() => {
+    for (let key in allCardsById) {
+      if (activeTransferCards.userActiveCard.id === key) {
+        setActiveTransferCards((state) => ({
+          ...state,
+          userActiveCard: allCardsById[key],
+        }));
+
+        console.log('change transfer');
+      }
+    }
+  }, []); // НЕ ОБНОВЛЯЕТСЯ БАЛАНС КАРТЫ, НЕ ВЫОДИТСЯ ЗАГРУЗКА НА КНОПКУ
+
+  const response = async () => {
+    let response = true;
+
+    await axios
+      .get('https://mixlands-3696a-default-rtdb.firebaseio.com/users.json')
+      .catch(() => {
+        response = false;
+      });
+
+    return response;
+  };
 
   const getUserCards = () => {
     for (let key in user.cards) {
@@ -163,16 +235,8 @@ function ProfileBank({
         return;
       }
 
-      let response = true;
-
-      await axios
-        .get('https://mixlands-3696a-default-rtdb.firebaseio.com/users.json')
-        .catch(() => {
-          setIsBuy('error');
-          response = false;
-        });
-
-      if (!response) {
+      if (!response()) {
+        setIsBuy('error');
         setTimeout(() => handleClose(), 2000);
         return;
       }
@@ -184,20 +248,102 @@ function ProfileBank({
         return;
       }
 
-      let response = true;
-
-      await axios
-        .get('https://mixlands-3696a-default-rtdb.firebaseio.com/users.json')
-        .catch(() => {
-          setPopoverIsBuy('error');
-          response = false;
-        });
-
-      if (!response) return;
+      if (!response()) {
+        setPopoverIsBuy('error');
+        return;
+      }
 
       await postBuyedCardPopover(player, buyedCardName, vaidateId);
     }
   };
+
+  const getCard = (item, ratityBottom, showBalance, icon = false) => {
+    let cardName = {};
+
+    defaultCards.forEach((defaultCard) => {
+      if (defaultCard.name === item.name) {
+        cardName = defaultCard;
+      }
+    });
+
+    specialCards.forEach((specialCard) => {
+      if (specialCard.name === item.name) {
+        cardName = specialCard;
+      }
+    });
+
+    return (
+      <Card
+        icon={icon}
+        item={item}
+        cardName={cardName}
+        getBalance={getBalance}
+        ratityBottom={ratityBottom}
+        showBalance={showBalance}
+      />
+    );
+  };
+
+  const transferPayload = async () => {
+    const userCard = activeTransferCards.userActiveCard;
+    const allUserCard = activeTransferCards.allUsersActiveCard;
+
+    setTransferError(false);
+
+    if (inputValue === '') {
+      setTransferError('Заполните поле');
+      return;
+    }
+    if (+inputValue <= 0) {
+      setTransferError('Сумма перевода должна быть больше 0');
+      return;
+    }
+    if (userCard.id === allUserCard.id) {
+      setTransferError('Нельзя перевести на ту же карту');
+      return;
+    }
+    if (!response()) {
+      setTransferError('Ошибка сервера');
+      return;
+    }
+    if (transferError) {
+      return;
+    }
+
+    await setTransferLoading(true);
+
+    await players.forEach(async (player) => {
+      if (player.name === user.name) {
+        await set(
+          ref(database, `users/${player.name}/mcoins`),
+          +player.mcoins - +inputValue
+        );
+        await set(
+          ref(database, `users/${player.name}/cards/${userCard.id}/balance`),
+          +userCard.balance - +inputValue
+        );
+        console.log('Уменшить');
+      }
+
+      if (player.name === allUserCard.owner) {
+        await set(
+          ref(database, `users/${player.name}/mcoins`),
+          +player.mcoins + +inputValue
+        );
+        await set(
+          ref(database, `users/${player.name}/cards/${allUserCard.id}/balance`),
+          +allUserCard.balance + +inputValue
+        );
+        console.log('Увеличить');
+      }
+    });
+
+    await getData();
+    await setTransferLoading(false);
+  };
+
+  const userActiveCardRatityBottom =
+    activeTransferCards.userActiveCard.balance > 6400 ? false : true;
 
   return (
     <div className="profile-page__bank">
@@ -245,6 +391,7 @@ function ProfileBank({
                       cardName={cardName}
                       getBalance={getBalance}
                       ratityBottom={item.balance > 6400 ? false : true}
+                      showBalance={true}
                     />
                   );
                 })}
@@ -296,10 +443,121 @@ function ProfileBank({
           </div>
         </div>
       ) : bankContent === 'transfers' ? (
-        <div className="profile-page__bank__transfers"></div>
+        <div className="profile-page__bank__transfers">
+          <div className="profile-page__bank__transfers__cards">
+            <select
+              name="userCards"
+              id="user-cards"
+              onChange={(e) => {
+                setActiveTransferCards((state) => ({
+                  ...state,
+                  userActiveCard: user.cards[e.target.value],
+                }));
+              }}
+            >
+              {userCards.map((card, i) => (
+                <option key={i} value={card.id}>
+                  ML-{card.id} » {user.name}
+                </option>
+              ))}
+            </select>
+            <div className="arrow-transfers">
+              <img src={arrowTransfers} alt="arrowTransfers" />
+            </div>
+
+            <select
+              name="allUsersCards"
+              id="all-users-cards"
+              onChange={(e) =>
+                setActiveTransferCards((state) => ({
+                  ...state,
+                  allUsersActiveCard: {
+                    owner: e.target.value.split(' ')[2],
+                    ...objPlayers[e.target.value.split(' ')[2]].cards[
+                      e.target.value.split(' ')[0].slice(3)
+                    ],
+                  },
+                }))
+              }
+            >
+              {players.map((user, i) => (
+                <React.Fragment key={i}>
+                  {allUsersCards[user.name]
+                    ? allUsersCards[user.name].map((card) => (
+                        <option
+                          key={card.id}
+                          value={`ML-${card.id} » ${user.name}`}
+                        >
+                          ML-{card.id} » {user.name}
+                        </option>
+                      ))
+                    : null}
+                </React.Fragment>
+              ))}
+            </select>
+
+            {getCard(
+              activeTransferCards.userActiveCard,
+              userActiveCardRatityBottom,
+              true
+            )}
+
+            <div className="arrow-transfers">
+              <img src={arrowTransfers} alt="arrowTransfers" />
+            </div>
+
+            {getCard(
+              activeTransferCards.allUsersActiveCard,
+              true,
+              false,
+              <TransferPopover item={activeTransferCards.allUsersActiveCard} />
+            )}
+          </div>
+          <div className="profile-page__bank__transfers__form">
+            <p className="transfers-error">{transferError}</p>
+            <input
+              placeholder="Сумма перевода..."
+              type="number"
+              name="sum"
+              id="transfer-sum"
+              min={0}
+              onChange={(e) => {
+                const value = e.target.value;
+
+                setInputValue(value);
+                setTransferError('');
+
+                if (value > activeTransferCards.userActiveCard.balance) {
+                  setTransferError('Не достаточно средств');
+                }
+
+                if (value < 0) {
+                  setTransferError('Не корректно заполнено поле');
+                }
+
+                if (value === '') {
+                  setTransferError('Заполните поле');
+                }
+              }}
+            />
+            <div className="textarea">
+              <textarea
+                placeholder="Комментарий..."
+                name="comment"
+                id="comment"
+                maxLength="250"
+                onChange={(e) => setTextareaValue(e.target.value)}
+              />
+              <span>{textareaValue.length}/250</span>
+            </div>
+            <button className="btn transfers-btn" onClick={transferPayload}>
+              {transferLoading ? 'Загрузка' : 'Перевести'}
+            </button>
+          </div>
+        </div>
       ) : null}
     </div>
   );
-}
+};
 
 export default ProfileBank;

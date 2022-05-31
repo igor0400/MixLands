@@ -115,6 +115,13 @@ $borderColor: #1f1c2f;
     }
   }
   &__players {
+    .error {
+      display: grid;
+      justify-content: center;
+      h4 {
+        text-align: center;
+      }
+    }
     .players__cards {
       display: grid;
       grid-template-columns: repeat(auto-fill, 285px);

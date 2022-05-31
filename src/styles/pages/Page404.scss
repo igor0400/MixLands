@@ -4,13 +4,11 @@
   display: grid;
   align-items: center;
   justify-content: center;
-  &__h2 {
-    color: #fff;
-    font-weight: 900;
-    font-size: 80px;
-    margin: 0;
-  }
   &__p {
+    text-align: center;
     color: grey;
+    margin-top: 15px;
+    font-size: 20px;
+    font-weight: 500;
   }
 }

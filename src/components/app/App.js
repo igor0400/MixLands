@@ -30,6 +30,7 @@ function App() {
   const [activeProfile, setActiveProfile] = useState('profile');
 
   const [players, setPlayers] = useState([]);
+  const [objPlayers, setObjPlayers] = useState({});
   const [playersLoading, setPlayersLoading] = useState(true);
   const [playersError, setPlayersError] = useState(false);
 
@@ -69,6 +70,7 @@ function App() {
           data.push(res.data[key]);
         }
         setPlayers(data);
+        setObjPlayers(res.data);
 
         if (user) {
           data.forEach((item) => {
@@ -164,6 +166,8 @@ function App() {
             getData={getData}
             cardId={cardId}
             defaultCardsError={defaultCardsError}
+            players={players}
+            objPlayers={objPlayers}
           />
         );
     }
@@ -223,12 +227,16 @@ function App() {
               <Route
                 path="profile"
                 element={
-                  <ProfilePage
-                    setActiveProfile={setActiveProfile}
-                    activeProfile={activeProfile}
-                  >
-                    {returnProfileElem()}
-                  </ProfilePage>
+                  playersError || defaultCardsError ? (
+                    <Page404 />
+                  ) : (
+                    <ProfilePage
+                      setActiveProfile={setActiveProfile}
+                      activeProfile={activeProfile}
+                    >
+                      {returnProfileElem()}
+                    </ProfilePage>
+                  )
                 }
               />
             ) : null}

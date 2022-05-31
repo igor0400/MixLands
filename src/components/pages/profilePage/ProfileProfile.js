@@ -1,4 +1,4 @@
-import { useState, useTransition } from 'react';
+import { useState } from 'react';
 import { database, ref, set } from '../../../firebase/firebase';
 import axios from 'axios';
 
@@ -18,7 +18,6 @@ const ProfileProfile = ({
   setChangeHeadColor,
 }) => {
   const user = JSON.parse(localStorage.getItem('user'));
-  const userHeadColor = user.headColor ? user.headColor : '#1f1c27';
 
   const [statsValue, setStatusValue] = useState(user.status);
 
@@ -89,6 +88,8 @@ const ProfileProfile = ({
         setHeadColor(headColor);
         setChangeHeadColor(false);
       }, 1000);
+    } else {
+      setTimeout(() => setHeadColor(headColor), 2000);
     }
   };
 
@@ -117,6 +118,8 @@ const ProfileProfile = ({
                   size="sm"
                   style={{ margin: '5px' }}
                 />
+              ) : headColor === 'error' ? (
+                <p className="head-color__error">Ошибка</p>
               ) : (
                 <div className="change-color" id="change-color-trigger">
                   <Form.Control

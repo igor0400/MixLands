@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import logo from '../../images/icons/logo-big-icon.png';
 import copy from '../../images/icons/copy.svg';
 import bea from '../../images/bea.svg';
+import phantom from '../../images/phantom.webp';
 
 const StatsPage = ({ players, loading, error }) => {
   const [serverActive, setServerActive] = useState(false);
@@ -157,7 +158,12 @@ const StatsPage = ({ players, loading, error }) => {
           />
         </div>
         {loading ? <Loading /> : null}
-        {error ? <h2>Error</h2> : null}
+        {error ? (
+          <div className="error">
+            <img src={phantom} alt="phantom" />
+            <h4>Ошибка</h4>
+          </div>
+        ) : null}
         <div className="players__cards">
           {!loading && !error ? (
             sortVisibleData.length > 0 ? (

@@ -1,4 +1,11 @@
-const Card = ({ item, getBalance, icon, cardName, ratityBottom }) => {
+const Card = ({
+  item,
+  getBalance,
+  icon,
+  cardName,
+  ratityBottom,
+  showBalance,
+}) => {
   const ratity = (ml) => (
     <div className="bank-card__bottom__ratity">
       {ml ? (
@@ -44,7 +51,7 @@ const Card = ({ item, getBalance, icon, cardName, ratityBottom }) => {
               Цена: {item.price === 0 ? 'Бесплатно' : getBalance(item.price)}
             </p>
           ) : null}
-          {item.balance !== undefined ? (
+          {showBalance && item.balance !== undefined ? (
             <p
               style={{ color: item.color ? item.color : '#fff' }}
               className="balance"
