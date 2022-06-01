@@ -51,6 +51,8 @@ function App() {
   const [headColor, setHeadColor] = useState(userHeadColor);
   const [changeHeadColor, setChangeHeadColor] = useState(false);
 
+  const [activePlayer, setActivePlayer] = useState({});
+
   const handleClose = () => setModal(false);
   const handleShowBuy = () => setModal('buy');
 
@@ -184,11 +186,28 @@ function App() {
 
       setChangeHeadColor(false);
 
-      if (user && headColor !== user.headColor) {
+      if (user && input && headColor !== user.headColor) {
         input.value = userHeadColor;
         setHeadColor(userHeadColor);
       }
     }
+  };
+
+  const getUserPage = () => {
+    const url = window.location.href.split('/')[4];
+    let player = false;
+
+    players.forEach((item) => {
+      if (item.name === url) player = item;
+    });
+
+    return (
+      <>
+        {player ? (
+          <Route path={player.name} element={<h1>{player.name}</h1>} />
+        ) : null}
+      </>
+    );
   };
 
   return (
@@ -208,6 +227,7 @@ function App() {
                   players={players}
                   loading={playersLoading}
                   error={playersError}
+                  setActivePlayer={setActivePlayer}
                 />
               }
             />
@@ -240,6 +260,8 @@ function App() {
                 }
               />
             ) : null}
+
+            {user && user.name === activePlayer.name ? null : getUserPage()}
 
             <Route path="*" element={<Page404 />} />
           </Routes>

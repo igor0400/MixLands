@@ -10,7 +10,7 @@ import copy from '../../images/icons/copy.svg';
 import bea from '../../images/bea.svg';
 import phantom from '../../images/phantom.webp';
 
-const StatsPage = ({ players, loading, error }) => {
+const StatsPage = ({ players, loading, error, setActivePlayer }) => {
   const [serverActive, setServerActive] = useState(false);
   const [online, setOnline] = useState(0);
   const [onlinePlayers, setOnlinePlayers] = useState([]);
@@ -169,8 +169,9 @@ const StatsPage = ({ players, loading, error }) => {
             sortVisibleData.length > 0 ? (
               sortVisibleData.map((item, i) => (
                 <Link
-                  to={user && user.name === item.name ? '/profile' : item.name}
+                  to={user && user.name === item.name ? '/profile' : `/${item.name}`}
                   key={i}
+                  onClick={() => setActivePlayer(item)}
                 >
                   <div className="player__card">
                     <div className="player__card__img">
