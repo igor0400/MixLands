@@ -204,7 +204,7 @@ function App() {
     return (
       <>
         {player ? (
-          <Route path={player.name} element={<h1>{player.name}</h1>} />
+          <Route path={player.name} element={<h2>{player.name}</h2>} />
         ) : null}
       </>
     );
