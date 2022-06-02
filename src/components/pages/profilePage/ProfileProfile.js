@@ -114,7 +114,7 @@ const ProfileProfile = ({
     const textarea = document.querySelector('#add-new-post');
 
     if (textareaValue === '') {
-      setAddNewPostError('Заполните поле!');
+      setAddNewPostError('Заполните поле');
       setAddNewPostProggres('error');
       return;
     }
