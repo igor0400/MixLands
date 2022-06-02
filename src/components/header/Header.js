@@ -87,7 +87,14 @@ const Header = ({ modal, setModal }) => {
                   <div
                     className={`dropdown__item animate__animated ${dropdownClass}`}
                   >
-                    <p className="chps">Сменить пароль</p>
+                    <Link to="/profile">
+                      <p className="go-profile" onClick={handleClose}>
+                        Перейти в профиль
+                      </p>
+                    </Link>
+                    <p className="chps" onClick={handleClose}>
+                      Сменить пароль
+                    </p>
                     <Link to="/">
                       <p
                         className="out"

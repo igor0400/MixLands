@@ -5,6 +5,8 @@ import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner';
 import Form from 'react-bootstrap/Form';
 
+import headDefault from '../../../images/head-default.png';
+
 const ProfileProfile = ({
   getData,
   changeStatus,
@@ -14,6 +16,8 @@ const ProfileProfile = ({
   changeHeadColor,
   setChangeHeadColor,
   postId,
+  copyText,
+  nitro,
 }) => {
   const user = JSON.parse(localStorage.getItem('user'));
 
@@ -21,6 +25,8 @@ const ProfileProfile = ({
   const [textareaValue, setTextareaValue] = useState('');
   const [addNewPostError, setAddNewPostError] = useState(false);
   const [addNewPostProggres, setAddNewPostProggres] = useState(false);
+
+  const textarea = document.querySelector('#add-new-post');
 
   const posts = [];
 
@@ -109,10 +115,19 @@ const ProfileProfile = ({
 
     return `${hours}:${minutes} ${day}.${month}.${year}`;
   }
+  function getClearDateTime() {
+    const now = new Date();
+    const day = plusZero(now.getDate());
+    const month = plusZero(now.getMonth() + 1);
+    const year = now.getFullYear();
+    const hours = plusZero(now.getHours());
+    const minutes = plusZero(now.getMinutes());
+    const seconds = plusZero(now.getSeconds());
+
+    return `${year}${month}${day}${hours}${minutes}${seconds}`;
+  }
 
   const addNewPost = async () => {
-    const textarea = document.querySelector('#add-new-post');
-
     if (textareaValue === '') {
       setAddNewPostError('Заполните поле');
       setAddNewPostProggres('error');
@@ -131,6 +146,7 @@ const ProfileProfile = ({
     await set(ref(database, `/users/${user.name}/posts/${postId}`), {
       text: textareaValue,
       date: getDateTime(),
+      clearDate: getClearDateTime(),
       id: postId,
     });
 
@@ -158,9 +174,7 @@ const ProfileProfile = ({
     <div className="profile-page__profile">
       <div className="profile-page__profile__info">
         <div className="profile-page__profile__info__logo">
-          {user.nitro ||
-          user.rank === 'Администратор' ||
-          user.rank === 'Модератор' ? (
+          {nitro ? (
             <div
               className="head-color"
               style={{
@@ -216,6 +230,7 @@ const ProfileProfile = ({
             style={{ background: headColor }}
             src={`https://mc-heads.net/head/${user.name}`}
             alt="head"
+            onError={(e) => (e.target.src = headDefault)}
           />
         </div>
         <div className="profile-page__profile__info__descr">
@@ -327,6 +342,34 @@ const ProfileProfile = ({
             <span>{textareaValue.length}/500</span>
           </div>
           <div className="add-posts-btn">
+            <div className="support__btns">
+              <button
+                className="support-btn"
+                onClick={() => (textarea.value = '')}
+              >
+                Очистить
+              </button>
+              <button
+                className="support-btn"
+                onClick={() => {
+                  if (textareaValue !== '') {
+                    copyText(textareaValue, true);
+                  }
+                }}
+              >
+                Копировать
+              </button>
+              <button
+                className="support-btn"
+                onClick={() => {
+                  window.navigator.clipboard
+                    .readText()
+                    .then((data) => (textarea.value += data));
+                }}
+              >
+                Вставить
+              </button>
+            </div>
             {addNewPostProggres === 'loading' ? (
               <button className="btn btn-blue btn-loading">
                 <Spinner animation="border" variant="primary" size="sm" />
@@ -346,7 +389,7 @@ const ProfileProfile = ({
         </div>
         {user.posts ? (
           posts.reverse().map((item, i) => (
-            <div className="profile-page__profile__posts__post" key={i}>
+            <div className="user__post" key={i}>
               <div className="title">
                 {user.name} — {item.date}
               </div>

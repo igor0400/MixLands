@@ -81,22 +81,6 @@
           cursor: pointer;
         }
       }
-      &__post {
-        padding: 20px;
-        margin: 30px 0;
-        background: #2b2736;
-        border-radius: 10px;
-        .title {
-          font-size: 15px;
-          color: #776c8f;
-          margin-bottom: 5px;
-        }
-        .text {
-          font-size: 20px;
-          line-height: 27px;
-          color: #cdc0ff;
-        }
-      }
       .posts-null {
         color: #454545;
         margin: 30px 0 0 0;

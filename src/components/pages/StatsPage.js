@@ -9,8 +9,9 @@ import logo from '../../images/icons/logo-big-icon.png';
 import copy from '../../images/icons/copy.svg';
 import bea from '../../images/bea.svg';
 import phantom from '../../images/phantom.webp';
+import faceDefault from '../../images/face-default.png';
 
-const StatsPage = ({ players, loading, error, setActivePlayer }) => {
+const StatsPage = ({ players, loading, error, setActivePlayer, copyText }) => {
   const [serverActive, setServerActive] = useState(false);
   const [online, setOnline] = useState(0);
   const [onlinePlayers, setOnlinePlayers] = useState([]);
@@ -30,34 +31,6 @@ const StatsPage = ({ players, loading, error, setActivePlayer }) => {
       setOnlinePlayers(res.data.players.list);
     });
   }, []);
-
-  const copyIp = () => {
-    const btn = 'play.mixlands.fun';
-    const body = document.querySelector('body');
-    const input = document.createElement('input');
-    body.append(input);
-    input.value = btn;
-    input.select();
-    document.execCommand('copy');
-    input.remove();
-  };
-
-  const copyAlert = () => {
-    const body = document.querySelector('body');
-    const item = document.createElement('div');
-    item.classList.add('copy-alert');
-    item.innerHTML = 'Скопировано';
-    item.classList.add('animate__animated');
-    item.classList.add('animate__fadeIn');
-    body.append(item);
-    setTimeout(() => {
-      item.classList.remove('animate__fadeIn');
-      item.classList.add('animate__fadeOut');
-    }, 2000);
-    setTimeout(() => {
-      item.remove();
-    }, 3000);
-  };
 
   const searchEmp = (items, term) => {
     if (term.length === 0) {
@@ -123,10 +96,7 @@ const StatsPage = ({ players, loading, error, setActivePlayer }) => {
                 src={copy}
                 alt="copy"
                 className="ip__copy"
-                onClick={() => {
-                  copyIp();
-                  copyAlert();
-                }}
+                onClick={() => copyText('play.mixlands.fun')}
               />
             </p>
           </div>
@@ -185,6 +155,7 @@ const StatsPage = ({ players, loading, error, setActivePlayer }) => {
                       <img
                         src={`https://mc-heads.net/avatar/${item.name}`}
                         alt={namePlayer(item.name)}
+                        onError={(e) => (e.target.src = faceDefault)}
                       />
                       {onlinePlayers.map((player, i) =>
                         item.name === player ? (

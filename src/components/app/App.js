@@ -16,6 +16,7 @@ import WikiPacks from '../pages/wikiPage/WikiPacks';
 import ShopPage from '../pages/ShopPage';
 import ProfilePage from '../pages/profilePage/ProfilePage';
 import ProfileProfile from '../pages/profilePage/ProfileProfile';
+import ProfilePosts from '../pages/profilePage/ProfilePosts';
 import ProfileBank from '../pages/profilePage/ProfileBank';
 import Footer from '../footer/Footer';
 import Page404 from '../pages/Page404';
@@ -45,15 +46,24 @@ function App() {
   const [popoverIsBuy, setPopoverIsBuy] = useState(false);
 
   const [cardId, setCardId] = useState(false);
-  const [postId, setPostId] = useState(null)
+  const [postId, setPostId] = useState(null);
 
-  const userHeadColor = user && user.headColor ? user.headColor : '#1F1C27';
+  const nitro =
+    (user && user.nitro) ||
+    (user && user.rank === 'Администратор') ||
+    (user && user.rank === 'Модератор');
+  const userHeadColor =
+    user && user.headColor && nitro ? user.headColor : '#1F1C27';
 
   const [changeStatus, setChangeStatus] = useState(false);
   const [headColor, setHeadColor] = useState(userHeadColor);
   const [changeHeadColor, setChangeHeadColor] = useState(false);
 
   const [activePlayer, setActivePlayer] = useState({});
+
+  const [copyAlertActive, setCopyAlertActive] = useState(false);
+  const [copyAlertMr, setCopyAlertMr] = useState(false);
+  const [copyAlertClass, setCopyAlertClass] = useState('animate__fadeIn');
 
   const handleClose = () => setModal(false);
   const handleShowBuy = () => setModal('buy');
@@ -127,6 +137,21 @@ function App() {
 
   useEffect(getData, []);
 
+  const copyText = (text, marginRight = false) => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopyAlertActive(true);
+      if (marginRight) setCopyAlertMr(true);
+
+      setTimeout(() => {
+        setCopyAlertClass('animate__fadeOut');
+      }, 2000);
+      setTimeout(() => {
+        setCopyAlertActive(false);
+        setCopyAlertClass('animate__fadeIn');
+      }, 3000);
+    });
+  };
+
   function returnWikiElem() {
     switch (activeWiki) {
       case 'rules':
@@ -155,10 +180,14 @@ function App() {
             changeHeadColor={changeHeadColor}
             setChangeHeadColor={setChangeHeadColor}
             postId={postId}
+            copyText={copyText}
+            nitro={nitro}
           />
         );
       case 'news':
         return <h1>news</h1>;
+      case 'posts':
+        return <ProfilePosts players={players} />;
       case 'topPlayers':
         return <h1>topPlayers</h1>;
       case 'bank':
@@ -227,7 +256,12 @@ function App() {
         <Header modal={modal} setModal={setModal} />
         <main className="main">
           <Routes>
-            <Route path="/" element={<MainPage handleShow={handleShowBuy} />} />
+            <Route
+              path="/"
+              element={
+                <MainPage handleShow={handleShowBuy} copyText={copyText} />
+              }
+            />
             <Route
               path="stats"
               element={
@@ -236,6 +270,7 @@ function App() {
                   loading={playersLoading}
                   error={playersError}
                   setActivePlayer={setActivePlayer}
+                  copyText={copyText}
                 />
               }
             />
@@ -274,6 +309,14 @@ function App() {
             <Route path="*" element={<Page404 />} />
           </Routes>
           <Modals show={modal} handleClose={handleClose} players={players} />
+          {copyAlertActive ? (
+            <div
+              className={`copy-alert animate__animated ${copyAlertClass}`}
+              style={{ marginRight: copyAlertMr ? '-175px' : 0 }}
+            >
+              Скопировано
+            </div>
+          ) : null}
         </main>
         <Footer />
       </div>

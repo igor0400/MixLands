@@ -226,3 +226,21 @@ a {
 .modal {
   z-index: 1000001;
 }
+
+.user__post {
+  padding: 20px;
+  margin: 20px 0;
+  background: #2b2736;
+  border-radius: 10px;
+  word-wrap: break-word;
+  .title {
+    font-size: 15px;
+    color: #776c8f;
+    margin-bottom: 5px;
+  }
+  .text {
+    font-size: 20px;
+    line-height: 27px;
+    color: #cdc0ff;
+  }
+}

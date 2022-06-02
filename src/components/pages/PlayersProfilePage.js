@@ -1,4 +1,10 @@
+import headDefault from '../../images/head-default.png';
+
 const PlayersProfilePage = ({ player }) => {
+  const nitro =
+    player.nitro ||
+    player.rank === 'Администратор' ||
+    player.rank === 'Модератор';
   const posts = [];
 
   if (player.posts) {
@@ -22,10 +28,12 @@ const PlayersProfilePage = ({ player }) => {
         <div className="players-profile-page__profile__info__logo">
           <img
             style={{
-              background: player.headColor ? player.headColor : '#1F1C27',
+              background:
+                player.headColor && nitro ? player.headColor : '#1F1C27',
             }}
             src={`https://mc-heads.net/head/${player.name}`}
             alt="head"
+            onError={(e) => (e.target.src = headDefault)}
           />
         </div>
         <div className="players-profile-page__profile__info__descr">
@@ -77,7 +85,7 @@ const PlayersProfilePage = ({ player }) => {
         {player.posts ? (
           posts.reverse().map((item) => (
             <div
-              className="players-profile-page__profile__posts__post"
+              className="user__post"
               key={item.id}
             >
               <div className="title">
@@ -87,7 +95,7 @@ const PlayersProfilePage = ({ player }) => {
             </div>
           ))
         ) : (
-          <h4 className="posts-null">Пока нет постов</h4>
+          <h4 className="posts-null">У игрока пока нет постов.</h4>
         )}
       </div>
     </div>

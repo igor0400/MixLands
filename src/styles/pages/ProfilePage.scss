@@ -27,7 +27,7 @@
     }
   }
   &__main {
-    width: 100%;
+    width: 78%;
     margin: 0 0 0 60px;
   }
   &__profile {
@@ -156,7 +156,7 @@
       }
     }
     &__posts {
-      margin-top: 50px;
+      margin: 50px 0 0 0;
       &__top {
         display: flex;
         justify-content: center;
@@ -167,24 +167,8 @@
           cursor: pointer;
         }
       }
-      &__post {
-        padding: 20px;
-        margin: 30px 0;
-        background: #2b2736;
-        border-radius: 10px;
-        .title {
-          font-size: 15px;
-          color: #776c8f;
-          margin-bottom: 5px;
-        }
-        .text {
-          font-size: 20px;
-          line-height: 27px;
-          color: #cdc0ff;
-        }
-      }
       &__add-new {
-        margin-top: 30px;
+        margin: 30px 0 40px;
         display: flex;
         flex-direction: column;
         .textarea {
@@ -197,10 +181,11 @@
             background: #232435;
             border-radius: 10px;
             border: none;
-            padding: 7px 10px;
+            padding: 10px 15px;
             &:focus-visible {
               outline: none;
               border: 2px solid #4f4b76;
+              padding: 8px 13px;
             }
           }
           span {
@@ -212,7 +197,9 @@
         }
         .add-posts-btn {
           margin-top: 10px;
-          text-align: end;
+          display: flex;
+          align-items: start;
+          justify-content: space-between;
           button {
             font-size: 16px;
             padding: 10px 40px;
@@ -222,6 +209,15 @@
           }
           .btn-loading {
             padding: 10px 85px;
+          }
+          .support-btn {
+            background: rgba(217, 217, 217, 0.06);
+            border-radius: 5px;
+            color: #fff;
+            font-size: 12px;
+            padding: 5px 10px;
+            border: none;
+            margin: 0 3px;
           }
         }
         .error {
@@ -331,6 +327,7 @@
             &:focus-visible {
               outline: none;
               border: 2px solid #4f4b76;
+              padding: 5px 8px;
             }
           }
           span {

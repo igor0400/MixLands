@@ -24,6 +24,14 @@ const ProfilePage = (props) => {
           </li>
           <li
             className={
+              props.activeProfile === 'posts' ? 'profile-active' : null
+            }
+            onClick={() => props.setActiveProfile('posts')}
+          >
+            Посты
+          </li>
+          <li
+            className={
               props.activeProfile === 'topPlayers' ? 'profile-active' : null
             }
             onClick={() => props.setActiveProfile('topPlayers')}
