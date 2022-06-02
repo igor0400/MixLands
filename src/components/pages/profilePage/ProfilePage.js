@@ -36,9 +36,6 @@ const ProfilePage = (props) => {
           >
             Банк
           </li>
-          <li className="out" onClick={() => localStorage.removeItem('user')}>
-            Выйти
-          </li>
         </ul>
       </div>
       <div className="profile-page__main">{props.children}</div>

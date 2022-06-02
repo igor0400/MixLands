@@ -24,16 +24,6 @@
       .profile-active {
         background: #5869ff;
       }
-      .out {
-        font-weight: 900;
-        background: #e1362b;
-        position: fixed;
-        bottom: 100px;
-        width: 255px;
-        &:hover {
-          background: #b12d24;
-        }
-      }
     }
   }
   &__main {
@@ -169,7 +159,7 @@
       margin-top: 50px;
       &__top {
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         img {
           background: #49425c;
           border-radius: 15px;
@@ -191,6 +181,54 @@
           font-size: 20px;
           line-height: 27px;
           color: #cdc0ff;
+        }
+      }
+      &__add-new {
+        margin-top: 30px;
+        display: flex;
+        flex-direction: column;
+        .textarea {
+          position: relative;
+          display: grid;
+          color: #8f77c3;
+          textarea {
+            color: #8f77c3;
+            min-height: 130px;
+            background: #232435;
+            border-radius: 10px;
+            border: none;
+            padding: 7px 10px;
+            &:focus-visible {
+              outline: none;
+              border: 2px solid #4f4b76;
+            }
+          }
+          span {
+            position: absolute;
+            bottom: 5px;
+            right: 10px;
+            color: gray;
+          }
+        }
+        .add-posts-btn {
+          margin-top: 20px;
+          text-align: end;
+          button {
+            font-size: 16px;
+            font-weight: 700;
+            padding: 12px 40px;
+          }
+          .succses {
+            padding: 12px 70px;
+          }
+          .btn-loading {
+            padding: 12px 85px;
+          }
+        }
+        .error {
+          color: #ff002e;
+          font-weight: 600;
+          margin-bottom: 5px;
         }
       }
       .posts-null {
@@ -285,7 +323,6 @@
           display: grid;
           color: #8f77c3;
           textarea {
-            margin: 2px;
             color: #8f77c3;
             min-height: 130px;
             background: #232435;
@@ -294,7 +331,6 @@
             padding: 7px 10px;
             &:focus-visible {
               outline: none;
-              margin: 0;
               border: 2px solid #4f4b76;
             }
           }

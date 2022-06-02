@@ -6,6 +6,7 @@ import axios from 'axios';
 import Header from '../header/Header';
 import MainPage from '../pages/MainPage';
 import StatsPage from '../pages/StatsPage';
+import PlayersProfilePage from '../pages/PlayersProfilePage';
 import WikiPage from '../pages/wikiPage/WikiPage';
 import WikiRules from '../pages/wikiPage/WikiRules';
 import WikiMechanics from '../pages/wikiPage/WikiMechanics';
@@ -44,8 +45,9 @@ function App() {
   const [popoverIsBuy, setPopoverIsBuy] = useState(false);
 
   const [cardId, setCardId] = useState(false);
+  const [postId, setPostId] = useState(null)
 
-  const userHeadColor = user && user.headColor ? user.headColor : '#1f1c27';
+  const userHeadColor = user && user.headColor ? user.headColor : '#1F1C27';
 
   const [changeStatus, setChangeStatus] = useState(false);
   const [headColor, setHeadColor] = useState(userHeadColor);
@@ -113,6 +115,14 @@ function App() {
       .then((res) => {
         if (res.data.cardId) setCardId(res.data.cardId);
       });
+
+    axios
+      .get(
+        'https://mixlands-3696a-default-rtdb.firebaseio.com/posts/postId.json'
+      )
+      .then((res) => {
+        setPostId(res.data);
+      });
   };
 
   useEffect(getData, []);
@@ -138,13 +148,13 @@ function App() {
         return (
           <ProfileProfile
             getData={getData}
-            setModal={setModal}
             changeStatus={changeStatus}
             setChangeStatus={setChangeStatus}
             headColor={headColor}
             setHeadColor={setHeadColor}
             changeHeadColor={changeHeadColor}
             setChangeHeadColor={setChangeHeadColor}
+            postId={postId}
           />
         );
       case 'news':
@@ -194,17 +204,15 @@ function App() {
   };
 
   const getUserPage = () => {
-    const url = window.location.href.split('/')[4];
-    let player = false;
-
-    players.forEach((item) => {
-      if (item.name === url) player = item;
-    });
+    const player = JSON.parse(localStorage.getItem('activePlayer'));
 
     return (
       <>
         {player ? (
-          <Route path={player.name} element={<h2>{player.name}</h2>} />
+          <Route
+            path={player.name}
+            element={<PlayersProfilePage player={player} />}
+          />
         ) : null}
       </>
     );

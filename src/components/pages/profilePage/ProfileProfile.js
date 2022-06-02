@@ -5,21 +5,22 @@ import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner';
 import Form from 'react-bootstrap/Form';
 
-import postsPlus from '../../../images/icons/posts-plus.svg';
-
 const ProfileProfile = ({
   getData,
-  setModal,
   changeStatus,
   setChangeStatus,
   headColor,
   setHeadColor,
   changeHeadColor,
   setChangeHeadColor,
+  postId,
 }) => {
   const user = JSON.parse(localStorage.getItem('user'));
 
   const [statsValue, setStatusValue] = useState(user.status);
+  const [textareaValue, setTextareaValue] = useState('');
+  const [addNewPostError, setAddNewPostError] = useState(false);
+  const [addNewPostProggres, setAddNewPostProggres] = useState(false);
 
   const posts = [];
 
@@ -28,6 +29,18 @@ const ProfileProfile = ({
       posts.push(user.posts[post]);
     }
   }
+
+  const response = async () => {
+    let response = true;
+
+    await axios
+      .get('https://mixlands-3696a-default-rtdb.firebaseio.com/users.json')
+      .catch(() => {
+        response = false;
+      });
+
+    return response;
+  };
 
   const onChangeStatus = () => {
     const text = document.querySelector('#user-status__text');
@@ -51,20 +64,14 @@ const ProfileProfile = ({
       setChangeStatus(false);
     } else {
       setChangeStatus('loading');
-      let response = true;
 
-      await axios
-        .get('https://mixlands-3696a-default-rtdb.firebaseio.com/users.json')
-        .catch(() => {
-          setChangeStatus('error');
-          response = false;
-          setTimeout(() => setChangeStatus(false), 2000);
-        });
-
-      if (response) {
+      if (response()) {
         await set(ref(database, `/users/${user.name}/status`), statsValue);
         await getData();
         setChangeStatus(false);
+      } else {
+        setChangeStatus('error');
+        setTimeout(() => setChangeStatus(false), 2000);
       }
     }
   };
@@ -72,16 +79,7 @@ const ProfileProfile = ({
   const postHeadColor = async () => {
     setHeadColor('loading');
 
-    let response = true;
-
-    await axios
-      .get('https://mixlands-3696a-default-rtdb.firebaseio.com/users.json')
-      .catch(() => {
-        setHeadColor('error');
-        response = false;
-      });
-
-    if (response) {
+    if (response()) {
       await set(ref(database, `/users/${user.name}/headColor`), headColor);
       await getData();
       await setTimeout(() => {
@@ -89,8 +87,62 @@ const ProfileProfile = ({
         setChangeHeadColor(false);
       }, 1000);
     } else {
+      setHeadColor('error');
       setTimeout(() => setHeadColor(headColor), 2000);
     }
+  };
+
+  function plusZero(value) {
+    if (value < 10) {
+      value = '0' + value;
+    }
+    return value;
+  }
+
+  function getDateTime() {
+    const now = new Date();
+    const day = plusZero(now.getDate());
+    const month = plusZero(now.getMonth() + 1);
+    const year = now.getFullYear();
+    const hours = plusZero(now.getHours());
+    const minutes = plusZero(now.getMinutes());
+
+    return `${hours}:${minutes} ${day}.${month}.${year}`;
+  }
+
+  const addNewPost = async () => {
+    const textarea = document.querySelector('#add-new-post');
+
+    if (textareaValue === '') {
+      setAddNewPostError('Заполните поле!');
+      setAddNewPostProggres('error');
+      return;
+    }
+
+    if (!response()) {
+      setAddNewPostError('Ошибка сервера');
+      setAddNewPostProggres('error');
+      return;
+    }
+
+    setAddNewPostError(false);
+    setAddNewPostProggres('loading');
+
+    await set(ref(database, `/users/${user.name}/posts/${postId}`), {
+      text: textareaValue,
+      date: getDateTime(),
+      id: postId,
+    });
+
+    await set(
+      ref(database, `/posts/postId`),
+      +postId <= 8 ? `0${+postId + 1}` : +postId + 1
+    );
+
+    setAddNewPostProggres('succses');
+    await getData();
+    textarea.value = '';
+    setTimeout(() => setAddNewPostProggres(false), 2000);
   };
 
   const getBalance = (item) =>
@@ -260,13 +312,41 @@ const ProfileProfile = ({
       </div>
       <div className="profile-page__profile__posts">
         <div className="profile-page__profile__posts__top">
-          <div></div>
           <h2 className="titleh2">Посты</h2>
-          <img src={postsPlus} alt="plus" />
+        </div>
+        <div className="profile-page__profile__posts__add-new">
+          {addNewPostError ? <p className="error">{addNewPostError}</p> : null}
+          <div className="textarea">
+            <textarea
+              placeholder="Напишите пост..."
+              name="add-new-post"
+              id="add-new-post"
+              maxLength="500"
+              onChange={(e) => setTextareaValue(e.target.value + '')}
+            />
+            <span>{textareaValue.length}/500</span>
+          </div>
+          <div className="add-posts-btn">
+            {addNewPostProggres === 'loading' ? (
+              <button className="btn btn-blue btn-loading">
+                <Spinner animation="border" variant="primary" size="sm" />
+              </button>
+            ) : addNewPostProggres === 'succses' ? (
+              <button className="btn btn-succses succses">
+                <div className="animate__animated animate__fadeInLeft">
+                  Готово
+                </div>
+              </button>
+            ) : (
+              <button className="btn btn-blue" onClick={addNewPost}>
+                Опубликовать
+              </button>
+            )}
+          </div>
         </div>
         {user.posts ? (
-          posts.reverse().map((item) => (
-            <div className="profile-page__profile__posts__post" key={item.id}>
+          posts.reverse().map((item, i) => (
+            <div className="profile-page__profile__posts__post" key={i}>
               <div className="title">
                 {user.name} — {item.date}
               </div>
@@ -274,9 +354,7 @@ const ProfileProfile = ({
             </div>
           ))
         ) : (
-          <h4 className="posts-null">
-            Пока нет постов <a href="#">написать пост</a>
-          </h4>
+          <h4 className="posts-null">Пока нет постов</h4>
         )}
       </div>
     </div>

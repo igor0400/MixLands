@@ -40,12 +40,65 @@
     }
   }
   &-btn {
-    display: grid;
+    display: flex;
     align-items: center;
     button {
       padding: 10px 35px;
       border-radius: 7px;
       font-weight: 500;
+    }
+    .profile-btn {
+      display: flex;
+      svg {
+        z-index: 100;
+        margin: 3px 0 0 5px;
+        cursor: pointer;
+        transform: rotate(180deg);
+        transition: 0.5s;
+        path {
+          stroke: gray;
+          stroke-width: 2;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+        }
+      }
+      .animated__profile-btn {
+        transform: rotate(0deg);
+        path {
+          stroke: #fff;
+        }
+      }
+      .dropdown {
+        position: relative;
+        &__item {
+          animation-duration: 0.5s;
+          position: absolute;
+          top: 30px;
+          right: -10px;
+          display: flex;
+          flex-direction: column;
+          white-space: nowrap;
+          background: rgba(79, 75, 118, 0.74);
+          border: 2px solid #5a567e;
+          border-radius: 10px;
+          p {
+            color: #fff;
+            cursor: pointer;
+            text-align: center;
+            padding: 5px;
+            &:hover {
+              background: rgba(57, 54, 87, 0.74);
+            }
+          }
+          .chps {
+            border-radius: 10px 10px 0 0;
+            border-bottom: 2px solid #5a567e;
+          }
+          .out {
+            border-radius: 0 0 10px 10px;
+          }
+        }
+      }
     }
   }
   &-modal {

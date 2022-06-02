@@ -169,9 +169,16 @@ const StatsPage = ({ players, loading, error, setActivePlayer }) => {
             sortVisibleData.length > 0 ? (
               sortVisibleData.map((item, i) => (
                 <Link
-                  to={user && user.name === item.name ? '/profile' : `/${item.name}`}
+                  to={
+                    user && user.name === item.name
+                      ? '/profile'
+                      : `/${item.name}`
+                  }
                   key={i}
-                  onClick={() => setActivePlayer(item)}
+                  onClick={() => {
+                    setActivePlayer(item);
+                    localStorage.setItem('activePlayer', JSON.stringify(item));
+                  }}
                 >
                   <div className="player__card">
                     <div className="player__card__img">

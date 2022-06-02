@@ -62,7 +62,7 @@ const ProfileBank = ({
 
   updateAllUsersCards();
 
-  const userCardsKeys = Object.keys(user.cards);
+  const userCardsKeys = user.cards ? Object.keys(user.cards) : null;
   const allUsersCardsKeys = Object.keys(allUsersCards);
   const allUsersCardKeys = allUsersCards[allUsersCardsKeys[0]]
     ? Object.keys(allUsersCards[allUsersCardsKeys[0]])
@@ -72,7 +72,7 @@ const ProfileBank = ({
 
   useEffect(() => {
     setActiveTransferCards(
-      allUsersCardKeys
+      allUsersCardKeys && userCardsKeys
         ? {
             userActiveCard: user.cards[userCardsKeys[0]],
             allUsersActiveCard:
@@ -503,7 +503,7 @@ const ProfileBank = ({
       ) : bankContent === 'transfers' ? (
         <div className="profile-page__bank__transfers">
           {activeTransferCards.userActiveCard &&
-          activeTransferCards.allUsersActiveCard ? (
+          activeTransferCards.allUsersActiveCard && userCardsKeys ? (
             <>
               <div className="profile-page__bank__transfers__cards">
                 <select
@@ -609,7 +609,7 @@ const ProfileBank = ({
                     name="comment"
                     id="comment"
                     maxLength="250"
-                    onChange={(e) => setTextareaValue(e.target.value)}
+                    onChange={(e) => setTextareaValue(e.target.value + '')}
                   />
                   <span>{textareaValue.length}/250</span>
                 </div>
@@ -618,6 +618,10 @@ const ProfileBank = ({
                 </button>
               </div>
             </>
+          ) : !userCardsKeys ? (
+            <h2 className="transfer-loading-error">
+              Оформите карту для того чтобы начать переводить
+            </h2>
           ) : (
             <h2 className="transfer-loading-error">
               Перезагрузите страницу, и попробуйте снова

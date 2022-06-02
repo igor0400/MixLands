@@ -62,7 +62,7 @@ function LoginModal({ show, handleClose, players }) {
         <button
           className="btn btn-blue"
           onClick={() => {
-            players.forEach((item) => {
+            players.every((item) => {
               if (
                 inputsValue.name === item.name &&
                 inputsValue.password === `${item.password}`
@@ -70,8 +70,10 @@ function LoginModal({ show, handleClose, players }) {
                 setInputsError(false);
                 handleClose();
                 localStorage.setItem('user', JSON.stringify(item));
+                return false;
               } else {
                 setInputsError(true);
+                return true;
               }
             });
           }}
