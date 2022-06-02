@@ -16,7 +16,9 @@ import WikiPacks from '../pages/wikiPage/WikiPacks';
 import ShopPage from '../pages/ShopPage';
 import ProfilePage from '../pages/profilePage/ProfilePage';
 import ProfileProfile from '../pages/profilePage/ProfileProfile';
+import ProfileNews from '../pages/profilePage/ProfileNews';
 import ProfilePosts from '../pages/profilePage/ProfilePosts';
+import ProfilePlayers from '../pages/profilePage/ProfilePlayers';
 import ProfileBank from '../pages/profilePage/ProfileBank';
 import Footer from '../footer/Footer';
 import Page404 from '../pages/Page404';
@@ -46,7 +48,6 @@ function App() {
   const [popoverIsBuy, setPopoverIsBuy] = useState(false);
 
   const [cardId, setCardId] = useState(false);
-  const [postId, setPostId] = useState(null);
 
   const nitro =
     (user && user.nitro) ||
@@ -64,6 +65,26 @@ function App() {
   const [copyAlertActive, setCopyAlertActive] = useState(false);
   const [copyAlertMr, setCopyAlertMr] = useState(false);
   const [copyAlertClass, setCopyAlertClass] = useState('animate__fadeIn');
+
+  const [news, setNews] = useState([]);
+
+  // HEADER
+
+  const [iconClass, setIconCalss] = useState(null);
+  const [dropdownClass, setDropdownClass] = useState('animate__fadeInDown');
+  const [dropdownActive, setDropdownActive] = useState(false);
+
+  const handleHeaderShow = () => {
+    setIconCalss('animated__profile-btn');
+    setDropdownClass('animate__fadeInDown');
+    setDropdownActive(true);
+  };
+
+  const handleHeaderClose = () => {
+    setIconCalss(null);
+    setDropdownClass('animate__fadeOutUp');
+    setTimeout(() => setDropdownActive(false), 500);
+  };
 
   const handleClose = () => setModal(false);
   const handleShowBuy = () => setModal('buy');
@@ -127,11 +148,15 @@ function App() {
       });
 
     axios
-      .get(
-        'https://mixlands-3696a-default-rtdb.firebaseio.com/posts/postId.json'
-      )
+      .get('https://mixlands-3696a-default-rtdb.firebaseio.com/news.json')
       .then((res) => {
-        setPostId(res.data);
+        const data = [];
+
+        for (let key in res.data) {
+          data.push(res.data[key]);
+        }
+
+        setNews(data);
       });
   };
 
@@ -179,17 +204,18 @@ function App() {
             setHeadColor={setHeadColor}
             changeHeadColor={changeHeadColor}
             setChangeHeadColor={setChangeHeadColor}
-            postId={postId}
             copyText={copyText}
             nitro={nitro}
           />
         );
       case 'news':
-        return <h1>news</h1>;
+        return (
+          <ProfileNews getData={getData} copyText={copyText} news={news} />
+        );
       case 'posts':
         return <ProfilePosts players={players} />;
-      case 'topPlayers':
-        return <h1>topPlayers</h1>;
+      case 'players':
+        return <ProfilePlayers players={players} />;
       case 'bank':
         return (
           <ProfileBank
@@ -230,6 +256,8 @@ function App() {
         setHeadColor(userHeadColor);
       }
     }
+
+    if (dropdownActive) handleHeaderClose();
   };
 
   const getUserPage = () => {
@@ -253,7 +281,15 @@ function App() {
         <Helmet>
           <title>MixLands</title>
         </Helmet>
-        <Header modal={modal} setModal={setModal} />
+        <Header
+          modal={modal}
+          setModal={setModal}
+          iconClass={iconClass}
+          dropdownClass={dropdownClass}
+          dropdownActive={dropdownActive}
+          handleHeaderShow={handleHeaderShow}
+          handleHeaderClose={handleHeaderClose}
+        />
         <main className="main">
           <Routes>
             <Route

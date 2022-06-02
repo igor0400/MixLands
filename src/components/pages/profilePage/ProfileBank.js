@@ -404,7 +404,7 @@ const ProfileBank = ({
   };
 
   return (
-    <div className="profile-page__bank">
+    <div className="profile-page__bank animate__animated animate__fadeIn duration05">
       <div className="profile-page__bank__navs">
         <button
           onClick={() => setBankContent('userCards')}
@@ -503,7 +503,8 @@ const ProfileBank = ({
       ) : bankContent === 'transfers' ? (
         <div className="profile-page__bank__transfers">
           {activeTransferCards.userActiveCard &&
-          activeTransferCards.allUsersActiveCard && userCardsKeys ? (
+          activeTransferCards.allUsersActiveCard &&
+          userCardsKeys ? (
             <>
               <div className="profile-page__bank__transfers__cards">
                 <select

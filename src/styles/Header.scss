@@ -49,13 +49,28 @@
     }
     .profile-btn {
       display: flex;
+      position: relative;
+      &:hover {
+        .header-profile__btn {
+          color: #fff;
+        }
+        svg {
+          path {
+            stroke: #fff;
+          }
+        }
+      }
+      .header-btn__dropdown__target {
+        cursor: pointer;
+        transition: 0.5s;
+      }
       svg {
         z-index: 100;
-        margin: 3px 0 0 5px;
-        cursor: pointer;
+        margin: 0 0 2px 5px;
         transform: rotate(180deg);
         transition: 0.5s;
         path {
+          transition: 0.3s;
           stroke: gray;
           stroke-width: 2;
           stroke-linecap: round;
@@ -69,7 +84,6 @@
         }
       }
       .dropdown {
-        position: relative;
         &__item {
           animation-duration: 0.5s;
           position: absolute;
@@ -166,10 +180,7 @@
   &-profile__btn {
     color: #b0b0b0;
     font-size: 18px;
-    transition: 0.2s;
-    &:hover {
-      color: #fff;
-    }
+    transition: 0.3s;
   }
   .profile-active {
     color: #fff;

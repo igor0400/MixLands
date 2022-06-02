@@ -20,10 +20,10 @@ const ProfilePosts = ({ players }) => {
   }, []);
 
   return (
-    <div className="profile-page__posts">
+    <div className="profile-page__posts animate__animated animate__fadeIn duration05">
       <h2 className="titleh2">Посты</h2>
       {posts.length === 0 ? (
-        <h2 style={{ textAlign: 'center', color: 'gray' }}>Пока нет постов</h2>
+        <h2 className="posts-null">Пока нет постов</h2>
       ) : (
         posts
           .sort((a, b) => a.clearDate - b.clearDate)

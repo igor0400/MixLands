@@ -1,6 +1,6 @@
 const WikiMechanics = () => {
   return (
-    <div className="wiki-page__mechanics">
+    <div className="wiki-page__mechanics animate__animated animate__fadeIn duration05">
       <h2 className="titleh2">Игровые механики</h2>
       <h3 className="titleh3">Банк</h3>
       <p className="grey-p">

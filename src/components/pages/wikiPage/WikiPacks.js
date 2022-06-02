@@ -1,6 +1,6 @@
 const WikiPacks = () => {
   return (
-    <div className="wiki-page__packs">
+    <div className="wiki-page__packs animate__animated animate__fadeIn duration05">
       <h2 className="titleh2">Текстурпак сервера</h2>
       <h3 className="titleh3">MixPack</h3>
       <p className="grey-p">

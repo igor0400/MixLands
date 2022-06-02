@@ -32,11 +32,11 @@ const ProfilePage = (props) => {
           </li>
           <li
             className={
-              props.activeProfile === 'topPlayers' ? 'profile-active' : null
+              props.activeProfile === 'players' ? 'profile-active' : null
             }
-            onClick={() => props.setActiveProfile('topPlayers')}
+            onClick={() => props.setActiveProfile('players')}
           >
-            Топ игроков
+            Игроки
           </li>
           <li
             className={props.activeProfile === 'bank' ? 'profile-active' : null}

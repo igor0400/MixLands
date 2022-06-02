@@ -76,7 +76,12 @@ const CardsInfoPopover = ({
 
             {popoverIsBuy === 'loading' ? (
               <button className="btn btn-blue btn-buy">
-                <Spinner animation="border" size="sm" variant="light" style={{margin: '0 50px'}} />
+                <Spinner
+                  animation="border"
+                  size="sm"
+                  variant="light"
+                  style={{ margin: '0 50px' }}
+                />
               </button>
             ) : popoverIsBuy === 'succses' ? (
               <button className="btn btn-succses btn-buy-succses">

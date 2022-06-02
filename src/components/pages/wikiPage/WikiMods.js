@@ -1,6 +1,6 @@
 const WikiMods = () => {
   return (
-    <div className="wiki-page__mods">
+    <div className="wiki-page__mods animate__animated animate__fadeIn duration05">
       <h2 className="titleh2">Моды для сервера</h2>
       <h3 className="titleh3">MixVoice</h3>
       <p className="grey-p">

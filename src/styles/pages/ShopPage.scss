@@ -1,5 +1,4 @@
 .shop-page {
-  max-width: 1100px;
   margin: 50px auto;
   &__descr {
     text-align: center;
@@ -14,53 +13,47 @@
   }
   &__cards {
     display: grid;
-    justify-content: space-between;
-    grid-template-columns: repeat(auto-fill, 500px);
-    gap: 20px;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fill, 400px);
+    gap: 40px;
     margin: 70px 0;
   }
 
   &__card {
+    display: flex;
+    flex-direction: column;
     border: 2px solid #1f1c2f;
     background: #15131d;
     border-radius: 10px;
     padding: 30px 40px;
     text-align: center;
-    display: grid;
     transition: 0.3s;
     &:hover {
       background: #171520;
     }
-    .card__text {
-      padding: 20px 0 30px;
-      .text-accent {
-        color: #807492;
-      }
+    .card__top {
+      margin-bottom: 50px;
       p {
+        margin-top: 10px;
         font-size: 20px;
       }
     }
 
-    .card__btn {
-      display: grid;
-      align-items: end;
-      justify-content: center;
-      button {
-        background: #2562ff;
-        border-radius: 10px;
-        color: #fff;
-        font-size: 20px;
-        font-weight: 900;
-        padding: 15px 130px;
-        width: fit-content;
-        height: fit-content;
+    .card__bottom {
+      p {
+        margin-bottom: 15px;
       }
-      .text-white {
-        color: #fff;
-        margin: 0 0 10px 0;
-        font-size: 18px;
+      .card__btn {
+        border-radius: 10px;
+        width: 100%;
       }
     }
+
+    // .text-white {
+    //   color: #fff;
+    //   margin: 0 0 20px 0;
+    //   font-size: 18px;
+    // }
   }
 
   &__afert {

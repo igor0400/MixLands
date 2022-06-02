@@ -1,6 +1,6 @@
 const WikiRules = () => {
   return (
-    <div className="wiki-page__rules">
+    <div className="wiki-page__rules animate__animated animate__fadeIn duration05">
       <h2 className="titleh2">Правила сервера</h2>
       <h3 className="titleh3">Discord</h3>
       <ol>

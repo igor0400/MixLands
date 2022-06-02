@@ -1,6 +1,6 @@
 const WikiFaq = () => {
   return (
-    <div className="wiki-page__faq">
+    <div className="wiki-page__faq animate__animated animate__fadeIn duration05">
       <h2 className="titleh2">Ответы на часто задаваемые вопросы</h2>
       <ul>
         <li className="b">Можно ли играть на сервере с пиратской версии?</li>
@@ -34,8 +34,7 @@ const WikiFaq = () => {
         </li>
         <li className="b">Есть ли на сервере донат-привелегии?</li>
         <li className="o">
-          Нет, на сервере нет донат-привелегий. Сервер имеет ванильную
-          тематику.
+          Нет, на сервере нет донат-привелегий. Сервер имеет ванильную тематику.
         </li>
       </ul>
     </div>

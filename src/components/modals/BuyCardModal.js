@@ -113,6 +113,7 @@ function BuyCardModal({
             onClick={() => {
               setModal(false);
               setIsBuy(false);
+              
             }}
           >
             <div className="animate__animated animate__fadeInLeft">Готово</div>

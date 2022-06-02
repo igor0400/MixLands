@@ -15,7 +15,6 @@ const ProfileProfile = ({
   setHeadColor,
   changeHeadColor,
   setChangeHeadColor,
-  postId,
   copyText,
   nitro,
 }) => {
@@ -32,7 +31,7 @@ const ProfileProfile = ({
 
   if (user.posts) {
     for (let post in user.posts) {
-      posts.push(user.posts[post]);
+      posts.push({ ...user.posts[post], id: post });
     }
   }
 
@@ -134,31 +133,28 @@ const ProfileProfile = ({
       return;
     }
 
-    if (!response()) {
-      setAddNewPostError('Ошибка сервера');
-      setAddNewPostProggres('error');
-      return;
-    }
-
     setAddNewPostError(false);
     setAddNewPostProggres('loading');
 
-    await set(ref(database, `/users/${user.name}/posts/${postId}`), {
-      text: textareaValue,
-      date: getDateTime(),
-      clearDate: getClearDateTime(),
-      id: postId,
-    });
-
-    await set(
-      ref(database, `/posts/postId`),
-      +postId <= 8 ? `0${+postId + 1}` : +postId + 1
-    );
-
-    setAddNewPostProggres('succses');
-    await getData();
-    textarea.value = '';
-    setTimeout(() => setAddNewPostProggres(false), 2000);
+    await axios
+      .post(
+        `https://mixlands-3696a-default-rtdb.firebaseio.com/users/${user.name}/posts.json`,
+        {
+          text: textareaValue,
+          date: getDateTime(),
+          clearDate: getClearDateTime(),
+        }
+      )
+      .then(async () => {
+        setAddNewPostProggres('succses');
+        await getData();
+        textarea.value = '';
+        setTimeout(() => setAddNewPostProggres(false), 2000);
+      })
+      .catch(() => {
+        setAddNewPostError('Ошибка сервера');
+        setAddNewPostProggres('error');
+      });
   };
 
   const getBalance = (item) =>
@@ -171,7 +167,7 @@ const ProfileProfile = ({
       : '0 MK';
 
   return (
-    <div className="profile-page__profile">
+    <div className="profile-page__profile animate__animated animate__fadeIn duration05">
       <div className="profile-page__profile__info">
         <div className="profile-page__profile__info__logo">
           {nitro ? (
@@ -362,9 +358,10 @@ const ProfileProfile = ({
               <button
                 className="support-btn"
                 onClick={() => {
-                  window.navigator.clipboard
-                    .readText()
-                    .then((data) => (textarea.value += data));
+                  window.navigator.clipboard.readText().then((data) => {
+                    textarea.value += data;
+                    setTextareaValue((state) => state + data);
+                  });
                 }}
               >
                 Вставить
