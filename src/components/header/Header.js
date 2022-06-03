@@ -10,6 +10,8 @@ const Header = ({
   handleHeaderShow,
   handleHeaderClose,
 }) => {
+  const user = localStorage.getItem('user');
+
   return (
     <header className="header" style={{ paddingRight: modal ? '10px' : 0 }}>
       <div className="header__wrapper mw1400">
@@ -48,7 +50,7 @@ const Header = ({
           </ul>
         </div>
         <div className="header-btn">
-          {localStorage.getItem('user') ? (
+          {user ? (
             <div className="profile-btn">
               <div
                 className="header-btn__dropdown__target"
@@ -82,7 +84,13 @@ const Header = ({
                       Перейти в профиль
                     </p>
                   </Link>
-                  <p className="chps" onClick={handleHeaderClose}>
+                  <p
+                    className="chps"
+                    onClick={() => {
+                      handleHeaderClose();
+                      setModal('changePassword');
+                    }}
+                  >
                     Сменить пароль
                   </p>
                   <Link to="/">

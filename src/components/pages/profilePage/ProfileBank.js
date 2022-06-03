@@ -202,8 +202,8 @@ const ProfileBank = ({
       getData();
       getUserCards();
       setModal(false);
-      setIsBuy(false);
-    }, 1000);
+    }, 1500);
+    setTimeout(() => setIsBuy(false), 2000);
   };
 
   const postBuyedCardPopover = async (player, buyedCardName, vaidateId) => {

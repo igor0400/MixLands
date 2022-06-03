@@ -344,7 +344,12 @@ function App() {
 
             <Route path="*" element={<Page404 />} />
           </Routes>
-          <Modals show={modal} handleClose={handleClose} players={players} />
+          <Modals
+            show={modal}
+            handleClose={handleClose}
+            players={players}
+            getData={getData}
+          />
           {copyAlertActive ? (
             <div
               className={`copy-alert animate__animated ${copyAlertClass}`}
