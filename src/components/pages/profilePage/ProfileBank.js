@@ -222,7 +222,6 @@ const ProfileBank = ({
 
     await setTimeout(() => {
       getData();
-      setModal(false);
       setIsBuy(false);
     }, 1000);
   };
