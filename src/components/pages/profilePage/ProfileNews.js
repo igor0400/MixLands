@@ -91,7 +91,10 @@ const ProfileNews = ({ getData, copyText, news }) => {
             <div className="support__btns">
               <button
                 className="support-btn"
-                onClick={() => (textarea.value = '')}
+                onClick={() => {
+                   textarea.value = '';
+                   setTextareaValue('');
+                }}
               >
                 Очистить
               </button>
