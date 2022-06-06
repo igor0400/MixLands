@@ -585,10 +585,22 @@ const ProfileBank = ({
                userCardsKeys ? (
                   <>
                      <div className="profile-page__bank__transfers__cards">
-                        <ViewSelect
-                           userCards={userCards}
-                           setActiveTransferCards={setActiveTransferCards}
-                        />
+                        <select
+                           name="userCards"
+                           id="user-cards"
+                           onChange={(e) => {
+                              setActiveTransferCards((state) => ({
+                                 ...state,
+                                 userActiveCard: user.cards[e.target.value],
+                              }));
+                           }}
+                        >
+                           {userCards.map((card, i) => (
+                              <option key={i} value={card.id}>
+                                 ML-{card.id} » {user.name}
+                              </option>
+                           ))}
+                        </select>
 
                         <div className="arrow-transfers">
                            <img src={arrowTransfers} alt="arrowTransfers" />
@@ -727,29 +739,6 @@ const ProfileBank = ({
             </div>
          ) : null}
       </div>
-   );
-};
-
-const ViewSelect = ({ userCards, setActiveTransferCards }) => {
-   const user = JSON.parse(localStorage.getItem('user'));
-
-   return (
-      <select
-         name="userCards"
-         id="user-cards"
-         onChange={(e) => {
-            setActiveTransferCards((state) => ({
-               ...state,
-               userActiveCard: user.cards[e.target.value],
-            }));
-         }}
-      >
-         {userCards.map((card, i) => (
-            <option key={i} value={card.id}>
-               ML-{card.id} » {user.name}
-            </option>
-         ))}
-      </select>
    );
 };
 
