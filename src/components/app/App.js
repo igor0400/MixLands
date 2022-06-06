@@ -1,7 +1,7 @@
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { database, ref, child, get } from '../../firebase/firebase';
 
 import Header from '../header/Header';
 import MainPage from '../pages/MainPage';
@@ -84,23 +84,29 @@ function App() {
    };
 
    const getData = () => {
-      axios
-         .get('https://mixlands-3696a-default-rtdb.firebaseio.com/users.json')
-         .then((res) => {
-            setPlayersLoading(false);
-            const data = [];
-            for (let key in res.data) {
-               data.push(res.data[key]);
-            }
-            setPlayers(data);
-            setObjPlayers(res.data);
+      const dbRef = ref(database);
 
-            if (user) {
-               data.forEach((item) => {
-                  if (item.name === user.name) {
-                     localStorage.setItem('user', JSON.stringify(item));
-                  }
-               });
+      get(child(dbRef, 'users'))
+         .then((snapshot) => {
+            if (snapshot.exists()) {
+               setPlayersLoading(false);
+               const data = [];
+               for (let key in snapshot.val()) {
+                  data.push(snapshot.val()[key]);
+               }
+               setPlayers(data);
+               setObjPlayers(snapshot.val());
+
+               if (user) {
+                  data.forEach((item) => {
+                     if (item.name === user.name) {
+                        localStorage.setItem('user', JSON.stringify(item));
+                     }
+                  });
+               }
+            } else {
+               setPlayersLoading(false);
+               setPlayersError(true);
             }
          })
          .catch(() => {
@@ -108,44 +114,52 @@ function App() {
             setPlayersError(true);
          });
 
-      axios
-         .get('https://mixlands-3696a-default-rtdb.firebaseio.com/cards.json')
-         .then((res) => {
-            const defaultData = [];
-            const specialData = [];
+      get(child(dbRef, 'cards'))
+         .then((snapshot) => {
+            if (snapshot.exists()) {
+               const defaultData = [];
+               const specialData = [];
 
-            for (let key in res.data.default) {
-               defaultData.push(res.data.default[key]);
+               for (let key in snapshot.val().default) {
+                  defaultData.push(snapshot.val().default[key]);
+               }
+
+               for (let key in snapshot.val().special) {
+                  specialData.push(snapshot.val().special[key]);
+               }
+
+               setDefaultCards(defaultData);
+               setSpecialCards(specialData);
+            } else {
+               setDefaultCardsError(true);
             }
-
-            for (let key in res.data.special) {
-               specialData.push(res.data.special[key]);
-            }
-
-            setDefaultCards(defaultData);
-            setSpecialCards(specialData);
          })
-         .catch((error) => {
-            setDefaultCardsError(error);
+         .catch(() => {
+            setDefaultCardsError(true);
          });
 
-      axios
-         .get('https://mixlands-3696a-default-rtdb.firebaseio.com/cards.json')
-         .then((res) => {
-            if (res.data.cardId) setCardId(res.data.cardId);
-         });
-
-      axios
-         .get('https://mixlands-3696a-default-rtdb.firebaseio.com/news.json')
-         .then((res) => {
-            const data = [];
-
-            for (let key in res.data) {
-               data.push(res.data[key]);
+      get(child(dbRef, 'cards'))
+         .then((snapshot) => {
+            if (snapshot.exists()) {
+               if (snapshot.val().cardId) setCardId(snapshot.val().cardId);
+            } else {
+               console.log('No data available');
             }
+         })
 
-            setNews(data);
-         });
+      get(child(dbRef, 'news')).then((snapshot) => {
+         if (snapshot.exists()) {
+             const data = [];
+
+             for (let key in snapshot.val()) {
+                data.push(snapshot.val()[key]);
+             }
+
+             setNews(data);
+         } else {
+            console.log('No data available');
+         }
+      });
    };
 
    useEffect(getData, []);

@@ -35,18 +35,6 @@ const ProfileProfile = ({
       }
    }
 
-   const response = async () => {
-      let response = true;
-
-      await axios
-         .get('https://mixlands-3696a-default-rtdb.firebaseio.com/users.json')
-         .catch(() => {
-            response = false;
-         });
-
-      return response;
-   };
-
    const onChangeStatus = () => {
       const text = document.querySelector('#user-status__text');
 
@@ -70,31 +58,33 @@ const ProfileProfile = ({
       } else {
          setChangeStatus('loading');
 
-         if (response()) {
-            await set(ref(database, `/users/${user.name}/status`), statsValue);
-            await getData();
-            setChangeStatus(false);
-         } else {
+         await set(
+            ref(database, `/users/${user.name}/status`),
+            statsValue
+         ).catch(() => {
             setChangeStatus('error');
             setTimeout(() => setChangeStatus(false), 2000);
-         }
+         });
+         await getData();
+         setChangeStatus(false);
       }
    };
 
    const postHeadColor = async () => {
       setHeadColor('loading');
 
-      if (response()) {
-         await set(ref(database, `/users/${user.name}/headColor`), headColor);
-         await getData();
-         await setTimeout(() => {
-            setHeadColor(headColor);
-            setChangeHeadColor(false);
-         }, 1000);
-      } else {
+      await set(
+         ref(database, `/users/${user.name}/headColor`),
+         headColor
+      ).catch(() => {
          setHeadColor('error');
          setTimeout(() => setHeadColor(headColor), 2000);
-      }
+      });
+      await getData();
+      await setTimeout(() => {
+         setHeadColor(headColor);
+         setChangeHeadColor(false);
+      }, 1000);
    };
 
    function plusZero(value) {
