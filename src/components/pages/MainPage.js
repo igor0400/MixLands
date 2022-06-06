@@ -30,7 +30,7 @@ const MainPage = ({ handleShow, copyText }) => {
                  <button
                     className="btn btn-inline-blue main-ip-btn"
                     onClick={() => {
-                       copyText();
+                       copyText('play.mixlands.fun');
                     }}
                  >
                     <span
