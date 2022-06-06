@@ -5,7 +5,6 @@ import { useState } from 'react';
 
 function BuyCardModal({
   show,
-  handleClose,
   userCards,
   cardBuyError,
   setCardBuyError,
@@ -24,13 +23,13 @@ function BuyCardModal({
   return (
     <Modal
       show={show === 'buyCard' ? true : false}
-      onHide={handleClose}
+      onHide={() => setModal(false)}
       className="default__modal"
     >
       <Modal.Header>
         <div></div>
         <Modal.Title>Выберите карту</Modal.Title>
-        <CloseButton variant="white" onClick={handleClose} />
+        <CloseButton variant="white" onClick={() => setModal(false)} />
       </Modal.Header>
 
       <div className="modal-body">
@@ -113,7 +112,6 @@ function BuyCardModal({
             onClick={() => {
               setModal(false);
               setIsBuy(false);
-              
             }}
           >
             <div className="animate__animated animate__fadeInLeft">Готово</div>

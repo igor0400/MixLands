@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, CSSProperties } from 'react';
 import { database, ref, set } from '../../../firebase/firebase';
 
 import Card from '../../card/Card';
@@ -33,10 +33,16 @@ const ProfileBank = ({
    const [transferError, setTransferError] = useState(false);
    const [transferStatus, setTransferStatus] = useState(false);
 
-   const user = JSON.parse(localStorage.getItem('user'));
+   const [activeTransferCards, setActiveTransferCards] = useState({});
+
+   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+
+   const [userCardsKeys, setUserCardsKeys] = useState(
+      user.cards ? Object.keys(user.cards) : null
+   );
 
    const filterDefaultCards = [];
-   const [userCards, setUserCards] = useState([]);
+   const userCards = [];
    const allUsersCards = {};
 
    const updateAllUsersCards = () => {
@@ -58,42 +64,64 @@ const ProfileBank = ({
 
    updateAllUsersCards();
 
-   const [userCardsKeys, setUserCardsKeys] = useState(
-      user.cards ? Object.keys(user.cards) : null
-   );
+   const changeActiveCards = async () => {
+      const normalUser = JSON.parse(localStorage.getItem('user'));
 
-   const [activeTransferCards, setActiveTransferCards] = useState({});
+      await setUserCardsKeys(user.cards ? Object.keys(user.cards) : null);
+
+      const activeTransferAllUsersCard = JSON.parse(
+         localStorage.getItem('activeTransferAllUsersCard')
+      );
+
+      if (normalUser.cards) {
+         setActiveTransferCards(
+            userCardsKeys
+               ? {
+                    userActiveCard: normalUser.cards[userCardsKeys[0]],
+                    allUsersActiveCard: activeTransferAllUsersCard,
+                 }
+               : {}
+         );
+      }
+
+      console.log(activeTransferCards.allUsersActiveCard);
+   };
 
    useEffect(() => {
-      getDefaultCards();
-      getUserCards();
+      changeActiveCards();
 
-      setUserCardsKeys(user.cards ? Object.keys(user.cards) : null);
+      const normalUser = JSON.parse(localStorage.getItem('user'));
 
-      setActiveTransferCards(
-         userCardsKeys
-            ? {
-                 userActiveCard: user.cards[userCardsKeys[0]],
-                 allUsersActiveCard: {
-                    ...user.cards[userCardsKeys[0]],
-                    owner: user.name,
-                 },
-              }
-            : {}
+      localStorage.setItem(
+         'activeTransferAllUsersCard',
+         JSON.stringify({
+            ...normalUser.cards[userCardsKeys[0]],
+            owner: normalUser.name,
+         })
       );
+
+      window.addEventListener('storage', (e) => {
+         if (e.key === 'user') {
+            localStorage.setItem('user', e.newValue);
+            setUser(JSON.parse(localStorage.getItem('user')));
+            changeActiveCards();
+         } else if (e.key === 'activeTransferAllUsersCard') {
+            // localStorage.setItem('activeTransferAllUsersCard', e.newValue);
+            changeActiveCards();
+         }
+      });
    }, []);
 
    //? BUY CARDS
 
    function getUserCards() {
-      const data = [];
+      const normalUser = JSON.parse(localStorage.getItem('user'));
 
-      for (let key in user.cards) {
-         data.push(user.cards[key]);
+      for (let key in normalUser.cards) {
+         userCards.push(normalUser.cards[key]);
       }
-
-      setUserCards(data);
    }
+   getUserCards();
 
    function getDefaultCards() {
       defaultCards.forEach((item) => {
@@ -166,20 +194,20 @@ const ProfileBank = ({
          id: cardId,
       });
 
-      await set(ref(database, `cards/cardId`), vaidateId(+cardId + 1))
-         .then(async () => {
-            await setIsBuy('succses');
-            await setTimeout(() => {
-               getData();
-               getUserCards();
-               setModal(false);
-            }, 1500);
-            setTimeout(() => setIsBuy(false), 2000);
-         })
-         .catch(() => {
+      await set(ref(database, `cards/cardId`), vaidateId(+cardId + 1)).catch(
+         () => {
             setIsBuy('error');
             setTimeout(() => handleClose(), 2000);
-         });
+         }
+      );
+
+      await setIsBuy('succses');
+      await setTimeout(async () => {
+         await getData();
+         await getUserCards();
+         setModal(false);
+      }, 1500);
+      setTimeout(() => setIsBuy(false), 2000);
    };
 
    const postBuyedCardPopover = async (player, buyedCardName, vaidateId) => {
@@ -196,12 +224,15 @@ const ProfileBank = ({
          .then(async () => {
             await setPopoverIsBuy('succses');
 
-            await setTimeout(() => {
-               getData();
-               setIsBuy(false);
+            await setTimeout(async () => {
+               await getData();
+               await getUserCards();
             }, 1000);
+            setTimeout(() => changeActiveCards(), 2000);
          })
          .catch(() => setPopoverIsBuy('error'));
+
+      setTimeout(() => setPopoverIsBuy(false), 1000);
    };
 
    const buyCard = async (player, value, buyedCardName, userCard = null) => {
@@ -275,39 +306,48 @@ const ProfileBank = ({
    const changeBalUser = async () => {
       const userCard = activeTransferCards.userActiveCard;
       const allUserCard = activeTransferCards.allUsersActiveCard;
+      const normalUser = JSON.parse(localStorage.getItem('user'));
 
-      if (user.name !== allUserCard.owner) {
+      if (normalUser.name !== allUserCard.owner) {
          await set(
-            ref(database, `users/${user.name}/mcoins`),
-            +user.mcoins - +inputValue
+            ref(database, `users/${normalUser.name}/mcoins`),
+            +normalUser.mcoins - +inputValue
          )
             .then(() => {
                set(
                   ref(
                      database,
-                     `users/${user.name}/cards/${userCard.id}/balance`
+                     `users/${normalUser.name}/cards/${userCard.id}/balance`
                   ),
-                  +userCard.balance - +inputValue
+                  normalUser.cards[userCard.id].balance - +inputValue
                ).catch(() => setTransferError('Ошибка сервера'));
             })
             .catch(() => setTransferError('Ошибка сервера'));
       }
 
-      if (user.name === allUserCard.owner) {
+      if (normalUser.name === allUserCard.owner) {
          await set(
-            ref(database, `users/${user.name}/cards/${userCard.id}/balance`),
-            +userCard.balance - +inputValue
+            ref(
+               database,
+               `users/${normalUser.name}/cards/${userCard.id}/balance`
+            ),
+            +normalUser.cards[userCard.id].balance - +inputValue
          ).catch(() => setTransferError('Ошибка сервера'));
       }
    };
 
    const changeBalPlayer = async () => {
-      const allUserCard = activeTransferCards.allUsersActiveCard;
+      const allUserCard = JSON.parse(
+         localStorage.getItem('activeTransferAllUsersCard')
+      );
+      const normalUser = JSON.parse(localStorage.getItem('user'));
+
+      await getData();
 
       await players.forEach(async (player) => {
          if (
             player.name === allUserCard.owner &&
-            user.name !== allUserCard.owner
+            normalUser.name !== allUserCard.owner
          ) {
             await set(
                ref(database, `users/${player.name}/mcoins`),
@@ -321,13 +361,20 @@ const ProfileBank = ({
                      ),
                      +allUserCard.balance + +inputValue
                   ).catch(() => setTransferError('Ошибка сервера'));
+                  localStorage.setItem(
+                     'activeTransferAllUsersCard',
+                     JSON.stringify({
+                        ...allUserCard,
+                        balance: +allUserCard.balance + +inputValue,
+                     })
+                  );
                })
                .catch(() => setTransferError('Ошибка сервера'));
          }
 
          if (
             player.name === allUserCard.owner &&
-            user.name === allUserCard.owner
+            normalUser.name === allUserCard.owner
          ) {
             await set(
                ref(
@@ -335,7 +382,17 @@ const ProfileBank = ({
                   `users/${player.name}/cards/${allUserCard.id}/balance`
                ),
                +allUserCard.balance + +inputValue
-            ).catch(() => setTransferError('Ошибка сервера'));
+            )
+               .then(() => {
+                  localStorage.setItem(
+                     'activeTransferAllUsersCard',
+                     JSON.stringify({
+                        ...allUserCard,
+                        balance: +allUserCard.balance + +inputValue,
+                     })
+                  );
+               })
+               .catch(() => setTransferError('Ошибка сервера'));
          }
       });
    };
@@ -364,9 +421,6 @@ const ProfileBank = ({
          setTransferError('Недостаточно средств');
          return;
       }
-      if (transferError) {
-         return;
-      }
 
       setTransferStatus('loading');
 
@@ -374,30 +428,36 @@ const ProfileBank = ({
       await changeBalPlayer();
 
       await getData();
+
       await setActiveTransferCards((state) => ({
          ...state,
          userActiveCard: {
             ...state.userActiveCard,
-            balance: +state.userActiveCard.balance - +inputValue,
+            balance:
+               +JSON.parse(localStorage.getItem('user')).cards[
+                  state.userActiveCard.id
+               ].balance - +inputValue,
          },
       }));
 
-      await setUserCards((state) => {
-         const data = [];
-         const userCard = activeTransferCards.userActiveCard;
+      await players.forEach((item) => {
+         const cards = item.cards;
 
-         state.forEach((item) => {
-            if (item.id === userCard.id) {
-               data.push({
-                  ...userCard,
-                  balance: +userCard.balance - +inputValue,
-               });
-            } else {
-               data.push(item);
+         if (item.name === allUserCard.owner) {
+            for (let key in cards) {
+               if (allUserCard.id === key) {
+                  setActiveTransferCards((state) => ({
+                     ...state,
+                     allUsersActiveCard: {
+                        ...state.allUsersActiveCard,
+                        balance:
+                           +cards[state.allUsersActiveCard.id].balance +
+                           +inputValue,
+                     },
+                  }));
+               }
             }
-         });
-
-         return data;
+         }
       });
 
       await setTransferStatus('succses');
@@ -407,6 +467,8 @@ const ProfileBank = ({
       textarea.value = '';
       setInputValue('');
       setTextareaValue('');
+      console.log(allUserCard);
+      await getData();
    };
 
    const userActiveCardRatityBottom = () => {
@@ -424,7 +486,10 @@ const ProfileBank = ({
                Ваши карты
             </button>
             <button
-               onClick={() => setBankContent('transfers')}
+               onClick={() => {
+                  changeActiveCards();
+                  setBankContent('transfers');
+               }}
                className={bankContent === 'transfers' ? 'nav-active' : null}
             >
                Переводы
@@ -436,7 +501,7 @@ const ProfileBank = ({
          {bankContent === 'userCards' ? (
             <div className="profile-page__bank__user-cards">
                {!defaultCardsError ? (
-                  user.cards ? (
+                  JSON.parse(localStorage.getItem('user')).cards ? (
                      <div className="existing-cars">
                         {userCards.map((item) => {
                            let cardName = {};
@@ -520,22 +585,11 @@ const ProfileBank = ({
                userCardsKeys ? (
                   <>
                      <div className="profile-page__bank__transfers__cards">
-                        <select
-                           name="userCards"
-                           id="user-cards"
-                           onChange={(e) => {
-                              setActiveTransferCards((state) => ({
-                                 ...state,
-                                 userActiveCard: user.cards[e.target.value],
-                              }));
-                           }}
-                        >
-                           {userCards.map((card, i) => (
-                              <option key={i} value={card.id}>
-                                 ML-{card.id} » {user.name}
-                              </option>
-                           ))}
-                        </select>
+                        <ViewSelect
+                           userCards={userCards}
+                           setActiveTransferCards={setActiveTransferCards}
+                        />
+
                         <div className="arrow-transfers">
                            <img src={arrowTransfers} alt="arrowTransfers" />
                         </div>
@@ -543,19 +597,20 @@ const ProfileBank = ({
                         <select
                            name="allUsersCards"
                            id="all-users-cards"
-                           defaultValue={`ML-${activeTransferCards.allUsersActiveCard.id} » ${activeTransferCards.allUsersActiveCard.owner}`}
-                           onChange={(e) =>
-                              setActiveTransferCards((state) => ({
-                                 ...state,
-                                 allUsersActiveCard: {
+                           value={`ML-${activeTransferCards.allUsersActiveCard.id} » ${activeTransferCards.allUsersActiveCard.owner}`}
+                           onChange={(e) => {
+                              localStorage.setItem(
+                                 'activeTransferAllUsersCard',
+                                 JSON.stringify({
                                     owner: e.target.value.split(' ')[2],
                                     ...objPlayers[e.target.value.split(' ')[2]]
                                        .cards[
                                        e.target.value.split(' ')[0].slice(3)
                                     ],
-                                 },
-                              }))
-                           }
+                                 })
+                              );
+                              changeActiveCards();
+                           }}
                         >
                            {players.map((user, i) => (
                               <React.Fragment key={i}>
@@ -672,6 +727,29 @@ const ProfileBank = ({
             </div>
          ) : null}
       </div>
+   );
+};
+
+const ViewSelect = ({ userCards, setActiveTransferCards }) => {
+   const user = JSON.parse(localStorage.getItem('user'));
+
+   return (
+      <select
+         name="userCards"
+         id="user-cards"
+         onChange={(e) => {
+            setActiveTransferCards((state) => ({
+               ...state,
+               userActiveCard: user.cards[e.target.value],
+            }));
+         }}
+      >
+         {userCards.map((card, i) => (
+            <option key={i} value={card.id}>
+               ML-{card.id} » {user.name}
+            </option>
+         ))}
+      </select>
    );
 };
 
