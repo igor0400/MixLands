@@ -34,7 +34,7 @@ const MainPage = ({ handleShow, copyText }) => {
                     }}
                  >
                     <span
-                       id="ip-btn"
+                       id="main-ip-btn"
                        onClick={() => {
                           copyText('play.mixlands.fun');
                        }}

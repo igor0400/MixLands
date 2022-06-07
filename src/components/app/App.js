@@ -51,7 +51,6 @@ function App() {
    const [activePlayer, setActivePlayer] = useState({});
 
    const [copyAlertActive, setCopyAlertActive] = useState(false);
-   const [copyAlertMr, setCopyAlertMr] = useState(false);
    const [copyAlertClass, setCopyAlertClass] = useState('animate__fadeIn');
 
    const [news, setNews] = useState([]);
@@ -138,24 +137,23 @@ function App() {
             setDefaultCardsError(true);
          });
 
-      get(child(dbRef, 'cards'))
-         .then((snapshot) => {
-            if (snapshot.exists()) {
-               if (snapshot.val().cardId) setCardId(snapshot.val().cardId);
-            } else {
-               console.log('No data available');
-            }
-         })
+      get(child(dbRef, 'cards')).then((snapshot) => {
+         if (snapshot.exists()) {
+            if (snapshot.val().cardId) setCardId(snapshot.val().cardId);
+         } else {
+            console.log('No data available');
+         }
+      });
 
       get(child(dbRef, 'news')).then((snapshot) => {
          if (snapshot.exists()) {
-             const data = [];
+            const data = [];
 
-             for (let key in snapshot.val()) {
-                data.push(snapshot.val()[key]);
-             }
+            for (let key in snapshot.val()) {
+               data.push(snapshot.val()[key]);
+            }
 
-             setNews(data);
+            setNews(data);
          } else {
             console.log('No data available');
          }
@@ -164,19 +162,24 @@ function App() {
 
    useEffect(getData, []);
 
-   const copyText = (text, marginRight = false) => {
-      navigator.clipboard.writeText(text).then(() => {
-         setCopyAlertActive(true);
-         if (marginRight) setCopyAlertMr(true);
+   const copyText = (text) => {
+      const body = document.querySelector('body');
+      const input = document.createElement('input');
+      body.append(input);
+      input.value = text;
+      input.select();
+      document.execCommand('copy');
+      input.remove();
 
-         setTimeout(() => {
-            setCopyAlertClass('animate__fadeOut');
-         }, 2000);
-         setTimeout(() => {
-            setCopyAlertActive(false);
-            setCopyAlertClass('animate__fadeIn');
-         }, 3000);
-      });
+      setCopyAlertActive(true);
+
+      setTimeout(() => {
+         setCopyAlertClass('animate__fadeOut');
+      }, 2000);
+      setTimeout(() => {
+         setCopyAlertActive(false);
+         setCopyAlertClass('animate__fadeIn');
+      }, 3000);
    };
 
    const onClickSomething = (e) => {
@@ -312,7 +315,6 @@ function App() {
                {copyAlertActive ? (
                   <div
                      className={`copy-alert animate__animated ${copyAlertClass}`}
-                     style={{ marginRight: copyAlertMr ? '-175px' : 0 }}
                   >
                      Скопировано
                   </div>

@@ -15,7 +15,6 @@ const ProfileProfile = ({
    setHeadColor,
    changeHeadColor,
    setChangeHeadColor,
-   copyText,
    nitro,
 }) => {
    const user = JSON.parse(localStorage.getItem('user'));
@@ -341,29 +340,6 @@ const ProfileProfile = ({
                         }}
                      >
                         Очистить
-                     </button>
-                     <button
-                        className="support-btn"
-                        onClick={() => {
-                           if (textareaValue !== '') {
-                              copyText(textareaValue, true);
-                           }
-                        }}
-                     >
-                        Копировать
-                     </button>
-                     <button
-                        className="support-btn"
-                        onClick={() => {
-                           window.navigator.clipboard
-                              .readText()
-                              .then((data) => {
-                                 textarea.value += data;
-                                 setTextareaValue((state) => state + data);
-                              });
-                        }}
-                     >
-                        Вставить
                      </button>
                   </div>
                   {addNewPostProggres === 'loading' ? (
