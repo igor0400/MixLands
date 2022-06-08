@@ -83,8 +83,6 @@ const ProfileBank = ({
                : {}
          );
       }
-
-      console.log(activeTransferCards.allUsersActiveCard);
    };
 
    useEffect(() => {
@@ -467,7 +465,6 @@ const ProfileBank = ({
       textarea.value = '';
       setInputValue('');
       setTextareaValue('');
-      console.log(allUserCard);
       await getData();
    };
 
