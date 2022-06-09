@@ -99,7 +99,7 @@
             color: #fff;
             cursor: pointer;
             text-align: center;
-            padding: 5px 10px;
+            padding: 7px 10px;
             &:hover {
               background: rgba(57, 54, 87, 0.74);
             }
@@ -107,6 +107,9 @@
           .go-profile {
             border-radius: 10px 10px 0 0;
             border-bottom: 2px solid #5a567e;
+          }
+          .notifications {
+             border-bottom: 2px solid #5a567e;
           }
           .chps {
             border-bottom: 2px solid #5a567e;

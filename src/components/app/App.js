@@ -10,6 +10,7 @@ import PlayersProfilePage from '../pages/PlayersProfilePage';
 import WikiPage from '../pages/wikiPage/WikiPage';
 import ShopPage from '../pages/ShopPage';
 import ProfilePage from '../pages/profilePage/ProfilePage';
+import NotificationsPage from '../pages/NotificationsPage';
 import Footer from '../footer/Footer';
 import Page404 from '../pages/Page404';
 import Modals from '../modals/Modals';
@@ -303,6 +304,8 @@ function App() {
                   {user && user.name === activePlayer.name
                      ? null
                      : getUserPage()}
+
+                  <Route path="notifications" element={<NotificationsPage />} />
 
                   <Route path="*" element={<Page404 />} />
                </Routes>
