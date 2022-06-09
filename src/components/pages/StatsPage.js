@@ -167,14 +167,16 @@ const StatsPage = ({ players, loading, error, setActivePlayer, copyText }) => {
                                        (e.target.src = faceDefault)
                                     }
                                  />
-                                 {onlinePlayers.map((player, i) =>
-                                    item.name === player ? (
-                                       <div
-                                          className="player__active__circle"
-                                          key={i}
-                                       ></div>
-                                    ) : null
-                                 )}
+                                 {onlinePlayers
+                                    ? onlinePlayers.map((player, i) =>
+                                         item.name === player ? (
+                                            <div
+                                               className="player__active__circle"
+                                               key={i}
+                                            ></div>
+                                         ) : null
+                                      )
+                                    : null}
                               </div>
                               <div className="player__card__descr">
                                  <h3>{namePlayer(item.name)}</h3>
