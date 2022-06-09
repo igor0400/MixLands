@@ -33,6 +33,7 @@ const ProfilePage = ({
    cardId,
    defaultCardsError,
    objPlayers,
+   setActivePlayer,
 }) => {
    const [activeProfile, setActiveProfile] = useState('profile');
 
@@ -59,7 +60,12 @@ const ProfilePage = ({
          case 'posts':
             return <ProfilePosts players={players} />;
          case 'players':
-            return <ProfilePlayers players={players} />;
+            return (
+               <ProfilePlayers
+                  players={players}
+                  setActivePlayer={setActivePlayer}
+               />
+            );
          case 'bank':
             return (
                <ProfileBank

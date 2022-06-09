@@ -144,11 +144,7 @@ const StatsPage = ({ players, loading, error, setActivePlayer, copyText }) => {
                   sortVisibleData && sortVisibleData.length > 0 ? (
                      sortVisibleData.map((item, i) => (
                         <Link
-                           to={
-                              user && user.name === item.name
-                                 ? '/profile'
-                                 : `/${item.name}`
-                           }
+                           to={`/${item.name}`}
                            key={i}
                            onClick={() => {
                               setActivePlayer(item);

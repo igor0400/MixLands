@@ -338,6 +338,10 @@
          display: grid;
          grid-template-columns: repeat(auto-fill, 350px);
          gap: 30px 50px;
+         color: #fff;
+         a {
+            color: #fff;
+         }
          .top-hours__card,
          .top-balance__card {
             transition: 0.2s;

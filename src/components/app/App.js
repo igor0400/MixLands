@@ -295,15 +295,14 @@ function App() {
                                  defaultCardsError={defaultCardsError}
                                  players={players}
                                  objPlayers={objPlayers}
+                                 setActivePlayer={setActivePlayer}
                               />
                            )
                         }
                      />
                   ) : null}
 
-                  {user && user.name === activePlayer.name
-                     ? null
-                     : getUserPage()}
+                  {getUserPage()}
 
                   <Route path="notifications" element={<NotificationsPage />} />
 

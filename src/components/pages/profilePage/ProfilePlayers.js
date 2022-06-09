@@ -1,8 +1,9 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import faceDefault from '../../../images/face-default.png';
 
-const ProfilePlayers = ({ players }) => {
+const ProfilePlayers = ({ players, setActivePlayer }) => {
    const [playersContent, setPlayersContent] = useState('topHours');
 
    const namePlayer = (name) =>
@@ -42,43 +43,57 @@ const ProfilePlayers = ({ players }) => {
                        .reverse()
                        .slice(0, 16)
                        .map((item, i) => (
-                          <div className="top-hours__card" key={i}>
-                             <div className="top-hours__card__img">
-                                <img
-                                   src={`https://mc-heads.net/avatar/${item.name}`}
-                                   alt={namePlayer(item.name)}
-                                   onError={(e) => (e.target.src = faceDefault)}
-                                />
-                             </div>
-                             <div className="top-hours__card__descr">
-                                <div className="top-hours__card__descr__top">
-                                   <h3>{namePlayer(item.name)}</h3>
-                                   <div>
-                                      <p
-                                         className="bage"
-                                         style={{
-                                            background:
-                                               i === 0
-                                                  ? '#FFC700'
-                                                  : i === 1
-                                                  ? '#C0C0C0'
-                                                  : i === 2
-                                                  ? '#9C622C'
-                                                  : '#383838',
-                                         }}
-                                      >
-                                         #{i + 1}
-                                      </p>
-                                   </div>
+                          <Link
+                             to={`/${item.name}`}
+                             key={i}
+                             onClick={() => {
+                                setActivePlayer(item);
+                                localStorage.setItem(
+                                   'activePlayer',
+                                   JSON.stringify(item)
+                                );
+                             }}
+                          >
+                             <div className="top-hours__card">
+                                <div className="top-hours__card__img">
+                                   <img
+                                      src={`https://mc-heads.net/avatar/${item.name}`}
+                                      alt={namePlayer(item.name)}
+                                      onError={(e) =>
+                                         (e.target.src = faceDefault)
+                                      }
+                                   />
                                 </div>
-                                <h5>
-                                   Наиграно:{' '}
-                                   <span style={{ color: '#fff' }}>
-                                      {item.hours}ч.
-                                   </span>
-                                </h5>
+                                <div className="top-hours__card__descr">
+                                   <div className="top-hours__card__descr__top">
+                                      <h3>{namePlayer(item.name)}</h3>
+                                      <div>
+                                         <p
+                                            className="bage"
+                                            style={{
+                                               background:
+                                                  i === 0
+                                                     ? '#FFC700'
+                                                     : i === 1
+                                                     ? '#C0C0C0'
+                                                     : i === 2
+                                                     ? '#9C622C'
+                                                     : '#383838',
+                                            }}
+                                         >
+                                            #{i + 1}
+                                         </p>
+                                      </div>
+                                   </div>
+                                   <h5>
+                                      Наиграно:{' '}
+                                      <span style={{ color: '#fff' }}>
+                                         {item.hours}ч.
+                                      </span>
+                                   </h5>
+                                </div>
                              </div>
-                          </div>
+                          </Link>
                        ))}
             </div>
          ) : playersContent === 'topBalance' ? (
@@ -90,43 +105,57 @@ const ProfilePlayers = ({ players }) => {
                        .reverse()
                        .slice(0, 16)
                        .map((item, i) => (
-                          <div className="top-balance__card" key={i}>
-                             <div className="top-balance__card__img">
-                                <img
-                                   src={`https://mc-heads.net/avatar/${item.name}`}
-                                   alt={namePlayer(item.name)}
-                                   onError={(e) => (e.target.src = faceDefault)}
-                                />
-                             </div>
-                             <div className="top-balance__card__descr">
-                                <div className="top-balance__card__descr__top">
-                                   <h3>{namePlayer(item.name)}</h3>
-                                   <div>
-                                      <p
-                                         className="bage"
-                                         style={{
-                                            background:
-                                               i === 0
-                                                  ? '#FFC700'
-                                                  : i === 1
-                                                  ? '#C0C0C0'
-                                                  : i === 2
-                                                  ? '#9C622C'
-                                                  : '#383838',
-                                         }}
-                                      >
-                                         #{i + 1}
-                                      </p>
-                                   </div>
+                          <Link
+                             to={`/${item.name}`}
+                             key={i}
+                             onClick={() => {
+                                setActivePlayer(item);
+                                localStorage.setItem(
+                                   'activePlayer',
+                                   JSON.stringify(item)
+                                );
+                             }}
+                          >
+                             <div className="top-balance__card">
+                                <div className="top-balance__card__img">
+                                   <img
+                                      src={`https://mc-heads.net/avatar/${item.name}`}
+                                      alt={namePlayer(item.name)}
+                                      onError={(e) =>
+                                         (e.target.src = faceDefault)
+                                      }
+                                   />
                                 </div>
-                                <h5>
-                                   Баланс:{' '}
-                                   <span style={{ color: '#fff' }}>
-                                      {getBalance(item.mcoins)}
-                                   </span>
-                                </h5>
+                                <div className="top-balance__card__descr">
+                                   <div className="top-balance__card__descr__top">
+                                      <h3>{namePlayer(item.name)}</h3>
+                                      <div>
+                                         <p
+                                            className="bage"
+                                            style={{
+                                               background:
+                                                  i === 0
+                                                     ? '#FFC700'
+                                                     : i === 1
+                                                     ? '#C0C0C0'
+                                                     : i === 2
+                                                     ? '#9C622C'
+                                                     : '#383838',
+                                            }}
+                                         >
+                                            #{i + 1}
+                                         </p>
+                                      </div>
+                                   </div>
+                                   <h5>
+                                      Баланс:{' '}
+                                      <span style={{ color: '#fff' }}>
+                                         {getBalance(item.mcoins)}
+                                      </span>
+                                   </h5>
+                                </div>
                              </div>
-                          </div>
+                          </Link>
                        ))}
             </div>
          ) : null}
