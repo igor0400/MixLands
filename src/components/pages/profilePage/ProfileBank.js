@@ -385,19 +385,22 @@ const ProfileBank = ({
                         balance: +allUserCard.balance + +inputValue,
                      })
                   );
+
+                  const notificationData = {
+                     date: getDate(),
+                     senderCard: {
+                        ...activeTransferCards.userActiveCard,
+                        owner: user.name,
+                     },
+                     message: textareaValue === '' ? null : textareaValue,
+                     recipientCard: allUserCard,
+                     sum: +inputValue,
+                  };
+
                   // ОТПРАВКА УВЕДОМЛЕНИЙ
                   axios.post(
-                     `https://mixlands-3696a-default-rtdb.firebaseio.com/users/${player.name}/notifications/new.json`,
-                     {
-                        date: getDate(),
-                        senderCard: {
-                           ...activeTransferCards.userActiveCard,
-                           owner: user.name,
-                        },
-                        message: textareaValue === '' ? null : textareaValue,
-                        recipientCard: allUserCard,
-                        sum: +inputValue,
-                     }
+                     `https://mixlands-3696a-default-rtdb.firebaseio.com/users/${player.name}/notifications/old.json`,
+                     notificationData
                   );
                })
                .catch(() => setTransferError('Ошибка сервера'));
@@ -422,20 +425,24 @@ const ProfileBank = ({
                         balance: +allUserCard.balance + +inputValue,
                      })
                   );
+
+                  const notificationData = {
+                     date: getDate(),
+                     senderCard: {
+                        ...activeTransferCards.userActiveCard,
+                        owner: user.name,
+                     },
+                     message: textareaValue === '' ? null : textareaValue,
+                     recipientCard: allUserCard,
+                     sum: +inputValue,
+                  };
+
                   // ОТПРАВКА УВЕДОМЛЕНИЙ
-                  axios.post(
-                     `https://mixlands-3696a-default-rtdb.firebaseio.com/users/${player.name}/notifications/new.json`,
-                     {
-                        date: getDate(),
-                        senderCard: {
-                           ...activeTransferCards.userActiveCard,
-                           owner: user.name,
-                        },
-                        message: textareaValue === '' ? null : textareaValue,
-                        recipientCard: allUserCard,
-                        sum: +inputValue,
-                     }
-                  );
+                  axios
+                     .post(
+                        `https://mixlands-3696a-default-rtdb.firebaseio.com/users/${player.name}/notifications/old.json`,
+                        notificationData
+                     )
                })
                .catch(() => setTransferError('Ошибка сервера'));
          }

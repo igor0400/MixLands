@@ -567,7 +567,7 @@ function App() {
          padding-bottom: 400px;
          `;
 
-      console.log(`%c    MixLands    `, css);
+      // console.log(`%c    MixLands    `, css);
    }, []);
 
    const copyText = (text) => {
