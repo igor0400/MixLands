@@ -65,7 +65,7 @@ const ProfileBank = ({
 
    updateAllUsersCards();
 
-   const changeActiveCards = async () => {
+   const changeActiveCards = async (setCardNull = false) => {
       const normalUser = JSON.parse(localStorage.getItem('user'));
 
       await setUserCardsKeys(user.cards ? Object.keys(user.cards) : null);
@@ -75,19 +75,26 @@ const ProfileBank = ({
       );
 
       if (normalUser.cards) {
-         setActiveTransferCards(
-            userCardsKeys
-               ? {
-                    userActiveCard: normalUser.cards[userCardsKeys[0]],
-                    allUsersActiveCard: activeTransferAllUsersCard,
-                 }
-               : {}
-         );
+         setActiveTransferCards((state) => {
+            if (userCardsKeys && !setCardNull) {
+               return {
+                  userActiveCard: state.userActiveCard
+                     ? state.userActiveCard
+                     : normalUser.cards[userCardsKeys[0]],
+                  allUsersActiveCard: activeTransferAllUsersCard,
+               };
+            } else if (userCardsKeys && setCardNull) {
+               return {
+                  userActiveCard: normalUser.cards[userCardsKeys[0]],
+                  allUsersActiveCard: activeTransferAllUsersCard,
+               };
+            } else return {};
+         });
       }
    };
 
    useEffect(() => {
-      changeActiveCards();
+      changeActiveCards(true);
 
       const normalUser = JSON.parse(localStorage.getItem('user'));
 
@@ -103,10 +110,9 @@ const ProfileBank = ({
          if (e.key === 'user') {
             localStorage.setItem('user', e.newValue);
             setUser(JSON.parse(localStorage.getItem('user')));
-            changeActiveCards();
+            changeActiveCards(true);
          } else if (e.key === 'activeTransferAllUsersCard') {
-            // localStorage.setItem('activeTransferAllUsersCard', e.newValue);
-            changeActiveCards();
+            changeActiveCards(true);
          }
       });
    }, []);
@@ -353,6 +359,18 @@ const ProfileBank = ({
       return `${hours}:${minutes} ${day}.${month}.${year}`;
    }
 
+   function getClearDate() {
+      const now = new Date();
+      const day = plusZero(now.getDate());
+      const month = plusZero(now.getMonth() + 1);
+      const year = now.getFullYear();
+      const hours = plusZero(now.getHours());
+      const minutes = plusZero(now.getMinutes());
+      const seconds = plusZero(now.getSeconds());
+
+      return `${year}${month}${day}${hours}${minutes}${seconds}`;
+   }
+
    const changeBalPlayer = async () => {
       const allUserCard = JSON.parse(
          localStorage.getItem('activeTransferAllUsersCard')
@@ -386,8 +404,10 @@ const ProfileBank = ({
                      })
                   );
 
+                  // ОТПРАВКА УВЕДОМЛЕНИЙ
                   const notificationData = {
                      date: getDate(),
+                     clearDate: getClearDate(),
                      senderCard: {
                         ...activeTransferCards.userActiveCard,
                         owner: user.name,
@@ -397,9 +417,8 @@ const ProfileBank = ({
                      sum: +inputValue,
                   };
 
-                  // ОТПРАВКА УВЕДОМЛЕНИЙ
                   axios.post(
-                     `https://mixlands-3696a-default-rtdb.firebaseio.com/users/${player.name}/notifications/old.json`,
+                     `https://mixlands-3696a-default-rtdb.firebaseio.com/users/${player.name}/notifications/new.json`,
                      notificationData
                   );
                })
@@ -425,24 +444,6 @@ const ProfileBank = ({
                         balance: +allUserCard.balance + +inputValue,
                      })
                   );
-
-                  const notificationData = {
-                     date: getDate(),
-                     senderCard: {
-                        ...activeTransferCards.userActiveCard,
-                        owner: user.name,
-                     },
-                     message: textareaValue === '' ? null : textareaValue,
-                     recipientCard: allUserCard,
-                     sum: +inputValue,
-                  };
-
-                  // ОТПРАВКА УВЕДОМЛЕНИЙ
-                  axios
-                     .post(
-                        `https://mixlands-3696a-default-rtdb.firebaseio.com/users/${player.name}/notifications/old.json`,
-                        notificationData
-                     )
                })
                .catch(() => setTransferError('Ошибка сервера'));
          }
@@ -538,7 +539,7 @@ const ProfileBank = ({
             </button>
             <button
                onClick={() => {
-                  changeActiveCards();
+                  changeActiveCards(true);
                   setBankContent('transfers');
                }}
                className={bankContent === 'transfers' ? 'nav-active' : null}
@@ -661,8 +662,8 @@ const ProfileBank = ({
                            name="allUsersCards"
                            id="all-users-cards"
                            value={`ML-${activeTransferCards.allUsersActiveCard.id} » ${activeTransferCards.allUsersActiveCard.owner}`}
-                           onChange={(e) => {
-                              localStorage.setItem(
+                           onChange={async (e) => {
+                              await localStorage.setItem(
                                  'activeTransferAllUsersCard',
                                  JSON.stringify({
                                     owner: e.target.value.split(' ')[2],
@@ -672,7 +673,7 @@ const ProfileBank = ({
                                     ],
                                  })
                               );
-                              changeActiveCards();
+                              await changeActiveCards();
                            }}
                         >
                            {players.map((user, i) => (
