@@ -263,48 +263,52 @@ function App() {
                      element={<ShopPage handleShow={handleShowBuy} />}
                   />
                   {localStorage.getItem('user') ? (
-                     <Route
-                        path="profile"
-                        element={
-                           playersError || defaultCardsError ? (
-                              <Page404 />
-                           ) : (
-                              <ProfilePage
-                                 getData={getData}
-                                 changeStatus={changeStatus}
-                                 setChangeStatus={setChangeStatus}
-                                 headColor={headColor}
-                                 setHeadColor={setHeadColor}
-                                 changeHeadColor={changeHeadColor}
-                                 setChangeHeadColor={setChangeHeadColor}
-                                 copyText={copyText}
-                                 nitro={nitro}
-                                 news={news}
-                                 defaultCards={defaultCards}
-                                 specialCards={specialCards}
-                                 setModal={setModal}
-                                 modal={modal}
-                                 handleClose={handleBuyCardClose}
-                                 cardBuyError={cardBuyError}
-                                 setCardBuyError={setCardBuyError}
-                                 isBuy={isBuy}
-                                 setIsBuy={setIsBuy}
-                                 popoverIsBuy={popoverIsBuy}
-                                 setPopoverIsBuy={setPopoverIsBuy}
-                                 cardId={cardId}
-                                 defaultCardsError={defaultCardsError}
-                                 players={players}
-                                 objPlayers={objPlayers}
-                                 setActivePlayer={setActivePlayer}
-                              />
-                           )
-                        }
-                     />
+                     <>
+                        <Route
+                           path="profile"
+                           element={
+                              playersError || defaultCardsError ? (
+                                 <Page404 />
+                              ) : (
+                                 <ProfilePage
+                                    getData={getData}
+                                    changeStatus={changeStatus}
+                                    setChangeStatus={setChangeStatus}
+                                    headColor={headColor}
+                                    setHeadColor={setHeadColor}
+                                    changeHeadColor={changeHeadColor}
+                                    setChangeHeadColor={setChangeHeadColor}
+                                    copyText={copyText}
+                                    nitro={nitro}
+                                    news={news}
+                                    defaultCards={defaultCards}
+                                    specialCards={specialCards}
+                                    setModal={setModal}
+                                    modal={modal}
+                                    handleClose={handleBuyCardClose}
+                                    cardBuyError={cardBuyError}
+                                    setCardBuyError={setCardBuyError}
+                                    isBuy={isBuy}
+                                    setIsBuy={setIsBuy}
+                                    popoverIsBuy={popoverIsBuy}
+                                    setPopoverIsBuy={setPopoverIsBuy}
+                                    cardId={cardId}
+                                    defaultCardsError={defaultCardsError}
+                                    players={players}
+                                    objPlayers={objPlayers}
+                                    setActivePlayer={setActivePlayer}
+                                 />
+                              )
+                           }
+                        />
+                        <Route
+                           path="notifications"
+                           element={<NotificationsPage />}
+                        />
+                     </>
                   ) : null}
 
                   {getUserPage()}
-
-                  <Route path="notifications" element={<NotificationsPage />} />
 
                   <Route path="*" element={<Page404 />} />
                </Routes>

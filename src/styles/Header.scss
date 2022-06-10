@@ -110,6 +110,17 @@
           }
           .notifications {
              border-bottom: 2px solid #5a567e;
+             position: relative;
+             .notifications__circle {
+               position: absolute;
+               font-size: 10px;
+               background: #F62525;
+               border-radius: 15px;
+               padding: 1px 7px;
+               font-weight: 700;
+               top: 5px;
+               right: 18px;
+             }
           }
           .chps {
             border-bottom: 2px solid #5a567e;

@@ -10,7 +10,7 @@ const Header = ({
    handleHeaderShow,
    handleHeaderClose,
 }) => {
-   const user = localStorage.getItem('user');
+   const user = JSON.parse(localStorage.getItem('user'));
 
    return (
       <header className="header" style={{ paddingRight: modal ? '10px' : 0 }}>
@@ -103,6 +103,15 @@ const Header = ({
                                  onClick={handleHeaderClose}
                               >
                                  Уведомления
+                                 {user.notifications &&
+                                 user.notifications.new ? (
+                                    <span className="notifications__circle">
+                                       {
+                                          Object.keys(user.notifications.new)
+                                             .length
+                                       }
+                                    </span>
+                                 ) : null}
                               </p>
                            </Link>
                            <p
