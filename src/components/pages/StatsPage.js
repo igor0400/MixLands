@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import LineChart from '../charts/LineChart';
 import axios from 'axios';
 import Loading from '../loading/Loading';
-import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 
 import logo from '../../images/icons/logo-big-icon.png';
@@ -67,9 +66,6 @@ const StatsPage = ({ players, loading, error, setActivePlayer, copyText }) => {
 
    return (
       <div className="stats-page mw1400 animate__animated animate__fadeIn">
-         <Helmet>
-            <title>{'MixLands > Статистика'}</title>
-         </Helmet>
          <div className="stats-page__chart">
             <img src={bea} alt="bea" className="bea" />
             <div className="stats-page__chart__info">

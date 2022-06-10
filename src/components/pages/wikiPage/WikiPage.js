@@ -1,4 +1,3 @@
-import { Helmet } from 'react-helmet';
 import { useState } from 'react';
 
 import WikiRules from './WikiRules';
@@ -27,9 +26,6 @@ const WikiPage = () => {
 
    return (
       <div className="wiki-page mw1400 animate__animated animate__fadeIn">
-         <Helmet>
-            <title>{'MixLands > Вики'}</title>
-         </Helmet>
          <div className="wiki-page__nav-bar">
             <ul>
                <li

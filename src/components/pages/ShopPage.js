@@ -1,11 +1,6 @@
-import { Helmet } from 'react-helmet';
-
 const ShopPage = ({ handleShow }) => {
    return (
       <div className="shop-page mw1400 animate__animated animate__fadeIn">
-         <Helmet>
-            <title>{'MixLands > Магазин'}</title>
-         </Helmet>
          <section className="shop-page__descr">
             <h3 className="titleh3">Товары сервера</h3>
             <p className="grey-p">

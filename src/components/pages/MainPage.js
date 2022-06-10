@@ -1,5 +1,3 @@
-import { Helmet } from 'react-helmet';
-
 import mainImg from '../../images/main3.png';
 import player1 from '../../images/card-player1.png';
 import player2 from '../../images/card-player2.png';
@@ -8,9 +6,6 @@ import player3 from '../../images/card-player3.png';
 const MainPage = ({ handleShow, copyText }) => {
   return (
      <div className="main-page mw1400 animate__animated animate__fadeIn">
-        <Helmet>
-           <title>MixLands</title>
-        </Helmet>
         <section className="main-page__main">
            <div className="main__descr animate__animated animate__fadeInLeft">
               <div className="title">

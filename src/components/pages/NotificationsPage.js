@@ -30,6 +30,11 @@ const NotificationsPage = () => {
             <>
                {newNotifications.length !== 0 ? (
                   <div className="notifications__new">
+                     <div className="notifications__new__title">
+                        <div className="line"></div>
+                        <h5>Новые</h5>
+                        <div className="line"></div>
+                     </div>
                      {newNotifications.map((item, i) => (
                         <div className="notification" key={i}>
                            <div className="notification__date">
@@ -44,6 +49,11 @@ const NotificationsPage = () => {
                            <div className="notification__sum">
                               Сумма перевода: {item.sum}
                            </div>
+                           {item.message ? (
+                              <div className="notification__message">
+                                 Сообщение: {item.message}
+                              </div>
+                           ) : null}
                         </div>
                      ))}
                   </div>
@@ -64,6 +74,11 @@ const NotificationsPage = () => {
                            <div className="notification__sum">
                               Сумма перевода: {item.sum}
                            </div>
+                           {item.message ? (
+                              <div className="notification__message">
+                                 Сообщение: {item.message}
+                              </div>
+                           ) : null}
                         </div>
                      ))}
                   </div>

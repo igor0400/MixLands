@@ -1,4 +1,3 @@
-import { Helmet } from 'react-helmet';
 import { useState } from 'react';
 
 import ProfileProfile from './ProfileProfile';
@@ -92,9 +91,6 @@ const ProfilePage = ({
 
    return (
       <section className="profile-page mw1400 animate__animated animate__fadeIn">
-         <Helmet>
-            <title>{'MixLands > Профиль'}</title>
-         </Helmet>
          <div className="profile-page__nav-bar">
             <ul>
                <li
