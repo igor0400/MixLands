@@ -1,6 +1,5 @@
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { database, ref, set } from '../../firebase/firebase';
+import { useEffect, useState } from 'react';
+import { database, set, ref } from '../../firebase/firebase';
 
 const NotificationsPage = () => {
    const user = JSON.parse(localStorage.getItem('user'));
@@ -17,6 +16,8 @@ const NotificationsPage = () => {
                userNewNotifications.push(user.notifications.new[key]);
             }
             setNewNotifications(userNewNotifications);
+
+            transferNotifications();
          }
 
          if (user.notifications.old) {
@@ -26,10 +27,6 @@ const NotificationsPage = () => {
             setOldNotifications(userOldNotifications);
          }
       }
-
-      if (user.notifications && user.notifications.new) {
-         transferNotifications();
-      }
    }, []);
 
    const transferNotifications = async () => {
@@ -38,8 +35,19 @@ const NotificationsPage = () => {
          ...user.notifications.new,
       }).then(async () => {
          await set(ref(database, `users/${user.name}/notifications/new`), null);
+         localStorage.setItem(
+            'user',
+            JSON.stringify({
+               ...user,
+               notifications: {
+                  old: {
+                     ...user.notifications.old,
+                     ...user.notifications.new,
+                  },
+               },
+            })
+         );
       });
-      console.log('Уведомления поменялись');
    };
 
    return (
@@ -56,6 +64,7 @@ const NotificationsPage = () => {
                      </div>
                      {newNotifications
                         .sort((a, b) => a.clearDate - b.clearDate)
+                        .reverse()
                         .map((item, i) => (
                            <div className="notification" key={i}>
                               <div className="notification__date">
@@ -81,15 +90,9 @@ const NotificationsPage = () => {
                ) : null}
                {oldNotifications.length !== 0 ? (
                   <div className="notifications__old">
-                     {user.notifications.new ? (
-                        <div className="notifications__old__title">
-                           <div className="line"></div>
-                           <h5>Старые</h5>
-                           <div className="line"></div>
-                        </div>
-                     ) : null}
                      {oldNotifications
                         .sort((a, b) => a.clearDate - b.clearDate)
+                        .reverse()
                         .map((item, i) => (
                            <div className="notification" key={i}>
                               <div className="notification__date">

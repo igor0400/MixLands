@@ -167,9 +167,9 @@ function App() {
 
       if (user && user.notifications && user.notifications.new) {
          const notifyNew = user.notifications.new;
-         notify(
-            notifyNew[Object.keys(notifyNew)[Object.keys(notifyNew).length - 1]]
-         );
+         for (let key in notifyNew) {
+            notify(notifyNew[key]);
+         }
       }
 
       // const css = `text-shadow: -1px -1px hsl(0,100%,50%),
@@ -634,9 +634,20 @@ function App() {
       );
    };
 
+   const getBalance = (item) =>
+      item < 64
+         ? `${item} MK`
+         : item >= 64
+         ? item % 64 === 0
+            ? `${Math.floor(item / 64)} CMK`
+            : `${Math.floor(item / 64)} CMK ${Math.floor(item % 64)} MK`
+         : '0 MK';
+
    const notify = (notification) =>
       toast(
-         `Пополнеие на ${notification.sum} от ${notification.senderCard.owner}`
+         `Пополнение на ${getBalance(notification.sum)} от ${
+            notification.senderCard.owner
+         }`
       );
 
    return (

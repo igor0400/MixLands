@@ -8,6 +8,8 @@
       }
       &__new {
          margin: 20px 0;
+         padding: 5px 0 10px;
+         border-bottom: 1px solid #c02a2a;
          &__title {
             display: flex;
             align-items: center;
@@ -24,19 +26,6 @@
       }
       &__old {
          margin: 20px 0;
-         &__title {
-            display: flex;
-            align-items: center;
-            h5 {
-               margin: 0;
-               padding: 0 10px;
-               color: #5e5a5a;
-            }
-            .line {
-               width: 100%;
-               border-bottom: 1px solid #5e5a5a;
-            }
-         }
       }
    }
    .notification {
