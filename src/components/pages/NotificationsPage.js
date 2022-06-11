@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 import { database, set, ref } from '../../firebase/firebase';
 
+import Spinner from 'react-bootstrap/Spinner';
+
 const NotificationsPage = () => {
    const user = JSON.parse(localStorage.getItem('user'));
    const [newNotifications, setNewNotifications] = useState([]);
    const [oldNotifications, setOldNotifications] = useState([]);
    const [removeAllNotifications, setRemoveAllNotifications] = useState(false);
+   const [clearNotifyProggres, setClearNotifyProggres] = useState(false);
 
    useEffect(() => {
       getNotifications();
@@ -23,14 +26,20 @@ const NotificationsPage = () => {
       if (normalUser.notifications) {
          if (normalUser.notifications.new) {
             for (let key in normalUser.notifications.new) {
-               userNewNotifications.push(normalUser.notifications.new[key]);
+               userNewNotifications.push({
+                  ...normalUser.notifications.new[key],
+                  id: key,
+               });
             }
             setNewNotifications(userNewNotifications);
          }
 
          if (normalUser.notifications.old) {
             for (let key in normalUser.notifications.old) {
-               userOldNotifications.push(normalUser.notifications.old[key]);
+               userOldNotifications.push({
+                  ...normalUser.notifications.old[key],
+                  id: key,
+               });
             }
             setOldNotifications(userOldNotifications);
          }
@@ -61,10 +70,13 @@ const NotificationsPage = () => {
    const clearNotifications = async () => {
       const userData = JSON.parse(JSON.stringify(user));
 
-      await set(ref(database, `users/${user.name}/notifications`), null).then(
-         () => {
+      setClearNotifyProggres('loading');
+
+      await set(ref(database, `users/${user.name}/notifications`), null)
+         .then(() => {
             delete userData.notifications;
 
+            setClearNotifyProggres('succses');
             setRemoveAllNotifications(true);
 
             setTimeout(() => {
@@ -72,27 +84,40 @@ const NotificationsPage = () => {
                setNewNotifications([]);
                setOldNotifications([]);
             }, 400);
-         }
-      );
+         })
+         .catch(() => setClearNotifyProggres('error'));
    };
+
+   const notifyRenderCondition = newNotifications.length !== 0 || oldNotifications.length !== 0
 
    return (
       <div className="notifications-page mw1400 animate__animated animate__fadeIn">
          <div className="notifications-page__top">
             <div></div>
             <h2 className="titleh2">Уведомления</h2>
-            {newNotifications.length === 0 &&
-            oldNotifications.length === 0 ? <div></div> : (
-               <button
-                  className="notifacations__clear"
-                  onClick={clearNotifications}
-               >
-                  Очистить всё
-               </button>
+            {newNotifications.length === 0 && oldNotifications.length === 0 ? (
+               <div></div>
+            ) : (
+               <>
+                  {clearNotifyProggres === 'loading' ? (
+                     <button className="notifacations__clear">
+                        <Spinner animation="border" variant="light" size="sm" />
+                     </button>
+                  ) : clearNotifyProggres === 'error' ? (
+                     <button className="notifacations__clear">Ошибка</button>
+                  ) : (
+                     <button
+                        className="notifacations__clear"
+                        onClick={clearNotifications}
+                     >
+                        Очистить всё
+                     </button>
+                  )}
+               </>
             )}
          </div>
 
-         {user.notifications ? (
+         {user.notifications && notifyRenderCondition ? (
             <>
                {newNotifications.length !== 0 ? (
                   <div className="notifications__new">
