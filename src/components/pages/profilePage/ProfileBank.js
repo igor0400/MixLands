@@ -98,13 +98,15 @@ const ProfileBank = ({
 
       const normalUser = JSON.parse(localStorage.getItem('user'));
 
-      localStorage.setItem(
-         'activeTransferAllUsersCard',
-         JSON.stringify({
-            ...normalUser.cards[userCardsKeys[0]],
-            owner: normalUser.name,
-         })
-      );
+      if (userCardsKeys) {
+         localStorage.setItem(
+            'activeTransferAllUsersCard',
+            JSON.stringify({
+               ...normalUser.cards[userCardsKeys[0]],
+               owner: normalUser.name,
+            })
+         );
+      }
 
       window.addEventListener('storage', (e) => {
          if (e.key === 'user') {

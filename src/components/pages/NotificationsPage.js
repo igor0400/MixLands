@@ -9,6 +9,7 @@ const NotificationsPage = () => {
    const [oldNotifications, setOldNotifications] = useState([]);
    const [removeAllNotifications, setRemoveAllNotifications] = useState(false);
    const [clearNotifyProggres, setClearNotifyProggres] = useState(false);
+   const [activeDeleteNotify, setActiveDeleteNotify] = useState(false);
 
    useEffect(() => {
       getNotifications();
@@ -88,7 +89,12 @@ const NotificationsPage = () => {
          .catch(() => setClearNotifyProggres('error'));
    };
 
-   const notifyRenderCondition = newNotifications.length !== 0 || oldNotifications.length !== 0
+   const deleteNotify = async (item) => {
+      setActiveDeleteNotify(item);
+   };
+
+   const notifyRenderCondition =
+      newNotifications.length !== 0 || oldNotifications.length !== 0;
 
    return (
       <div className="notifications-page mw1400 animate__animated animate__fadeIn">
@@ -132,7 +138,8 @@ const NotificationsPage = () => {
                         .map((item, i) => (
                            <div
                               className={
-                                 removeAllNotifications
+                                 removeAllNotifications ||
+                                 activeDeleteNotify.clearDate === item.clearDate
                                     ? 'notification animate__animated animate__zoomOut'
                                     : 'notification'
                               }
@@ -155,6 +162,9 @@ const NotificationsPage = () => {
                                     Сообщение: {item.message}
                                  </div>
                               ) : null}
+                              <button onClick={() => deleteNotify(item)}>
+                                 Удалить
+                              </button>
                            </div>
                         ))}
                   </div>
@@ -167,7 +177,8 @@ const NotificationsPage = () => {
                         .map((item, i) => (
                            <div
                               className={
-                                 removeAllNotifications
+                                 removeAllNotifications ||
+                                 activeDeleteNotify.clearDate === item.clearDate
                                     ? 'notification animate__animated animate__zoomOut'
                                     : 'notification'
                               }
@@ -190,6 +201,9 @@ const NotificationsPage = () => {
                                     Сообщение: {item.message}
                                  </div>
                               ) : null}
+                              <button onClick={() => deleteNotify(item)}>
+                                 Удалить
+                              </button>
                            </div>
                         ))}
                   </div>

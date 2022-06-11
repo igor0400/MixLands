@@ -52,7 +52,7 @@ const ProfileProfile = ({
    };
 
    const postStatus = async () => {
-      if (statsValue === user.status) {
+      if (statsValue === user.status || statsValue === '') {
          setChangeStatus(false);
       } else {
          setChangeStatus('loading');
