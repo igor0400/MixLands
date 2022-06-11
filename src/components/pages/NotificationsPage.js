@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { database, set, ref } from '../../firebase/firebase';
+import { database, set, ref, child, get } from '../../firebase/firebase';
 
 import Spinner from 'react-bootstrap/Spinner';
 
@@ -10,16 +10,17 @@ const NotificationsPage = () => {
    const [removeAllNotifications, setRemoveAllNotifications] = useState(false);
    const [clearNotifyProggres, setClearNotifyProggres] = useState(false);
    const [activeDeleteNotify, setActiveDeleteNotify] = useState(false);
+   const [deleteNotifyProggres, setDeleteNotifyProggres] = useState(false);
 
    useEffect(() => {
-      getNotifications();
+      getRenderedNotifications();
 
       if (user.notifications && user.notifications.new) {
          transferNotifications();
       }
    }, []);
 
-   const getNotifications = () => {
+   const getRenderedNotifications = () => {
       const normalUser = JSON.parse(localStorage.getItem('user'));
       const userNewNotifications = [];
       const userOldNotifications = [];
@@ -90,9 +91,41 @@ const NotificationsPage = () => {
    };
 
    const deleteNotify = async (item) => {
-      setActiveDeleteNotify(item);
+      let dataNewNotify = [];
+      let dataOldNotify = [];
 
-      
+      setDeleteNotifyProggres('loading');
+
+      const dbRef = ref(database);
+      await get(child(dbRef, `users/${user.name}/notifications`))
+         .then((snapshot) => {
+            if (snapshot.exists()) {
+               for (let key in snapshot.val().new) {
+                  dataNewNotify.push(snapshot.val().new[key]);
+               }
+               for (let key in snapshot.val().old) {
+                  dataOldNotify.push(snapshot.val().old[key]);
+               }
+
+               // СДЕЛАТЬ СДЕСЬ УДАЛЕНИЕ УВЕДОМЛЕНИЯ!!!!!!!!!!!!!!!!!!!!!!
+
+               // ПОСЛЕ УДАЛЕНИЯ В THEN СДЕЛАТЬ ЭТО 
+                setDeleteNotifyProggres('succses');
+                setActiveDeleteNotify(item);
+               // ЕСЛИ ОШИБКА В CATCH ЭТО
+               setDeleteNotifyProggres('error');
+
+            } else {
+               console.log('No data available');
+            }
+         })
+         .catch(() => {
+            setDeleteNotifyProggres('error');
+         })
+         .finally(() => setTimeout(() => setDeleteNotifyProggres(false), 500));
+
+      console.log(dataNewNotify);
+      console.log(dataOldNotify);
    };
 
    const getBalance = (item) =>
