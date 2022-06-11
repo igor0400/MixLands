@@ -78,10 +78,20 @@ const NotificationsPage = () => {
 
    return (
       <div className="notifications-page mw1400 animate__animated animate__fadeIn">
-         <h2 className="titleh2">Уведомления</h2>
-         <button className="notifacations__clear" onClick={clearNotifications}>
-            Очистить всё
-         </button>
+         <div className="notifications-page__top">
+            <div></div>
+            <h2 className="titleh2">Уведомления</h2>
+            {newNotifications.length === 0 &&
+            oldNotifications.length === 0 ? <div></div> : (
+               <button
+                  className="notifacations__clear"
+                  onClick={clearNotifications}
+               >
+                  Очистить всё
+               </button>
+            )}
+         </div>
+
          {user.notifications ? (
             <>
                {newNotifications.length !== 0 ? (

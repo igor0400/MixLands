@@ -1,6 +1,10 @@
 .notifications-page {
    max-width: 1100px;
    margin: 30px auto;
+   &__top {
+      display: flex;
+      justify-content: space-between;
+   }
    .notifications {
       &-null {
          text-align: center;
