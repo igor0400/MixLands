@@ -91,37 +91,40 @@ const NotificationsPage = () => {
 
    const deleteNotify = async (item) => {
       setActiveDeleteNotify(item);
+
+      
    };
+
+   const getBalance = (item) =>
+      item < 64
+         ? `${item} MK`
+         : item >= 64
+         ? item % 64 === 0
+            ? `${Math.floor(item / 64)} CMK`
+            : `${Math.floor(item / 64)} CMK ${Math.floor(item % 64)} MK`
+         : '0 MK';
 
    const notifyRenderCondition =
       newNotifications.length !== 0 || oldNotifications.length !== 0;
 
    return (
       <div className="notifications-page mw1400 animate__animated animate__fadeIn">
-         <div className="notifications-page__top">
+         <h2 className="titleh2">Уведомления</h2>
+         {newNotifications.length === 0 && oldNotifications.length === 0 ? (
             <div></div>
-            <h2 className="titleh2">Уведомления</h2>
-            {newNotifications.length === 0 && oldNotifications.length === 0 ? (
-               <div></div>
-            ) : (
-               <>
-                  {clearNotifyProggres === 'loading' ? (
-                     <button className="notifacations__clear">
-                        <Spinner animation="border" variant="light" size="sm" />
-                     </button>
-                  ) : clearNotifyProggres === 'error' ? (
-                     <button className="notifacations__clear">Ошибка</button>
-                  ) : (
-                     <button
-                        className="notifacations__clear"
-                        onClick={clearNotifications}
-                     >
-                        Очистить всё
-                     </button>
-                  )}
-               </>
-            )}
-         </div>
+         ) : (
+            <div className="notifications__clear">
+               {clearNotifyProggres === 'loading' ? (
+                  <button>
+                     <Spinner animation="border" variant="light" size="sm" />
+                  </button>
+               ) : clearNotifyProggres === 'error' ? (
+                  <button>Ошибка</button>
+               ) : (
+                  <button onClick={clearNotifications}>Очистить всё</button>
+               )}
+            </div>
+         )}
 
          {user.notifications && notifyRenderCondition ? (
             <>
@@ -145,26 +148,39 @@ const NotificationsPage = () => {
                               }
                               key={i}
                            >
+                              <button
+                                 className="notification__delete"
+                                 onClick={() => deleteNotify(item)}
+                              >
+                                 Удалить
+                              </button>
                               <div className="notification__date">
-                                 Дата: {item.date}
+                                 {item.date}
                               </div>
-                              <div className="notification__recipient">
-                                 Получатель: {item.recipientCard.owner}
+                              <div className="notification__recipient-card text-accent">
+                                 Пополнение карты ML-
+                                 {item.recipientCard.id}
                               </div>
                               <div className="notification__sender">
-                                 Отправитель: {item.senderCard.owner}
+                                 От:{' '}
+                                 <span className="text-accent">
+                                    {item.senderCard.owner}
+                                 </span>
                               </div>
                               <div className="notification__sum">
-                                 Сумма перевода: {item.sum}
+                                 Сумма:{' '}
+                                 <span className="text-accent">
+                                    {getBalance(item.sum)}
+                                 </span>
                               </div>
                               {item.message ? (
                                  <div className="notification__message">
-                                    Сообщение: {item.message}
+                                    Комментарий:{' '}
+                                    <span className="text-accent">
+                                       {item.message}
+                                    </span>
                                  </div>
                               ) : null}
-                              <button onClick={() => deleteNotify(item)}>
-                                 Удалить
-                              </button>
                            </div>
                         ))}
                   </div>
@@ -184,26 +200,39 @@ const NotificationsPage = () => {
                               }
                               key={i}
                            >
+                              <button
+                                 className="notification__delete"
+                                 onClick={() => deleteNotify(item)}
+                              >
+                                 Удалить
+                              </button>
                               <div className="notification__date">
-                                 Дата: {item.date}
+                                 {item.date}
                               </div>
-                              <div className="notification__recipient">
-                                 Получатель: {item.recipientCard.owner}
+                              <div className="notification__recipient-card text-accent">
+                                 Пополнение карты ML-
+                                 {item.recipientCard.id}
                               </div>
                               <div className="notification__sender">
-                                 Отправитель: {item.senderCard.owner}
+                                 От:{' '}
+                                 <span className="text-accent">
+                                    {item.senderCard.owner}
+                                 </span>
                               </div>
                               <div className="notification__sum">
-                                 Сумма перевода: {item.sum}
+                                 Сумма:{' '}
+                                 <span className="text-accent">
+                                    {getBalance(item.sum)}
+                                 </span>
                               </div>
                               {item.message ? (
                                  <div className="notification__message">
-                                    Сообщение: {item.message}
+                                    Комментарий:{' '}
+                                    <span className="text-accent">
+                                       {item.message}
+                                    </span>
                                  </div>
                               ) : null}
-                              <button onClick={() => deleteNotify(item)}>
-                                 Удалить
-                              </button>
                            </div>
                         ))}
                   </div>
