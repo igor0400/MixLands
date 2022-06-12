@@ -91,30 +91,65 @@ const NotificationsPage = () => {
    };
 
    const deleteNotify = async (item) => {
-      let dataNewNotify = [];
-      let dataOldNotify = [];
 
+      //НЕ РАБОТАЕТ УДАЛЕНИЕ ИЗ СТАРЫХ УВЕДОМЛЕНИЙ
+      setActiveDeleteNotify(item);
       setDeleteNotifyProggres('loading');
 
       const dbRef = ref(database);
       await get(child(dbRef, `users/${user.name}/notifications`))
-         .then((snapshot) => {
+         .then(async (snapshot) => {
+            const thenDelete = () => {
+               setDeleteNotifyProggres('succses');
+
+               const userData = JSON.parse(JSON.stringify(user));
+
+               if (userData.notifications.new[item.id]) {
+                  delete userData.notifications.new[item.id];
+               }
+               if (userData.notifications.old[item.id]) {
+                  delete userData.notifications.old[item.id];
+               }
+
+               localStorage.setItem('user', JSON.stringify(userData));
+
+               setTimeout(() => {
+                  setNewNotifications((state) =>
+                     state.filter((notify) => notify.id !== item.id)
+                  );
+                  setOldNotifications((state) =>
+                     state.filter((notify) => notify.id !== item.id)
+                  );
+               }, 400);
+            };
+
             if (snapshot.exists()) {
                for (let key in snapshot.val().new) {
-                  dataNewNotify.push(snapshot.val().new[key]);
+                  if (key === item.id) {
+                     await set(
+                        ref(
+                           database,
+                           `users/${user.name}/notifications/new/${item.id}`
+                        ),
+                        null
+                     )
+                        .then(thenDelete)
+                        .catch(() => setDeleteNotifyProggres('error'));
+                  }
                }
                for (let key in snapshot.val().old) {
-                  dataOldNotify.push(snapshot.val().old[key]);
+                  if (key === item.id) {
+                     await set(
+                        ref(
+                           database,
+                           `users/${user.name}/notifications/old/${item.id}`
+                        ),
+                        null
+                     )
+                        .then(thenDelete)
+                        .catch(() => setDeleteNotifyProggres('error'));
+                  }
                }
-
-               // СДЕЛАТЬ СДЕСЬ УДАЛЕНИЕ УВЕДОМЛЕНИЯ!!!!!!!!!!!!!!!!!!!!!!
-
-               // ПОСЛЕ УДАЛЕНИЯ В THEN СДЕЛАТЬ ЭТО 
-                setDeleteNotifyProggres('succses');
-                setActiveDeleteNotify(item);
-               // ЕСЛИ ОШИБКА В CATCH ЭТО
-               setDeleteNotifyProggres('error');
-
             } else {
                console.log('No data available');
             }
@@ -123,9 +158,6 @@ const NotificationsPage = () => {
             setDeleteNotifyProggres('error');
          })
          .finally(() => setTimeout(() => setDeleteNotifyProggres(false), 500));
-
-      console.log(dataNewNotify);
-      console.log(dataOldNotify);
    };
 
    const getBalance = (item) =>
@@ -143,9 +175,7 @@ const NotificationsPage = () => {
    return (
       <div className="notifications-page mw1400 animate__animated animate__fadeIn">
          <h2 className="titleh2">Уведомления</h2>
-         {newNotifications.length === 0 && oldNotifications.length === 0 ? (
-            <div></div>
-         ) : (
+         {newNotifications.length !== 0 || oldNotifications.length !== 0 ? (
             <div className="notifications__clear">
                {clearNotifyProggres === 'loading' ? (
                   <button>
@@ -157,7 +187,7 @@ const NotificationsPage = () => {
                   <button onClick={clearNotifications}>Очистить всё</button>
                )}
             </div>
-         )}
+         ) : null}
 
          {user.notifications && notifyRenderCondition ? (
             <>
@@ -175,18 +205,36 @@ const NotificationsPage = () => {
                            <div
                               className={
                                  removeAllNotifications ||
-                                 activeDeleteNotify.clearDate === item.clearDate
+                                 (activeDeleteNotify.id === item.id &&
+                                    deleteNotifyProggres === 'succses')
                                     ? 'notification animate__animated animate__zoomOut'
                                     : 'notification'
                               }
                               key={i}
                            >
-                              <button
-                                 className="notification__delete"
-                                 onClick={() => deleteNotify(item)}
-                              >
-                                 Удалить
-                              </button>
+                              {deleteNotifyProggres === 'loading' &&
+                              activeDeleteNotify.id === item.id ? (
+                                 <button className="notification__delete loading">
+                                    <Spinner
+                                       animation="border"
+                                       variant="light"
+                                       size="sm"
+                                    />
+                                 </button>
+                              ) : deleteNotifyProggres === 'error' &&
+                                activeDeleteNotify.id === item.id ? (
+                                 <button className="notification__delete error">
+                                    Ошибка
+                                 </button>
+                              ) : (
+                                 <button
+                                    className="notification__delete"
+                                    onClick={() => deleteNotify(item)}
+                                 >
+                                    Удалить
+                                 </button>
+                              )}
+
                               <div className="notification__date">
                                  {item.date}
                               </div>
@@ -227,18 +275,36 @@ const NotificationsPage = () => {
                            <div
                               className={
                                  removeAllNotifications ||
-                                 activeDeleteNotify.clearDate === item.clearDate
+                                 (activeDeleteNotify.id === item.id &&
+                                    deleteNotifyProggres === 'succses')
                                     ? 'notification animate__animated animate__zoomOut'
                                     : 'notification'
                               }
                               key={i}
                            >
-                              <button
-                                 className="notification__delete"
-                                 onClick={() => deleteNotify(item)}
-                              >
-                                 Удалить
-                              </button>
+                              {deleteNotifyProggres === 'loading' &&
+                              activeDeleteNotify.id === item.id ? (
+                                 <button className="notification__delete loading">
+                                    <Spinner
+                                       animation="border"
+                                       variant="light"
+                                       size="sm"
+                                    />
+                                 </button>
+                              ) : deleteNotifyProggres === 'error' &&
+                                activeDeleteNotify.id === item.id ? (
+                                 <button className="notification__delete error">
+                                    Ошибка
+                                 </button>
+                              ) : (
+                                 <button
+                                    className="notification__delete"
+                                    onClick={() => deleteNotify(item)}
+                                 >
+                                    Удалить
+                                 </button>
+                              )}
+
                               <div className="notification__date">
                                  {item.date}
                               </div>
