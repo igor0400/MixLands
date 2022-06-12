@@ -91,10 +91,11 @@ const NotificationsPage = () => {
    };
 
    const deleteNotify = async (item) => {
+      await setActiveDeleteNotify(item);
+      await setDeleteNotifyProggres('loading');
 
-      //НЕ РАБОТАЕТ УДАЛЕНИЕ ИЗ СТАРЫХ УВЕДОМЛЕНИЙ
-      setActiveDeleteNotify(item);
-      setDeleteNotifyProggres('loading');
+      console.log(newNotifications);
+      console.log(oldNotifications);
 
       const dbRef = ref(database);
       await get(child(dbRef, `users/${user.name}/notifications`))
@@ -104,13 +105,20 @@ const NotificationsPage = () => {
 
                const userData = JSON.parse(JSON.stringify(user));
 
-               if (userData.notifications.new[item.id]) {
-                  delete userData.notifications.new[item.id];
+               if (userData.notifications) {
+                  if (
+                     userData.notifications.new &&
+                     userData.notifications.new[item.id]
+                  ) {
+                     delete userData.notifications.new[item.id];
+                  }
+                  if (
+                     userData.notifications.old &&
+                     userData.notifications.old[item.id]
+                  ) {
+                     delete userData.notifications.old[item.id];
+                  }
                }
-               if (userData.notifications.old[item.id]) {
-                  delete userData.notifications.old[item.id];
-               }
-
                localStorage.setItem('user', JSON.stringify(userData));
 
                setTimeout(() => {
@@ -152,6 +160,7 @@ const NotificationsPage = () => {
                }
             } else {
                console.log('No data available');
+               setDeleteNotifyProggres('error');
             }
          })
          .catch(() => {
@@ -229,7 +238,11 @@ const NotificationsPage = () => {
                               ) : (
                                  <button
                                     className="notification__delete"
-                                    onClick={() => deleteNotify(item)}
+                                    onClick={() => {
+                                       if (!deleteNotifyProggres) {
+                                          deleteNotify(item);
+                                       }
+                                    }}
                                  >
                                     Удалить
                                  </button>
@@ -299,7 +312,11 @@ const NotificationsPage = () => {
                               ) : (
                                  <button
                                     className="notification__delete"
-                                    onClick={() => deleteNotify(item)}
+                                    onClick={() => {
+                                       if (!deleteNotifyProggres) {
+                                          deleteNotify(item);
+                                       }
+                                    }}
                                  >
                                     Удалить
                                  </button>
