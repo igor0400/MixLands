@@ -13,11 +13,11 @@ const WikiFaq = () => {
         </li>
         <li className="b">Какой IP-адрес у сервера?</li>
         <li className="o">
-          IP-адрес сервера - <span>play.mixlands.fun</span>
+          IP-адрес сервера - <span>play.mixlands.space</span>
         </li>
         <li className="b">Сколько стоит проходка?</li>
         <li className="o">
-          На данный момент проходка стоит <span>200 рублей</span>.
+          На данный момент проходка стоит <span>300 рублей</span>.
         </li>
         <li className="b"> Какое ограничение мира?</li>
         <li className="o">

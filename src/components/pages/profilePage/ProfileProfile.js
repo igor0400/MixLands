@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import Spinner from 'react-bootstrap/Spinner';
 import Form from 'react-bootstrap/Form';
+import { getDateTime, getClearDateTime } from '../../../service/getDate';
 
 import headDefault from '../../../images/head-default.png';
 
@@ -85,35 +86,6 @@ const ProfileProfile = ({
          setChangeHeadColor(false);
       }, 1000);
    };
-
-   function plusZero(value) {
-      if (value < 10) {
-         value = '0' + value;
-      }
-      return value;
-   }
-
-   function getDateTime() {
-      const now = new Date();
-      const day = plusZero(now.getDate());
-      const month = plusZero(now.getMonth() + 1);
-      const year = now.getFullYear();
-      const hours = plusZero(now.getHours());
-      const minutes = plusZero(now.getMinutes());
-
-      return `${hours}:${minutes} ${day}.${month}.${year}`;
-   }
-   function getClearDateTime() {
-      const now = new Date();
-      const day = plusZero(now.getDate());
-      const month = plusZero(now.getMonth() + 1);
-      const year = now.getFullYear();
-      const hours = plusZero(now.getHours());
-      const minutes = plusZero(now.getMinutes());
-      const seconds = plusZero(now.getSeconds());
-
-      return `${year}${month}${day}${hours}${minutes}${seconds}`;
-   }
 
    const addNewPost = async () => {
       if (textareaValue === '') {
@@ -344,11 +316,7 @@ const ProfileProfile = ({
                   </div>
                   {addNewPostProggres === 'loading' ? (
                      <button className="btn btn-blue btn-loading">
-                        <Spinner
-                           animation="border"
-                           variant="primary"
-                           size="sm"
-                        />
+                        <Spinner animation="border" variant="light" size="sm" />
                      </button>
                   ) : addNewPostProggres === 'succses' ? (
                      <button className="btn btn-succses succses">

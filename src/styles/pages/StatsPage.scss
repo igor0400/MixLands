@@ -1,184 +1,184 @@
 $borderColor: #1f1c2f;
 .stats-page {
-  max-width: 1200px;
-  margin: 100px auto;
-  &__chart {
-    border: 3px solid $borderColor;
-    border-radius: 5px;
-    margin: 0 auto;
-    position: relative;
-    .bea {
-      position: absolute;
-      right: -100px;
-      top: -90px;
-      width: 200px;
-      z-index: 100;
-    }
-    &__info {
-      color: #fff;
-      border-bottom: 3px solid $borderColor;
-      display: flex;
-      align-items: center;
-      padding: 20px 30px;
-      p {
-        color: #a8a8a8;
+   max-width: 1200px;
+   margin: 100px auto;
+   &__chart {
+      border: 3px solid $borderColor;
+      border-radius: 5px;
+      margin: 0 auto;
+      position: relative;
+      .bea {
+         position: absolute;
+         right: -100px;
+         top: -90px;
+         width: 200px;
+         z-index: 100;
       }
-      .info__logo {
-        img {
-          width: 65px;
-          height: 65px;
-        }
-      }
-      .info__descr {
-        margin-left: 10px;
-        &__title {
-          position: relative;
-          h3 {
-            margin: 0;
-            font-size: 22px;
-            line-height: 18px;
-            font-weight: 800;
-          }
-        }
-        &__online {
-          line-height: 16px;
-          padding: 5px 0;
-        }
-        &__ip {
-          line-height: 16px;
-          .ip__copy {
-            margin-left: 5px;
-            cursor: pointer;
-          }
-        }
-      }
+      &__info {
+         color: #fff;
+         border-bottom: 3px solid $borderColor;
+         display: flex;
+         align-items: center;
+         padding: 20px 30px;
+         p {
+            color: #a8a8a8;
+         }
+         .info__logo {
+            img {
+               width: 65px;
+               height: 65px;
+            }
+         }
+         .info__descr {
+            margin-left: 10px;
+            &__title {
+               position: relative;
+               h3 {
+                  margin: 0;
+                  font-size: 22px;
+                  line-height: 18px;
+                  font-weight: 800;
+               }
+            }
+            &__online {
+               line-height: 16px;
+               padding: 5px 0;
+            }
+            &__ip {
+               line-height: 16px;
+               .ip__copy {
+                  margin-left: 5px;
+                  cursor: pointer;
+               }
+            }
+         }
 
-      .green,
-      .red,
-      .blue {
-        width: 7px;
-        height: 7px;
-        background: #52ff00;
-        position: absolute;
-        border-radius: 50px;
-        top: 8px;
-        right: 60px;
+         .green,
+         .red,
+         .blue {
+            width: 7px;
+            height: 7px;
+            background: #52ff00;
+            position: absolute;
+            border-radius: 50px;
+            top: 8px;
+            right: 60px;
+         }
+         .red {
+            background: red;
+         }
+         .blue {
+            background: #2562ff;
+         }
       }
-      .red {
-        background: red;
+      &__canvas {
+         margin: 20px 0 -8px -8px;
       }
-      .blue {
-        background: #2562ff;
+   }
+   .players__serch {
+      margin: 40px 0 20px;
+      &__buttons {
+         margin-bottom: 10px;
+         border-radius: 5px;
+         width: fit-content;
+         button {
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            background: none;
+            padding: 7px 40px;
+            transition: 0.2s;
+            margin: 0 3px;
+            &:not(.button-active):hover {
+               background: rgba(165, 165, 165, 0.1);
+            }
+         }
       }
-    }
-    &__canvas {
-      margin: 20px 0 -8px -8px;
-    }
-  }
-  .players__serch {
-    margin: 40px 0 20px;
-    &__buttons {
-      margin-bottom: 10px;
-      border-radius: 5px;
-      width: fit-content;
-      button {
-        border: none;
-        border-radius: 5px;
-        color: #fff;
-        background: none;
-        padding: 7px 40px;
-        transition: 0.2s;
-        margin: 0 3px;
-        &:not(.button-active):hover {
-          background: rgba(165, 165, 165, 0.1);
-        }
+      .button-active {
+         background: #9d50ff;
       }
-    }
-    .button-active {
-      background: #9d50ff;
-    }
-    input {
-      width: 100%;
-      background: rgba(29, 28, 33, 0.63);
-      border: 1px solid $borderColor;
-      border-radius: 5px;
-      color: #fff;
-      padding: 7px 7px 7px 45px;
-      background: url('../../images/icons/serch.svg') no-repeat 10px 7px;
-      background-size: auto 65%;
-      outline: 0 !important;
-      margin: 1px;
-      &:focus {
-        margin: 0;
-        border: 2px solid #36265a;
+      input {
+         width: 100%;
+         background: rgba(29, 28, 33, 0.63);
+         border: 1px solid $borderColor;
+         border-radius: 5px;
+         color: #fff;
+         padding: 7px 7px 7px 45px;
+         background: url('../../images/icons/serch.svg') no-repeat 10px 7px;
+         background-size: auto 65%;
+         outline: 0 !important;
+         margin: 1px;
+         &:focus {
+            margin: 0;
+            border: 2px solid #36265a;
+         }
       }
-    }
-  }
-  &__players {
-    .error {
-      display: grid;
-      justify-content: center;
-      h4 {
-        text-align: center;
+   }
+   &__players {
+      .error {
+         display: grid;
+         justify-content: center;
+         h4 {
+            text-align: center;
+         }
       }
-    }
-    .players__cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, 285px);
-      gap: 20px;
+      .players__cards {
+         display: grid;
+         grid-template-columns: repeat(auto-fill, 285px);
+         gap: 20px;
+      }
       .null-players {
-        font-weight: 600;
-        width: 400px;
-        margin: 0;
+         font-weight: 600;
+         margin: 0;
+         text-align: center;
       }
-    }
-    .player__card {
-      transition: 0.2s;
-      background: #15131b;
-      border: 1px solid $borderColor;
-      border-radius: 5px;
-      display: flex;
-      align-items: center;
-      padding: 20px;
-      cursor: pointer;
-      &:hover {
-        background: rgba(53, 53, 53, 0.288);
+      .player__card {
+         transition: 0.2s;
+         background: #15131b;
+         border: 1px solid $borderColor;
+         border-radius: 5px;
+         display: flex;
+         align-items: center;
+         padding: 20px;
+         cursor: pointer;
+         &:hover {
+            background: rgba(53, 53, 53, 0.288);
+         }
+         &__img {
+            position: relative;
+            img {
+               width: 75px;
+               height: 75px;
+               border-radius: 5px;
+            }
+            .player__active__circle {
+               position: absolute;
+               width: 20px;
+               height: 20px;
+               background: #52ff00;
+               border-radius: 50px;
+               border: 4px solid $borderColor;
+               right: -6px;
+               bottom: -6px;
+            }
+         }
+         &__descr {
+            margin-left: 20px;
+            h3,
+            h5 {
+               color: #fff;
+               margin: 0;
+            }
+            h3 {
+               font-size: 20px;
+               color: #fff;
+               margin-bottom: 5px;
+            }
+            h5 {
+               font-size: 16px;
+               color: #848484;
+            }
+         }
       }
-      &__img {
-        position: relative;
-        img {
-          width: 75px;
-          height: 75px;
-          border-radius: 5px;
-        }
-        .player__active__circle {
-          position: absolute;
-          width: 20px;
-          height: 20px;
-          background: #52ff00;
-          border-radius: 50px;
-          border: 4px solid $borderColor;
-          right: -6px;
-          bottom: -6px;
-        }
-      }
-      &__descr {
-        margin-left: 20px;
-        h3,
-        h5 {
-          color: #fff;
-          margin: 0;
-        }
-        h3 {
-          font-size: 20px;
-          color: #fff;
-          margin-bottom: 5px;
-        }
-        h5 {
-          font-size: 16px;
-          color: #848484;
-        }
-      }
-    }
-  }
+   }
 }

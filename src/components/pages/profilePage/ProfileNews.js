@@ -1,9 +1,11 @@
 import axios from 'axios';
 import { useState } from 'react';
 
+import { getDateTime, getClearDateTime } from '../../../service/getDate';
+
 import Spinner from 'react-bootstrap/Spinner';
 
-const ProfileNews = ({ getData, copyText, news }) => {
+const ProfileNews = ({ getData, news }) => {
    const user = JSON.parse(localStorage.getItem('user'));
 
    const [textareaValue, setTextareaValue] = useState('');
@@ -11,34 +13,6 @@ const ProfileNews = ({ getData, copyText, news }) => {
    const [addNewsProggres, setAddNewsProggres] = useState(false);
 
    const textarea = document.querySelector('#add-news');
-
-   function plusZero(value) {
-      if (value < 10) {
-         value = '0' + value;
-      }
-      return value;
-   }
-   function getDateTime() {
-      const now = new Date();
-      const day = plusZero(now.getDate());
-      const month = plusZero(now.getMonth() + 1);
-      const year = now.getFullYear();
-      const hours = plusZero(now.getHours());
-      const minutes = plusZero(now.getMinutes());
-
-      return `${hours}:${minutes} ${day}.${month}.${year}`;
-   }
-   function getClearDateTime() {
-      const now = new Date();
-      const day = plusZero(now.getDate());
-      const month = plusZero(now.getMonth() + 1);
-      const year = now.getFullYear();
-      const hours = plusZero(now.getHours());
-      const minutes = plusZero(now.getMinutes());
-      const seconds = plusZero(now.getSeconds());
-
-      return `${year}${month}${day}${hours}${minutes}${seconds}`;
-   }
 
    const addNews = async () => {
       if (textareaValue === '') {
@@ -101,11 +75,7 @@ const ProfileNews = ({ getData, copyText, news }) => {
                   </div>
                   {addNewsProggres === 'loading' ? (
                      <button className="btn btn-blue btn-loading">
-                        <Spinner
-                           animation="border"
-                           variant="primary"
-                           size="sm"
-                        />
+                        <Spinner animation="border" variant="light" size="sm" />
                      </button>
                   ) : addNewsProggres === 'succses' ? (
                      <button className="btn btn-succses succses">

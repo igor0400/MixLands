@@ -19,15 +19,17 @@ const StatsPage = ({ players, loading, error, setActivePlayer, copyText }) => {
    const [term, setTerm] = useState('');
    const [loadingServerActive, setLoadingServerActive] = useState(true);
 
-   const user = JSON.parse(localStorage.getItem('user'));
-
    useEffect(() => {
       axios.get('https://api.mcsrvstat.us/2/prp.plo.su').then((res) => {
          setLoadingServerActive(false);
-         setServerActive(res.data.online);
-         setOnline(res.data.players.online);
-         setMaxOnline(res.data.players.max);
-         setOnlinePlayers(res.data.players.list);
+         if (res.data) {
+            setServerActive(res.data.online);
+            if (res.data.players) {
+               setOnline(res.data.players.online);
+               setMaxOnline(res.data.players.max);
+               setOnlinePlayers(res.data.players.list);
+            }
+         }
       });
    }, []);
 
@@ -92,12 +94,12 @@ const StatsPage = ({ players, loading, error, setActivePlayer, copyText }) => {
                   </p>
                   <p className="info__descr__ip">
                      IP:{' '}
-                     <span style={{ color: '#fff' }}>play.mixlands.fun</span>
+                     <span style={{ color: '#fff' }}>play.mixlands.space</span>
                      <img
                         src={copy}
                         alt="copy"
                         className="ip__copy"
-                        onClick={() => copyText('play.mixlands.fun')}
+                        onClick={() => copyText('play.mixlands.space')}
                      />
                   </p>
                </div>
@@ -135,10 +137,10 @@ const StatsPage = ({ players, loading, error, setActivePlayer, copyText }) => {
                   <h4>Ошибка</h4>
                </div>
             ) : null}
-            <div className="players__cards">
-               {!loading && !error ? (
-                  sortVisibleData && sortVisibleData.length > 0 ? (
-                     sortVisibleData.map((item, i) => (
+            {!loading && !error ? (
+               sortVisibleData && sortVisibleData.length > 0 ? (
+                  <div className="players__cards">
+                     {sortVisibleData.map((item, i) => (
                         <Link
                            to={`/${item.name}`}
                            key={i}
@@ -181,12 +183,12 @@ const StatsPage = ({ players, loading, error, setActivePlayer, copyText }) => {
                               </div>
                            </div>
                         </Link>
-                     ))
-                  ) : (
-                     <h3 className="null-players">Игроков не найдено</h3>
-                  )
-               ) : null}
-            </div>
+                     ))}
+                  </div>
+               ) : (
+                  <h3 className="null-players">Игроков не найдено</h3>
+               )
+            ) : null}
          </div>
       </div>
    );

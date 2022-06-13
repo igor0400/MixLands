@@ -596,7 +596,9 @@ const ProfileBank = ({
                      Покупка карт
                   </h2>
                   {defaultCardsError ? (
-                     <h2 className="default-cards-error">Ошибка сервера</h2>
+                     <h2 className="default-cards-error animate__animated animate__fadeIn duration05">
+                        Ошибка сервера
+                     </h2>
                   ) : null}
                   <div className="cards">
                      {!defaultCardsError
@@ -714,7 +716,9 @@ const ProfileBank = ({
                         )}
                      </div>
                      <div className="profile-page__bank__transfers__form">
-                        <p className="transfers-error">{transferError}</p>
+                        <p className="transfers-error animate__animated animate__fadeIn duration05">
+                           {transferError}
+                        </p>
                         <input
                            placeholder="Сумма перевода..."
                            type="number"

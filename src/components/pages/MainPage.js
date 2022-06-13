@@ -25,16 +25,16 @@ const MainPage = ({ handleShow, copyText }) => {
                  <button
                     className="btn btn-inline-blue main-ip-btn"
                     onClick={() => {
-                       copyText('play.mixlands.fun');
+                       copyText('play.mixlands.space');
                     }}
                  >
                     <span
                        id="main-ip-btn"
                        onClick={() => {
-                          copyText('play.mixlands.fun');
+                          copyText('play.mixlands.space');
                        }}
                     >
-                       play.mixlands.fun
+                       play.mixlands.space
                     </span>
                  </button>
               </div>

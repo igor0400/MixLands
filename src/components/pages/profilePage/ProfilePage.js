@@ -5,6 +5,7 @@ import ProfileNews from './ProfileNews';
 import ProfilePosts from './ProfilePosts';
 import ProfilePlayers from './ProfilePlayers';
 import ProfileBank from './ProfileBank';
+import ProfileFines from './ProfileFines';
 
 const ProfilePage = ({
    getData,
@@ -14,7 +15,6 @@ const ProfilePage = ({
    setHeadColor,
    changeHeadColor,
    setChangeHeadColor,
-   copyText,
    nitro,
    news,
    players,
@@ -48,13 +48,12 @@ const ProfilePage = ({
                   setHeadColor={setHeadColor}
                   changeHeadColor={changeHeadColor}
                   setChangeHeadColor={setChangeHeadColor}
-                  copyText={copyText}
                   nitro={nitro}
                />
             );
          case 'news':
             return (
-               <ProfileNews getData={getData} copyText={copyText} news={news} />
+               <ProfileNews getData={getData} news={news} />
             );
          case 'posts':
             return <ProfilePosts players={players} />;
@@ -86,6 +85,8 @@ const ProfilePage = ({
                   objPlayers={objPlayers}
                />
             );
+         case 'fines':
+            return <ProfileFines />;
       }
    }
 
@@ -128,6 +129,14 @@ const ProfilePage = ({
                   onClick={() => setActiveProfile('bank')}
                >
                   Банк
+               </li>
+               <li
+                  className={
+                     activeProfile === 'fines' ? 'profile-active' : null
+                  }
+                  onClick={() => setActiveProfile('fines')}
+               >
+                  Штрафы
                </li>
             </ul>
          </div>

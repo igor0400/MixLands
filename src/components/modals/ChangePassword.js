@@ -105,6 +105,7 @@ const ChangePassword = ({ show, handleClose, getData }) => {
                      margin: '0 0 5px 0',
                      textAlign: 'center',
                   }}
+                  className="animate__animated animate__fadeIn duration05"
                >
                   {inputsError}
                </span>
