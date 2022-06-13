@@ -3,7 +3,7 @@ $borderColor: #1f1c2f;
    max-width: 1200px;
    margin: 100px auto;
    &__chart {
-      border: 3px solid $borderColor;
+      border: 1px solid $borderColor;
       border-radius: 5px;
       margin: 0 auto;
       position: relative;
@@ -16,59 +16,86 @@ $borderColor: #1f1c2f;
       }
       &__info {
          color: #fff;
-         border-bottom: 3px solid $borderColor;
-         display: flex;
-         align-items: center;
-         padding: 20px 30px;
+         border-bottom: 1px solid $borderColor;
+         display: grid;
+         grid-template-columns: repeat(3, 1fr);
          p {
             color: #a8a8a8;
+            margin: 0;
          }
-         .info__logo {
-            img {
-               width: 65px;
-               height: 65px;
-            }
-         }
-         .info__descr {
-            margin-left: 10px;
-            &__title {
-               position: relative;
-               h3 {
-                  margin: 0;
-                  font-size: 22px;
-                  line-height: 18px;
-                  font-weight: 800;
+         .info__title {
+            padding: 30px;
+            display: flex;
+            border-right: 1px solid $borderColor;
+            &__logo {
+               display: grid;
+               align-items: center;
+               img {
+                  width: 60px;
+                  height: 60px;
                }
             }
-            &__online {
-               line-height: 16px;
-               padding: 5px 0;
+            &__descr {
+               margin: 10px 0 0 10px;
+               h3 {
+                  font-weight: 700;
+                  margin: 0;
+               }
+               &-p {
+                  display: flex;
+                  span {
+                     margin: 0 0 0 20px;
+                  }
+                  .green,
+                  .red,
+                  .blue {
+                     position: relative;
+                     &::before {
+                        content: '';
+                        width: 10px;
+                        height: 10px;
+                        background: #52ff00;
+                        position: absolute;
+                        border-radius: 50px;
+                        top: 7px;
+                        left: -15px;
+                     }
+                  }
+                  .red {
+                     &::before {
+                        background: red;
+                     }
+                  }
+                  .blue {
+                     &::before {
+                        background: #2562ff;
+                     }
+                  }
+               }
             }
+         }
+         .info__stats {
+            border-right: 1px solid $borderColor;
+            &__online {
+               padding: 20px 100px 20px 20px;
+               border-bottom: 1px solid $borderColor;
+            }
+            &__tps {
+               padding: 20px;
+            }
+         }
+         .info__detals {
             &__ip {
-               line-height: 16px;
+               padding: 20px;
+               border-bottom: 1px solid $borderColor;
                .ip__copy {
                   margin-left: 5px;
                   cursor: pointer;
                }
             }
-         }
-
-         .green,
-         .red,
-         .blue {
-            width: 7px;
-            height: 7px;
-            background: #52ff00;
-            position: absolute;
-            border-radius: 50px;
-            top: 8px;
-            right: 60px;
-         }
-         .red {
-            background: red;
-         }
-         .blue {
-            background: #2562ff;
+            &__version {
+               padding: 20px;
+            }
          }
       }
       &__canvas {
@@ -128,7 +155,7 @@ $borderColor: #1f1c2f;
          gap: 20px;
       }
       .null-players {
-         font-weight: 600;
+         font-weight: 500;
          margin: 0;
          text-align: center;
       }

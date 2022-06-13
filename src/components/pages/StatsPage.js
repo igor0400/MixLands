@@ -71,28 +71,44 @@ const StatsPage = ({ players, loading, error, setActivePlayer, copyText }) => {
          <div className="stats-page__chart">
             <img src={bea} alt="bea" className="bea" />
             <div className="stats-page__chart__info">
-               <div className="info__logo">
-                  <img src={logo} alt="logo" />
-               </div>
-               <div className="info__descr">
-                  <div className="info__descr__title">
-                     <h3>MixLands</h3>
-                     {loadingServerActive ? (
-                        <span className="blue"></span>
-                     ) : null}
-                     {!loadingServerActive ? (
-                        serverActive ? (
-                           <div className="green"></div>
-                        ) : (
-                           <div className="red"></div>
-                        )
-                     ) : null}
+               <div className="info__title">
+                  <div className="info__title__logo">
+                     <img src={logo} alt="logo" />
                   </div>
-                  <p className="info__descr__online">
-                     Онлайн: <span style={{ color: '#fff' }}>{online}</span> из{' '}
-                     <span style={{ color: '#fff' }}>{maxOnline}</span>
+                  <div className="info__title__descr">
+                     <h3>MixLands</h3>
+                     <div className="info__title__descr-p">
+                        <p style={{ color: '#A8A8A8' }}>Статус:</p>{' '}
+                        {loadingServerActive ? (
+                           <span className="blue">Загрузка...</span>
+                        ) : (
+                           <>
+                              {serverActive ? (
+                                 <span className="green">Работает</span>
+                              ) : (
+                                 <span className="red">Не работатет</span>
+                              )}
+                           </>
+                        )}
+                     </div>
+                  </div>
+               </div>
+               <div className="info__stats">
+                  <p className="info__stats__online">
+                     Онлайн: <span style={{ color: '#52ff00' }}>{online}</span>{' '}
+                     из <span style={{ color: '#fff' }}>{maxOnline}</span>
                   </p>
-                  <p className="info__descr__ip">
+                  <div className="info__stats__tps">
+                     <p>
+                        TPS:{' '}
+                        <span style={{ color: '#52ff00' }}>
+                           {serverActive ? '20' : '0'}
+                        </span>
+                     </p>
+                  </div>
+               </div>
+               <div className="info__detals">
+                  <p className="info__detals__ip">
                      IP:{' '}
                      <span style={{ color: '#fff' }}>play.mixlands.space</span>
                      <img
@@ -101,6 +117,9 @@ const StatsPage = ({ players, loading, error, setActivePlayer, copyText }) => {
                         className="ip__copy"
                         onClick={() => copyText('play.mixlands.space')}
                      />
+                  </p>
+                  <p className="info__detals__version">
+                     Версия: <span style={{ color: '#fff' }}>1.19</span>
                   </p>
                </div>
             </div>
