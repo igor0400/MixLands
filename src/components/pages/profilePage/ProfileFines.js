@@ -16,15 +16,17 @@ const ProfileFines = ({
    modal,
    getData,
 }) => {
-   const user = JSON.parse(localStorage.getItem('user'));
+   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
    const [fines, setFines] = useState([]);
    const [payFineError, setPayFineError] = useState(false);
    const [activeFine, setActiveFine] = useState(false);
    const [activeFineDelete, setActiveFineDelete] = useState(false);
 
+   // TODO: сделать выдачу штрафов
+
    useEffect(() => {
       // axios.post(
-      //    '${dbLink}/users/Swingor/fines.json',
+      //    `${dbLink}/users/Swingor/fines.json`,
       //    {
       //       descr: 'вход на чужую территорию, развод конфликта',
       //       sum: 64,
@@ -43,6 +45,13 @@ const ProfileFines = ({
       }
 
       setFines(finesData);
+
+      window.addEventListener('storage', (e) => {
+         if (e.key === 'user') {
+            localStorage.setItem('user', e.newValue);
+            setUser(JSON.parse(localStorage.getItem('user')));
+         }
+      });
    }, []);
 
    const payFine = (userCard) => {
@@ -63,7 +72,7 @@ const ProfileFines = ({
          .then(() => {
             set(
                ref(database, `users/${user.name}/cards/${userCard.id}/balance`),
-               userCard.balance - +sum
+               +userCard.balance - +sum
             )
                .then(() => {
                   set(
@@ -95,6 +104,32 @@ const ProfileFines = ({
                            );
                            setActiveFineDelete(false);
                         }, 2200);
+
+                        const activeTransferCards = JSON.parse(
+                           localStorage.getItem('activeTransferAllUsersCard')
+                        );
+                        const normalUser = JSON.parse(JSON.stringify(user));
+
+                        if (activeTransferCards.id === userCard.id) {
+                           localStorage.setItem(
+                              'activeTransferAllUsersCard',
+                              JSON.stringify({ ...userCard, owner: user.name })
+                           );
+                        }
+
+                        normalUser.mcoins = normalUser.mcoins - +sum;
+
+                        for (let key in normalUser.cards) {
+                           if (key === userCard.id) {
+                              normalUser.cards[key].balance =
+                                 +userCard.balance - +sum;
+                           }
+                        }
+
+                        localStorage.setItem(
+                           'user',
+                           JSON.stringify(normalUser)
+                        );
                      })
                      .catch(() => setIsBuy('error'));
                })

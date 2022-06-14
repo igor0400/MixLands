@@ -114,6 +114,7 @@ const ProfileBank = ({
             localStorage.setItem('user', e.newValue);
             setUser(JSON.parse(localStorage.getItem('user')));
             changeActiveCards(true);
+            getUserCards();
          } else if (e.key === 'activeTransferAllUsersCard') {
             changeActiveCards(true);
          }
@@ -202,6 +203,20 @@ const ProfileBank = ({
 
       await setIsBuy('succses');
       await setTimeout(async () => {
+         const copyActiveCards = JSON.parse(
+            localStorage.getItem('activeTransferAllUsersCard')
+         );
+
+         if (copyActiveCards.id === userCard.id) {
+            localStorage.setItem(
+               'activeTransferAllUsersCard',
+               JSON.stringify({
+                  ...copyActiveCards,
+                  balance: +userCard.balance - +value,
+               })
+            );
+         }
+
          await getData();
          await getUserCards();
          setModal(false);

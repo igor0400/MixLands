@@ -52,9 +52,7 @@ const ProfilePage = ({
                />
             );
          case 'news':
-            return (
-               <ProfileNews getData={getData} news={news} />
-            );
+            return <ProfileNews getData={getData} news={news} />;
          case 'posts':
             return <ProfilePosts players={players} />;
          case 'players':
@@ -141,14 +139,14 @@ const ProfilePage = ({
                >
                   Банк
                </li>
-               <li
+               {/* <li
                   className={
                      activeProfile === 'fines' ? 'profile-active' : null
                   }
                   onClick={() => setActiveProfile('fines')}
                >
                   Штрафы
-               </li>
+               </li> */}
             </ul>
          </div>
          <div className="profile-page__main">{returnProfileElem()}</div>
