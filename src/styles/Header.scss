@@ -203,4 +203,26 @@
          color: #fff;
       }
    }
+   .temporary-drawer {
+      display: none;
+   }
+}
+
+@media (max-width: 1000px) {
+   .header {
+      &__wrapper {
+         padding: 20px 0;
+      }
+      &__logo {
+      }
+      &__nav {
+         display: none;
+      }
+      &-btn {
+         display: none;
+      }
+      .temporary-drawer {
+         display: block;
+      }
+   }
 }

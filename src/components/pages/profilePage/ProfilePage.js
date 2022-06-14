@@ -83,19 +83,19 @@ const ProfilePage = ({
                   objPlayers={objPlayers}
                />
             );
-         case 'fines':
-            return (
-               <ProfileFines
-                  defaultCards={defaultCards}
-                  defaultCardsError={defaultCardsError}
-                  specialCards={specialCards}
-                  setModal={setModal}
-                  modal={modal}
-                  handleClose={handleClose}
-                  isBuy={isBuy}
-                  setIsBuy={setIsBuy}
-               />
-            );
+         // case 'fines':
+         //    return (
+         //       <ProfileFines
+         //          defaultCards={defaultCards}
+         //          defaultCardsError={defaultCardsError}
+         //          specialCards={specialCards}
+         //          setModal={setModal}
+         //          modal={modal}
+         //          handleClose={handleClose}
+         //          isBuy={isBuy}
+         //          setIsBuy={setIsBuy}
+         //       />
+         //    );
       }
    }
 
