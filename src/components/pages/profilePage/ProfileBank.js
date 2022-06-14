@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { database, ref, set } from '../../../firebase/firebase';
+import { database, ref, set, dbLink } from '../../../firebase/firebase';
 import axios from 'axios';
+import { getBalance } from '../../../service/getBalance';
 
 import Card from '../../card/Card';
 import CardsInfoPopover from '../../popovers/CardsInfoPopover';
@@ -139,15 +140,6 @@ const ProfileBank = ({
    }
 
    getDefaultCards();
-
-   const getBalance = (item) =>
-      item < 64
-         ? `${item} MK`
-         : item >= 64
-         ? item % 64 === 0
-            ? `${Math.floor(item / 64)} CMK`
-            : `${Math.floor(item / 64)} CMK ${Math.floor(item % 64)} MK`
-         : '0 MK';
 
    const sortCards = (cards) => {
       const filter = (a, b) => {
@@ -420,7 +412,7 @@ const ProfileBank = ({
                   };
 
                   axios.post(
-                     `https://mixlands-3696a-default-rtdb.firebaseio.com/users/${player.name}/notifications/new.json`,
+                     `${dbLink}/users/${player.name}/notifications/new.json`,
                      notificationData
                   );
                })

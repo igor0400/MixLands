@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { getBalance } from '../../../service/getBalance';
 
 import faceDefault from '../../../images/face-default.png';
 
@@ -8,15 +9,6 @@ const ProfilePlayers = ({ players, setActivePlayer }) => {
 
    const namePlayer = (name) =>
       name.length > 11 ? `${name.slice(0, 9)}...` : name;
-
-   const getBalance = (item) =>
-      item < 64
-         ? `${item} MK`
-         : item >= 64
-         ? item % 64 === 0
-            ? `${Math.floor(item / 64)} CMK`
-            : `${Math.floor(item / 64)} CMK ${Math.floor(item % 64)} MK`
-         : '0 MK';
 
    return (
       <div className="profile-page__players animate__animated animate__fadeIn duration05">

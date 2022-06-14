@@ -3,34 +3,65 @@ import CloseButton from 'react-bootstrap/CloseButton';
 import Spinner from 'react-bootstrap/Spinner';
 import { useState } from 'react';
 import { getBalance } from '../../service/getBalance';
+import { useEffect } from 'react';
 
-function BuyCardModal({
+function PayFineModal({
    show,
-   userCards,
-   cardBuyError,
-   setCardBuyError,
    specialCards,
    defaultCards,
-   buyCard,
-   user,
-   buyedCard,
    setModal,
    isBuy,
    setIsBuy,
+   payFine,
    handleClose,
+   payFineError,
+   setPayFineError,
+   setActiveFine,
 }) {
-   const [activeBankCard, setActiveBankCard] = useState(false);
+   const [activeCard, setActiveCard] = useState(false);
+   const [userCards, setUserCards] = useState([]);
+   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+
+   useEffect(() => {
+      const dataUserCards = [];
+
+      if (user.cards) {
+         for (let key in user.cards) {
+            dataUserCards.push(user.cards[key]);
+         }
+
+         setUserCards(dataUserCards);
+      }
+
+      window.addEventListener('storage', (e) => {
+         if (e.key === 'user') {
+            localStorage.setItem('user', e.newValue);
+            setUser(JSON.parse(localStorage.getItem('user')));
+         }
+      });
+   }, []);
 
    return (
       <Modal
-         show={show === 'buyCard' ? true : false}
-         onHide={() => handleClose()}
+         show={show === 'payFine' ? true : false}
+         onHide={() => {
+            handleClose();
+            setPayFineError(false);
+            setActiveFine(false);
+         }}
          className="default__modal"
       >
          <Modal.Header>
             <div></div>
             <Modal.Title>Выберите карту</Modal.Title>
-            <CloseButton variant="white" onClick={() => handleClose()} />
+            <CloseButton
+               variant="white"
+               onClick={() => {
+                  handleClose();
+                  setPayFineError(false);
+                  setActiveFine(false);
+               }}
+            />
          </Modal.Header>
 
          <div className="modal-body">
@@ -58,7 +89,7 @@ function BuyCardModal({
                      return (
                         <div
                            className={
-                              activeBankCard && activeBankCard.id === item.id
+                              activeCard && activeCard.id === item.id
                                  ? 'bank-card bank-card__active'
                                  : 'bank-card'
                            }
@@ -67,8 +98,8 @@ function BuyCardModal({
                               background: `100% center / cover no-repeat url(${cardName.imgUrl})`,
                            }}
                            onClick={() => {
-                              setActiveBankCard(item);
-                              setCardBuyError(false);
+                              setActiveCard(item);
+                              setPayFineError(false);
                            }}
                         >
                            <div className="bank-card__top">
@@ -110,7 +141,7 @@ function BuyCardModal({
 
          <Modal.Footer>
             <p className="card-buy-error animate__animated animate__fadeIn duration05">
-               {cardBuyError}
+               {payFineError}
             </p>
             {isBuy === 'loading' ? (
                <button className="btn btn-blue">
@@ -143,15 +174,10 @@ function BuyCardModal({
                <button
                   className="btn btn-blue"
                   onClick={() => {
-                     if (activeBankCard) {
-                        buyCard(
-                           user,
-                           buyedCard.price,
-                           buyedCard.name,
-                           activeBankCard
-                        );
-                     } else if (!activeBankCard) {
-                        setCardBuyError('Вы не выбрали карту!');
+                     if (activeCard) {
+                        payFine(activeCard);
+                     } else {
+                        setPayFineError('Выберите катру');
                      }
                   }}
                >
@@ -163,4 +189,4 @@ function BuyCardModal({
    );
 }
 
-export default BuyCardModal;
+export default PayFineModal;

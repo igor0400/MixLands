@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { database, ref, child, get } from '../../firebase/firebase';
 
 import { ToastContainer, toast } from 'react-toastify';
+import { getBalance } from '../../service/getBalance';
 
 import Header from '../header/Header';
 import MainPage from '../pages/MainPage';
@@ -633,15 +634,6 @@ function App() {
          </>
       );
    };
-
-   const getBalance = (item) =>
-      item < 64
-         ? `${item} MK`
-         : item >= 64
-         ? item % 64 === 0
-            ? `${Math.floor(item / 64)} CMK`
-            : `${Math.floor(item / 64)} CMK ${Math.floor(item % 64)} MK`
-         : '0 MK';
 
    const notify = (notification) =>
       toast(

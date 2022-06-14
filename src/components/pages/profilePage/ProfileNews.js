@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 
 import { getDateTime, getClearDateTime } from '../../../service/getDate';
+import { dbLink } from '../../../firebase/firebase';
 
 import Spinner from 'react-bootstrap/Spinner';
 
@@ -25,7 +26,7 @@ const ProfileNews = ({ getData, news }) => {
       setAddNewsProggres('loading');
 
       await axios
-         .post(`https://mixlands-3696a-default-rtdb.firebaseio.com/news.json`, {
+         .post(`${dbLink}/news.json`, {
             text: textareaValue,
             date: getDateTime(),
             clearDate: getClearDateTime(),

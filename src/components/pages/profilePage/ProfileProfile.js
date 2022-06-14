@@ -1,10 +1,11 @@
-import { useState } from 'react';
-import { database, ref, set } from '../../../firebase/firebase';
+import { useState, useEffect } from 'react';
+import { database, ref, set, dbLink } from '../../../firebase/firebase';
 import axios from 'axios';
 
 import Spinner from 'react-bootstrap/Spinner';
 import Form from 'react-bootstrap/Form';
 import { getDateTime, getClearDateTime } from '../../../service/getDate';
+import { getBalance } from '../../../service/getBalance';
 
 import headDefault from '../../../images/head-default.png';
 
@@ -18,7 +19,7 @@ const ProfileProfile = ({
    setChangeHeadColor,
    nitro,
 }) => {
-   const user = JSON.parse(localStorage.getItem('user'));
+   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
 
    const [statsValue, setStatusValue] = useState(user.status);
    const [textareaValue, setTextareaValue] = useState('');
@@ -28,6 +29,15 @@ const ProfileProfile = ({
    const textarea = document.querySelector('#add-new-post');
 
    const posts = [];
+
+   useEffect(() => {
+      window.addEventListener('storage', (e) => {
+         if (e.key === 'user') {
+            localStorage.setItem('user', e.newValue);
+            setUser(JSON.parse(localStorage.getItem('user')));
+         }
+      });
+   }, []);
 
    if (user.posts) {
       for (let post in user.posts) {
@@ -58,14 +68,18 @@ const ProfileProfile = ({
       } else {
          setChangeStatus('loading');
 
-         await set(
-            ref(database, `/users/${user.name}/status`),
-            statsValue
-         ).catch(() => {
-            setChangeStatus('error');
-            setTimeout(() => setChangeStatus(false), 2000);
-         });
-         await getData();
+         await set(ref(database, `/users/${user.name}/status`), statsValue)
+            .then(() => {
+               setUser((state) => ({ ...state, status: statsValue }));
+               localStorage.setItem(
+                  'user',
+                  JSON.stringify({ ...user, status: statsValue })
+               );
+            })
+            .catch(() => {
+               setChangeStatus('error');
+               setTimeout(() => setChangeStatus(false), 2000);
+            });
          setChangeStatus(false);
       }
    };
@@ -98,14 +112,11 @@ const ProfileProfile = ({
       setAddNewPostProggres('loading');
 
       await axios
-         .post(
-            `https://mixlands-3696a-default-rtdb.firebaseio.com/users/${user.name}/posts.json`,
-            {
-               text: textareaValue,
-               date: getDateTime(),
-               clearDate: getClearDateTime(),
-            }
-         )
+         .post(`${dbLink}/users/${user.name}/posts.json`, {
+            text: textareaValue,
+            date: getDateTime(),
+            clearDate: getClearDateTime(),
+         })
          .then(async () => {
             setAddNewPostProggres('succses');
             await getData();
@@ -117,15 +128,6 @@ const ProfileProfile = ({
             setAddNewPostProggres('error');
          });
    };
-
-   const getBalance = (item) =>
-      item < 64
-         ? `${item} MK`
-         : item >= 64
-         ? item % 64 === 0
-            ? `${Math.floor(item / 64)} CMK`
-            : `${Math.floor(item / 64)} CMK ${Math.floor(item % 64)} MK`
-         : '0 MK';
 
    return (
       <div className="profile-page__profile animate__animated animate__fadeIn duration05">

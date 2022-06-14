@@ -22,7 +22,7 @@ const ProfilePage = ({
    specialCards,
    setModal,
    modal,
-   handleBuyCardClose,
+   handleClose,
    cardBuyError,
    setCardBuyError,
    isBuy,
@@ -71,7 +71,7 @@ const ProfilePage = ({
                   specialCards={specialCards}
                   setModal={setModal}
                   modal={modal}
-                  handleClose={handleBuyCardClose}
+                  handleClose={handleClose}
                   cardBuyError={cardBuyError}
                   setCardBuyError={setCardBuyError}
                   isBuy={isBuy}
@@ -86,7 +86,18 @@ const ProfilePage = ({
                />
             );
          case 'fines':
-            return <ProfileFines />;
+            return (
+               <ProfileFines
+                  defaultCards={defaultCards}
+                  defaultCardsError={defaultCardsError}
+                  specialCards={specialCards}
+                  setModal={setModal}
+                  modal={modal}
+                  handleClose={handleClose}
+                  isBuy={isBuy}
+                  setIsBuy={setIsBuy}
+               />
+            );
       }
    }
 
