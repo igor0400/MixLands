@@ -1,5 +1,5 @@
 import { NavLink, Link } from 'react-router-dom';
-import logo from '../../images/icons/logo.png';
+import logo from '../../images/icons/header-logo.svg';
 import { useState } from 'react';
 
 import Box from '@mui/material/Box';

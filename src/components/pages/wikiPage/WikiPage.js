@@ -105,13 +105,14 @@ function LabelBottomNavigation({ setActiveWiki }) {
          onChange={handleChange}
          style={{ background: 'rgb(33, 30, 41)', height: '70px' }}
       >
-         {buttons.map((item) => (
+         {buttons.map((item, i) => (
             <BottomNavigationAction
                label={item.label}
                value={item.value}
                icon={item.icon}
                onClick={() => setActiveWiki(item.value)}
                style={{ minWidth: '64px' }}
+               key={i}
             />
          ))}
       </BottomNavigation>
