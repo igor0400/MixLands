@@ -275,6 +275,9 @@ $borderColor: #1f1c2f;
             }
          }
       }
+      .players__cards {
+         justify-content: center;
+      }
    }
 }
 @media (max-width: 375px) {
