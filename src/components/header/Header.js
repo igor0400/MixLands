@@ -9,6 +9,7 @@ import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
+import DehazeIcon from '@mui/icons-material/Dehaze';
 
 const Header = ({
    modal,
@@ -22,7 +23,7 @@ const Header = ({
    const user = JSON.parse(localStorage.getItem('user'));
 
    return (
-      <header className="header" style={{ paddingRight: modal ? '10px' : 0 }}>
+      <header className={modal ? 'header header-padding' : 'header'}>
          <div className="header__wrapper mw1400">
             <div className="header__logo">
                <NavLink to="/">
@@ -154,13 +155,18 @@ const Header = ({
                   </button>
                )}
             </div>
-            <TemporaryDrawer />
+            <TemporaryDrawer
+               setModal={setModal}
+               handleHeaderClose={handleHeaderClose}
+            />
          </div>
       </header>
    );
 };
 
-function TemporaryDrawer() {
+function TemporaryDrawer({ setModal, handleHeaderClose }) {
+   const user = JSON.parse(localStorage.getItem('user'));
+
    const [state, setState] = useState({
       top: false,
       left: false,
@@ -185,25 +191,116 @@ function TemporaryDrawer() {
          role="presentation"
          onClick={toggleDrawer(anchor, false)}
          onKeyDown={toggleDrawer(anchor, false)}
+         className="temporary-drawer__body"
+         style={{
+            background: '#211e29',
+            height: '100%',
+            color: 'rgb(169 169 169)',
+         }}
       >
          <List>
-            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text) => (
-               <ListItem key={text} disablePadding>
-                  <ListItemButton>
-                     <p>{text}</p>
-                  </ListItemButton>
-               </ListItem>
+            {[
+               { text: 'Главная', link: '' },
+               { text: 'Статистика', link: 'stats' },
+               { text: 'Вики', link: 'wiki' },
+               { text: 'Магазин', link: 'shop' },
+            ].map((item, i) => (
+               <NavLink
+                  to={`/${item.link}`}
+                  style={({ isActive }) => ({
+                     color: isActive ? '#fff' : 'rgb(169 169 169)',
+                     background: isActive ? 'rgba(255, 255, 255, 0.1)' : 'none',
+                  })}
+                  key={i}
+               >
+                  <ListItem disablePadding>
+                     <ListItemButton>
+                        <p>{item.text}</p>
+                     </ListItemButton>
+                  </ListItem>
+               </NavLink>
             ))}
          </List>
          <Divider />
          <List>
-            {['All mail', 'Trash', 'Spam'].map((text) => (
-               <ListItem key={text} disablePadding>
+            {user ? (
+               <>
+                  <NavLink
+                     to="/profile"
+                     style={({ isActive }) => ({
+                        color: isActive ? '#fff' : 'rgb(169 169 169)',
+                     })}
+                  >
+                     <ListItem
+                        disablePadding
+                        className="go-profile"
+                        onClick={handleHeaderClose}
+                     >
+                        <ListItemButton>
+                           <p>Перейти в профиль</p>
+                        </ListItemButton>
+                     </ListItem>
+                  </NavLink>
+                  <NavLink
+                     to="/notifications"
+                     style={({ isActive }) => ({
+                        color: isActive ? '#fff' : 'rgb(169 169 169)',
+                     })}
+                  >
+                     <ListItem
+                        disablePadding
+                        className="notifications"
+                        onClick={handleHeaderClose}
+                     >
+                        <ListItemButton>
+                           <p>
+                              Уведомления
+                              {user.notifications && user.notifications.new ? (
+                                 <span className="notifications__circle">
+                                    {Object.keys(user.notifications.new).length}
+                                 </span>
+                              ) : null}
+                           </p>
+                        </ListItemButton>
+                     </ListItem>
+                  </NavLink>
+                  <ListItem
+                     disablePadding
+                     className="chps"
+                     onClick={() => {
+                        handleHeaderClose();
+                        setModal('changePassword');
+                     }}
+                     style={{ color: 'rgb(169 169 169)' }}
+                  >
+                     <ListItemButton>
+                        <p>Сменить пароль</p>
+                     </ListItemButton>
+                  </ListItem>
+
+                  <Link to="/">
+                     <ListItem
+                        disablePadding
+                        className="out"
+                        onClick={() => {
+                           localStorage.removeItem('user');
+                           handleHeaderClose();
+                        }}
+                        style={{ color: 'rgb(169 169 169)' }}
+                     >
+                        <ListItemButton>
+                           <p>Выйти</p>
+                        </ListItemButton>
+                     </ListItem>
+                  </Link>
+               </>
+            ) : (
+               <ListItem disablePadding onClick={() => setModal('login')}>
                   <ListItemButton>
-                     <p>{text}</p>
+                     <p>Авторизация</p>
                   </ListItemButton>
                </ListItem>
-            ))}
+            )}
          </List>
       </Box>
    );
@@ -213,8 +310,10 @@ function TemporaryDrawer() {
       /iPad|iPhone|iPod/.test(navigator.userAgent);
 
    return (
-      <div className="temporary-drawer">
-         <Button onClick={toggleDrawer('right', true)}>right</Button>
+      <div className="temporary-drawer" style={{ margin: 'auto 0' }}>
+         <Button onClick={toggleDrawer('right', true)} style={{ padding: 0 }}>
+            <DehazeIcon style={{ fill: '#fff' }} sx={{ fontSize: 35 }} />
+         </Button>
          <SwipeableDrawer
             style={{ zIndex: 10000000 }}
             disableBackdropTransition={!iOS}
@@ -222,6 +321,7 @@ function TemporaryDrawer() {
             anchor={'right'}
             open={state['right']}
             onClose={toggleDrawer('right', false)}
+            onOpen={toggleDrawer('right', true)}
          >
             {list('right')}
          </SwipeableDrawer>

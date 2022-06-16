@@ -19,6 +19,9 @@ $borderColor: #1f1c2f;
          border-bottom: 1px solid $borderColor;
          display: grid;
          grid-template-columns: repeat(3, 1fr);
+         &__media {
+            display: none;
+         }
          p {
             color: #a8a8a8;
             margin: 0;
@@ -89,7 +92,7 @@ $borderColor: #1f1c2f;
                padding: 20px;
                border-bottom: 1px solid $borderColor;
                .ip__copy {
-                  margin-left: 5px;
+                  margin-left: 4px;
                   cursor: pointer;
                }
             }
@@ -204,6 +207,91 @@ $borderColor: #1f1c2f;
             h5 {
                font-size: 16px;
                color: #848484;
+            }
+         }
+      }
+   }
+}
+
+@media (max-width: 1410px) {
+   .stats-page {
+      margin: 100px;
+   }
+}
+@media (max-width: 1150px) {
+   .stats-page {
+      &__chart {
+         .bea {
+            display: none;
+         }
+      }
+   }
+}
+@media (max-width: 1004px) {
+   .stats-page {
+      margin: 50px;
+      &__chart {
+         &__info {
+            display: none;
+            &__media {
+               display: block;
+               color: #fff;
+               border-bottom: 1px solid $borderColor;
+               padding: 15px;
+               .info {
+                  &__title {
+                     h3 {
+                        margin: 0;
+                        font-weight: 800;
+                     }
+                  }
+                  &__stats,
+                  &__ip {
+                     color: #a8a8a8;
+                     .ip__copy {
+                        margin-left: 4px;
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+}
+
+@media (max-width: 600px) {
+   .stats-page {
+      margin: 20px;
+   }
+}
+@media (max-width: 425px) {
+   .stats-page {
+      margin: 0;
+      padding: 20px 10px;
+      &__chart {
+         &__info {
+            &__media {
+               padding: 10px;
+            }
+         }
+      }
+   }
+}
+@media (max-width: 375px) {
+   .stats-page {
+      .players__serch {
+         &__buttons {
+            button {
+               padding: 7px 25px;
+               font-size: 14px;
+            }
+         }
+      }
+      .player__card {
+         &__img {
+            img {
+               width: 60px;
+               height: 60px;
             }
          }
       }

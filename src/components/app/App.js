@@ -654,7 +654,7 @@ function App() {
                handleHeaderShow={handleHeaderShow}
                handleHeaderClose={handleHeaderClose}
             />
-            {/* <main className="main">
+            <main className="main">
                <Routes>
                   <Route
                      path="/"
@@ -742,7 +742,7 @@ function App() {
                   <div
                      className={`copy-alert animate__animated ${copyAlertClass}`}
                   >
-                     Скопировано
+                     <p>Скопировано</p> 
                   </div>
                ) : null}
                <Link to="/notifications">
@@ -759,7 +759,7 @@ function App() {
                   />
                </Link>
             </main>
-            <Footer /> */}
+            <Footer />
          </div>
       </Router>
    );

@@ -123,6 +123,37 @@ const StatsPage = ({ players, loading, error, setActivePlayer, copyText }) => {
                   </p>
                </div>
             </div>
+            <div className="stats-page__chart__info__media">
+               <div className="info__title">
+                  <h3>
+                     MixLands{' '}
+                     {loadingServerActive ? (
+                        <span className="blue"></span>
+                     ) : (
+                        <>
+                           {serverActive ? (
+                              <span className="green"></span>
+                           ) : (
+                              <span className="red"></span>
+                           )}
+                        </>
+                     )}
+                  </h3>
+               </div>
+               <div className="info__stats">
+                  Онлайн: <span style={{ color: '#52ff00' }}>{online}</span> из{' '}
+                  <span style={{ color: '#fff' }}>{maxOnline}</span>
+               </div>
+               <p className="info__ip">
+                  IP: <span style={{ color: '#fff' }}>play.mixlands.space</span>
+                  <img
+                     src={copy}
+                     alt="copy"
+                     className="ip__copy"
+                     onClick={() => copyText('play.mixlands.space')}
+                  />
+               </p>
+            </div>
             <div style={{ width: '100.2%' }}>
                <LineChart />
             </div>

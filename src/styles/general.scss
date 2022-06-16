@@ -1,6 +1,6 @@
 :root {
    --toastify-color-light: #fff;
-   --toastify-color-dark: #2B2736;
+   --toastify-color-dark: #2b2736;
    --toastify-color-progress-dark: #bb86fc;
 }
 
@@ -56,12 +56,18 @@ a {
 .copy-alert {
    position: fixed;
    bottom: 30px;
-   right: 47%;
-   color: #fff;
-   background: rgba(46, 46, 46, 0.8);
-   padding: 10px;
-   border-radius: 10px;
    animation-duration: 0.5s;
+   right: 0;
+   left: 0;
+   margin: 0 auto;
+   text-align: center;
+   width: fit-content;
+   p {
+      background: rgba(46, 46, 46, 0.8);
+      padding: 10px;
+      border-radius: 10px;
+      color: #fff;
+   }
 }
 
 .mw1400 {
@@ -160,11 +166,6 @@ a {
    margin: 0;
 }
 
-@media (max-width: 1440px) {
-   .mw1400 {
-      margin: 0 20px;
-   }
-}
 .default__modal {
    z-index: 10000;
    .modal {
@@ -263,5 +264,32 @@ a {
       font-size: 20px;
       line-height: 27px;
       color: #cdc0ff;
+   }
+}
+
+@media (max-width: 1440px) {
+   .mw1400 {
+      margin: 0 20px;
+   }
+}
+
+@media (max-width: 425px) {
+   .mw1400 {
+      margin: 0;
+   }
+   .main {
+      padding-top: 76px;
+   }
+   .btn {
+      padding: 12px 40px;
+      border-radius: 10px;
+      font-size: 18px;
+   }
+   .titleh2 {
+      font-size: 30px;
+   }
+
+   .titleh3 {
+      font-size: 20px;
    }
 }

@@ -9,7 +9,7 @@ const MainPage = ({ handleShow, copyText }) => {
         <section className="main-page__main">
            <div className="main__descr animate__animated animate__fadeInLeft">
               <div className="title">
-                 <h1>Уникальный Minecraft Сервер</h1>
+                 <h1>Уникальный <br /> Minecraft <br /> Сервер</h1>
               </div>
               <div className="text">
                  <p className="grey-p">
