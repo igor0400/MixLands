@@ -70,16 +70,23 @@
    .shop-page {
       margin: 50px 10px;
       &__cards {
-         grid-template-columns: repeat(auto-fill, 320px);
          margin: 50px 0;
-      }
-      &__card {
-         padding: 20px;
       }
       &__afert {
          p {
             margin-bottom: 15px;
          }
+      }
+   }
+}
+
+@media (max-width: 399px) {
+   .shop-page {
+      &__cards {
+         grid-template-columns: repeat(auto-fill, 320px);
+      }
+      &__card {
+         padding: 20px;
       }
    }
 }
