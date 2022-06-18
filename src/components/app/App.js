@@ -18,6 +18,8 @@ import Footer from '../footer/Footer';
 import Page404 from '../pages/Page404';
 import Modals from '../modals/Modals';
 
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 import '../../styles/App.scss';
 
 function App() {
@@ -40,6 +42,8 @@ function App() {
    const [popoverIsBuy, setPopoverIsBuy] = useState(false);
 
    const [cardId, setCardId] = useState(false);
+
+   const isMedia = useMediaQuery('(max-width: 425px)');
 
    const nitro =
       (user && user.nitro) ||
@@ -643,6 +647,119 @@ function App() {
          }`
       );
 
+   const renderMain = () => {
+      return (
+         <>
+            <main className="main">
+               <Routes>
+                  <Route
+                     path="/"
+                     element={
+                        <MainPage
+                           handleShow={handleShowBuy}
+                           copyText={copyText}
+                        />
+                     }
+                  />
+                  <Route
+                     path="stats"
+                     element={
+                        <StatsPage
+                           players={players}
+                           loading={playersLoading}
+                           error={playersError}
+                           setActivePlayer={setActivePlayer}
+                           copyText={copyText}
+                        />
+                     }
+                  />
+                  <Route path="wiki" element={<WikiPage />} />
+                  <Route
+                     path="shop"
+                     element={<ShopPage handleShow={handleShowBuy} />}
+                  />
+                  {localStorage.getItem('user') ? (
+                     <>
+                        <Route
+                           path="profile"
+                           element={
+                              playersError || defaultCardsError ? (
+                                 <Page404 />
+                              ) : (
+                                 <ProfilePage
+                                    getData={getData}
+                                    changeStatus={changeStatus}
+                                    setChangeStatus={setChangeStatus}
+                                    headColor={headColor}
+                                    setHeadColor={setHeadColor}
+                                    changeHeadColor={changeHeadColor}
+                                    setChangeHeadColor={setChangeHeadColor}
+                                    copyText={copyText}
+                                    nitro={nitro}
+                                    news={news}
+                                    defaultCards={defaultCards}
+                                    specialCards={specialCards}
+                                    setModal={setModal}
+                                    modal={modal}
+                                    handleClose={handleBuyCardClose}
+                                    cardBuyError={cardBuyError}
+                                    setCardBuyError={setCardBuyError}
+                                    isBuy={isBuy}
+                                    setIsBuy={setIsBuy}
+                                    popoverIsBuy={popoverIsBuy}
+                                    setPopoverIsBuy={setPopoverIsBuy}
+                                    cardId={cardId}
+                                    defaultCardsError={defaultCardsError}
+                                    players={players}
+                                    objPlayers={objPlayers}
+                                    setActivePlayer={setActivePlayer}
+                                 />
+                              )
+                           }
+                        />
+                        <Route
+                           path="notifications"
+                           element={<NotificationsPage />}
+                        />
+                     </>
+                  ) : null}
+
+                  {getUserPage()}
+
+                  <Route path="*" element={<Page404 />} />
+               </Routes>
+               <Modals
+                  show={modal}
+                  handleClose={handleClose}
+                  players={players}
+                  getData={getData}
+               />
+               {copyAlertActive ? (
+                  <div
+                     className={`copy-alert animate__animated ${copyAlertClass}`}
+                  >
+                     <p>Скопировано</p>
+                  </div>
+               ) : null}
+               <Link to="/notifications">
+                  <ToastContainer
+                     position="bottom-right"
+                     autoClose={5000}
+                     newestOnTop={false}
+                     closeOnClick
+                     rtl={false}
+                     pauseOnFocusLoss
+                     draggable
+                     pauseOnHover
+                     theme="dark"
+                  />
+               </Link>
+            </main>
+            <Footer />
+         </>
+      );
+   };
+
    return (
       <Router>
          <div className="App" onClick={(e) => onClickSomething(e)}>
@@ -655,114 +772,12 @@ function App() {
                handleHeaderShow={handleHeaderShow}
                handleHeaderClose={handleHeaderClose}
             />
-            <SimpleBar className="side-bar">
-               <main className="main">
-                  <Routes>
-                     <Route
-                        path="/"
-                        element={
-                           <MainPage
-                              handleShow={handleShowBuy}
-                              copyText={copyText}
-                           />
-                        }
-                     />
-                     <Route
-                        path="stats"
-                        element={
-                           <StatsPage
-                              players={players}
-                              loading={playersLoading}
-                              error={playersError}
-                              setActivePlayer={setActivePlayer}
-                              copyText={copyText}
-                           />
-                        }
-                     />
-                     <Route path="wiki" element={<WikiPage />} />
-                     <Route
-                        path="shop"
-                        element={<ShopPage handleShow={handleShowBuy} />}
-                     />
-                     {localStorage.getItem('user') ? (
-                        <>
-                           <Route
-                              path="profile"
-                              element={
-                                 playersError || defaultCardsError ? (
-                                    <Page404 />
-                                 ) : (
-                                    <ProfilePage
-                                       getData={getData}
-                                       changeStatus={changeStatus}
-                                       setChangeStatus={setChangeStatus}
-                                       headColor={headColor}
-                                       setHeadColor={setHeadColor}
-                                       changeHeadColor={changeHeadColor}
-                                       setChangeHeadColor={setChangeHeadColor}
-                                       copyText={copyText}
-                                       nitro={nitro}
-                                       news={news}
-                                       defaultCards={defaultCards}
-                                       specialCards={specialCards}
-                                       setModal={setModal}
-                                       modal={modal}
-                                       handleClose={handleBuyCardClose}
-                                       cardBuyError={cardBuyError}
-                                       setCardBuyError={setCardBuyError}
-                                       isBuy={isBuy}
-                                       setIsBuy={setIsBuy}
-                                       popoverIsBuy={popoverIsBuy}
-                                       setPopoverIsBuy={setPopoverIsBuy}
-                                       cardId={cardId}
-                                       defaultCardsError={defaultCardsError}
-                                       players={players}
-                                       objPlayers={objPlayers}
-                                       setActivePlayer={setActivePlayer}
-                                    />
-                                 )
-                              }
-                           />
-                           <Route
-                              path="notifications"
-                              element={<NotificationsPage />}
-                           />
-                        </>
-                     ) : null}
 
-                     {getUserPage()}
-
-                     <Route path="*" element={<Page404 />} />
-                  </Routes>
-                  <Modals
-                     show={modal}
-                     handleClose={handleClose}
-                     players={players}
-                     getData={getData}
-                  />
-                  {copyAlertActive ? (
-                     <div
-                        className={`copy-alert animate__animated ${copyAlertClass}`}
-                     >
-                        <p>Скопировано</p>
-                     </div>
-                  ) : null}
-                  <Link to="/notifications">
-                     <ToastContainer
-                        position="bottom-right"
-                        autoClose={5000}
-                        newestOnTop={false}
-                        closeOnClick
-                        rtl={false}
-                        pauseOnFocusLoss
-                        draggable
-                        pauseOnHover
-                        theme="dark"
-                     />
-                  </Link>
-               </main>
-               <Footer />
-            </SimpleBar>
+            {isMedia ? (
+               renderMain()
+            ) : (
+               <SimpleBar className="side-bar">{renderMain()}</SimpleBar>
+            )}
          </div>
       </Router>
    );
