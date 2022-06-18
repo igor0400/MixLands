@@ -23,7 +23,7 @@ const Header = ({
    const user = JSON.parse(localStorage.getItem('user'));
 
    return (
-      <header className={modal ? 'header header-padding' : 'header'}>
+      <header className="header">
          <div className="header__wrapper mw1400">
             <div className="header__logo">
                <NavLink to="/">

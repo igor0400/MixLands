@@ -1,6 +1,7 @@
 import { HashRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { database, ref, child, get } from '../../firebase/firebase';
+import SimpleBar from 'simplebar-react';
 
 import { ToastContainer, toast } from 'react-toastify';
 import { getBalance } from '../../service/getBalance';
@@ -654,112 +655,114 @@ function App() {
                handleHeaderShow={handleHeaderShow}
                handleHeaderClose={handleHeaderClose}
             />
-            <main className="main">
-               <Routes>
-                  <Route
-                     path="/"
-                     element={
-                        <MainPage
-                           handleShow={handleShowBuy}
-                           copyText={copyText}
-                        />
-                     }
+            <SimpleBar className="side-bar">
+               <main className="main">
+                  <Routes>
+                     <Route
+                        path="/"
+                        element={
+                           <MainPage
+                              handleShow={handleShowBuy}
+                              copyText={copyText}
+                           />
+                        }
+                     />
+                     <Route
+                        path="stats"
+                        element={
+                           <StatsPage
+                              players={players}
+                              loading={playersLoading}
+                              error={playersError}
+                              setActivePlayer={setActivePlayer}
+                              copyText={copyText}
+                           />
+                        }
+                     />
+                     <Route path="wiki" element={<WikiPage />} />
+                     <Route
+                        path="shop"
+                        element={<ShopPage handleShow={handleShowBuy} />}
+                     />
+                     {localStorage.getItem('user') ? (
+                        <>
+                           <Route
+                              path="profile"
+                              element={
+                                 playersError || defaultCardsError ? (
+                                    <Page404 />
+                                 ) : (
+                                    <ProfilePage
+                                       getData={getData}
+                                       changeStatus={changeStatus}
+                                       setChangeStatus={setChangeStatus}
+                                       headColor={headColor}
+                                       setHeadColor={setHeadColor}
+                                       changeHeadColor={changeHeadColor}
+                                       setChangeHeadColor={setChangeHeadColor}
+                                       copyText={copyText}
+                                       nitro={nitro}
+                                       news={news}
+                                       defaultCards={defaultCards}
+                                       specialCards={specialCards}
+                                       setModal={setModal}
+                                       modal={modal}
+                                       handleClose={handleBuyCardClose}
+                                       cardBuyError={cardBuyError}
+                                       setCardBuyError={setCardBuyError}
+                                       isBuy={isBuy}
+                                       setIsBuy={setIsBuy}
+                                       popoverIsBuy={popoverIsBuy}
+                                       setPopoverIsBuy={setPopoverIsBuy}
+                                       cardId={cardId}
+                                       defaultCardsError={defaultCardsError}
+                                       players={players}
+                                       objPlayers={objPlayers}
+                                       setActivePlayer={setActivePlayer}
+                                    />
+                                 )
+                              }
+                           />
+                           <Route
+                              path="notifications"
+                              element={<NotificationsPage />}
+                           />
+                        </>
+                     ) : null}
+
+                     {getUserPage()}
+
+                     <Route path="*" element={<Page404 />} />
+                  </Routes>
+                  <Modals
+                     show={modal}
+                     handleClose={handleClose}
+                     players={players}
+                     getData={getData}
                   />
-                  <Route
-                     path="stats"
-                     element={
-                        <StatsPage
-                           players={players}
-                           loading={playersLoading}
-                           error={playersError}
-                           setActivePlayer={setActivePlayer}
-                           copyText={copyText}
-                        />
-                     }
-                  />
-                  <Route path="wiki" element={<WikiPage />} />
-                  <Route
-                     path="shop"
-                     element={<ShopPage handleShow={handleShowBuy} />}
-                  />
-                  {localStorage.getItem('user') ? (
-                     <>
-                        <Route
-                           path="profile"
-                           element={
-                              playersError || defaultCardsError ? (
-                                 <Page404 />
-                              ) : (
-                                 <ProfilePage
-                                    getData={getData}
-                                    changeStatus={changeStatus}
-                                    setChangeStatus={setChangeStatus}
-                                    headColor={headColor}
-                                    setHeadColor={setHeadColor}
-                                    changeHeadColor={changeHeadColor}
-                                    setChangeHeadColor={setChangeHeadColor}
-                                    copyText={copyText}
-                                    nitro={nitro}
-                                    news={news}
-                                    defaultCards={defaultCards}
-                                    specialCards={specialCards}
-                                    setModal={setModal}
-                                    modal={modal}
-                                    handleClose={handleBuyCardClose}
-                                    cardBuyError={cardBuyError}
-                                    setCardBuyError={setCardBuyError}
-                                    isBuy={isBuy}
-                                    setIsBuy={setIsBuy}
-                                    popoverIsBuy={popoverIsBuy}
-                                    setPopoverIsBuy={setPopoverIsBuy}
-                                    cardId={cardId}
-                                    defaultCardsError={defaultCardsError}
-                                    players={players}
-                                    objPlayers={objPlayers}
-                                    setActivePlayer={setActivePlayer}
-                                 />
-                              )
-                           }
-                        />
-                        <Route
-                           path="notifications"
-                           element={<NotificationsPage />}
-                        />
-                     </>
+                  {copyAlertActive ? (
+                     <div
+                        className={`copy-alert animate__animated ${copyAlertClass}`}
+                     >
+                        <p>Скопировано</p>
+                     </div>
                   ) : null}
-
-                  {getUserPage()}
-
-                  <Route path="*" element={<Page404 />} />
-               </Routes>
-               <Modals
-                  show={modal}
-                  handleClose={handleClose}
-                  players={players}
-                  getData={getData}
-               />
-               {copyAlertActive ? (
-                  <div
-                     className={`copy-alert animate__animated ${copyAlertClass}`}
-                  >
-                     <p>Скопировано</p> 
-                  </div>
-               ) : null}
-               <Link to="/notifications">
-                  <ToastContainer
-                     position="bottom-right"
-                     autoClose={5000}
-                     newestOnTop={false}
-                     closeOnClick
-                     rtl={false}
-                     pauseOnFocusLoss
-                     draggable
-                     pauseOnHover
-                     theme="dark"
-                  />
-               </Link>
-            </main>
-            <Footer />
+                  <Link to="/notifications">
+                     <ToastContainer
+                        position="bottom-right"
+                        autoClose={5000}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                        theme="dark"
+                     />
+                  </Link>
+               </main>
+               <Footer />
+            </SimpleBar>
          </div>
       </Router>
    );
