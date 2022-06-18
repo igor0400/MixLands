@@ -121,7 +121,7 @@ const ChangePassword = ({ show, handleClose, getData }) => {
                   </div>
                </button>
             ) : (
-               <button className="btn btn-blue" onClick={postPass}>
+               <button className="btn btn-blue change-pass" onClick={postPass}>
                   Сменить пароль
                </button>
             )}

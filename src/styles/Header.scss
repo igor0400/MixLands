@@ -238,11 +238,54 @@
       }
    }
 }
-@media (max-width: 425px) {
+@media (max-width: 426px) {
    .header {
       &__logo {
          img {
             width: 90%;
+         }
+      }
+      &-modal {
+         .modal {
+            &-content {
+               margin-top: 70px;
+               padding: 20px;
+               border-radius: 15px;
+            }
+            &-body {
+               padding: 0 20px 15px;
+               input {
+                  margin: 7px 2px;
+                  &:focus {
+                     margin: 5px 0;
+                  }
+               }
+            }
+            &-footer {
+               padding: 10px 0;
+            }
+         }
+      }
+   }
+}
+@media (max-width: 350px) {
+   .header {
+      &-modal {
+         .modal {
+            &-body {
+               padding: 0 10px 15px;
+               input {
+                  margin: 7px 2px;
+                  &:focus {
+                     margin: 5px 0;
+                  }
+               }
+            }
+            &-footer {
+               .change-pass {
+                  padding: 10px 30px;
+               }
+            }
          }
       }
    }
