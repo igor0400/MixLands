@@ -1,7 +1,6 @@
 import { HashRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { database, ref, child, get } from '../../firebase/firebase';
-import SimpleBar from 'simplebar-react';
 
 import { ToastContainer, toast } from 'react-toastify';
 import { getBalance } from '../../service/getBalance';
@@ -17,8 +16,6 @@ import NotificationsPage from '../pages/NotificationsPage';
 import Footer from '../footer/Footer';
 import Page404 from '../pages/Page404';
 import Modals from '../modals/Modals';
-
-import useMediaQuery from '@mui/material/useMediaQuery';
 
 import '../../styles/App.scss';
 
@@ -42,8 +39,6 @@ function App() {
    const [popoverIsBuy, setPopoverIsBuy] = useState(false);
 
    const [cardId, setCardId] = useState(false);
-
-   const isMedia = useMediaQuery('(max-width: 425px)');
 
    const nitro =
       (user && user.nitro) ||
@@ -647,9 +642,18 @@ function App() {
          }`
       );
 
-   const renderMain = () => {
-      return (
-         <>
+   return (
+      <Router>
+         <div className="App" onClick={(e) => onClickSomething(e)}>
+            <Header
+               setModal={setModal}
+               iconClass={iconClass}
+               dropdownClass={dropdownClass}
+               dropdownActive={dropdownActive}
+               handleHeaderShow={handleHeaderShow}
+               handleHeaderClose={handleHeaderClose}
+            />
+
             <main className="main">
                <Routes>
                   <Route
@@ -756,28 +760,6 @@ function App() {
                </Link>
             </main>
             <Footer />
-         </>
-      );
-   };
-
-   return (
-      <Router>
-         <div className="App" onClick={(e) => onClickSomething(e)}>
-            <Header
-               modal={modal}
-               setModal={setModal}
-               iconClass={iconClass}
-               dropdownClass={dropdownClass}
-               dropdownActive={dropdownActive}
-               handleHeaderShow={handleHeaderShow}
-               handleHeaderClose={handleHeaderClose}
-            />
-
-            {isMedia ? (
-               renderMain()
-            ) : (
-               <SimpleBar className="side-bar">{renderMain()}</SimpleBar>
-            )}
          </div>
       </Router>
    );

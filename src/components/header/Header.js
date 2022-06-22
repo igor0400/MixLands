@@ -12,7 +12,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 import DehazeIcon from '@mui/icons-material/Dehaze';
 
 const Header = ({
-   modal,
    setModal,
    iconClass,
    dropdownClass,

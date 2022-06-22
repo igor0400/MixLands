@@ -21,8 +21,13 @@ body {
    height: 100%;
 }
 
+html {
+	overflow-y: scroll;
+}
+
 body {
    margin: 0;
+   padding-right: 0 !important;
    font-family: 'Inter', sans-serif;
    background: #15131b;
 }
@@ -172,11 +177,6 @@ a {
    margin: 0;
 }
 
-.modal-backdrop {
-   width: 100%;
-   height: 100%;
-}
-
 .default__modal {
    z-index: 10000;
    .modal {
@@ -255,6 +255,8 @@ a {
 
 .modal-backdrop {
    z-index: 1000000;
+   width: 100%;
+   height: 100%;
 }
 .modal {
    z-index: 1000001;

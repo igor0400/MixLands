@@ -26,10 +26,7 @@ function BuyModal({ show, handleClose }) {
          </div>
 
          <Modal.Footer>
-            <a
-               className="btn btn-blue"
-               href="https://discord.gg/UVz8Aj7vpj"
-            >
+            <a className="btn btn-blue" href="https://discord.gg/UVz8Aj7vpj">
                Купить
             </a>
          </Modal.Footer>

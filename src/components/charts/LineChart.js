@@ -81,8 +81,6 @@ const LineChart = () => {
       },
    };
 
-   console.log(isMedia)
-
    return (
       <>
          <Line
