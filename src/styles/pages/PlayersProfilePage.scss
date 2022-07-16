@@ -1,91 +1,104 @@
 .players-profile-page {
-  max-width: 1000px;
-  margin: 30px auto;
-  color: #fff;
-  &__profile {
-    &__info {
-      display: flex;
-      &__logo {
-        position: relative;
-        img {
-          border-radius: 10px;
-          padding: 30px 40px;
-        }
-      }
-      &__descr {
-        margin: 0 30px;
-
-        .profile-p {
-          font-weight: 400;
-          font-size: 20px;
-          line-height: 32px;
-        }
-
-        .name {
-          font-size: 30px;
-          line-height: 36px;
-          margin-bottom: 30px;
-        }
-
-        .status {
-          display: flex;
-
-          &__text {
-            margin-left: 5px;
-          }
-
-          input {
-            margin: 1px 1px 1px 6px;
-            font-size: 20px;
-            border-radius: 5px;
-            height: 24px;
-            font-size: 16px;
-            padding: 15px 7px;
-            background: #232435;
-            border: none;
-            color: #fff;
-            &:focus-visible {
-              margin: 0 0 0 5px;
-              border: 1px solid #4f4b76;
-              outline: none;
+   max-width: 1000px;
+   margin: 30px auto;
+   color: #fff;
+   &__profile {
+      &__info {
+         display: flex;
+         &__logo {
+            position: relative;
+            img {
+               border-radius: 10px;
+               padding: 30px 40px;
             }
-          }
-        }
-        .skin {
-          button {
-            background: none;
-            font-size: 20px;
-            color: #0d6efd;
-            border: none;
-            line-height: 20px;
-            padding: 0 3px;
-            &:hover {
-              color: #0a58ca;
+         }
+         &__descr {
+            margin: 0 30px;
+
+            .profile-p {
+               font-weight: 400;
+               font-size: 20px;
+               line-height: 32px;
             }
-          }
-        }
-        #user-status__text {
-          animation-duration: 0.3s;
-        }
+
+            .name {
+               font-size: 30px;
+               line-height: 36px;
+               margin-bottom: 30px;
+            }
+
+            .status {
+               display: flex;
+
+               &__text {
+                  margin-left: 5px;
+                  word-break: break-word;
+               }
+            }
+            .skin {
+               button {
+                  background: none;
+                  font-size: 20px;
+                  color: #0d6efd;
+                  border: none;
+                  line-height: 20px;
+                  padding: 0 3px;
+                  &:hover {
+                     color: #0a58ca;
+                  }
+               }
+            }
+            #user-status__text {
+               animation-duration: 0.3s;
+            }
+         }
       }
-    }
-    &__posts {
-      margin-top: 50px;
-      &__top {
-        display: flex;
-        justify-content: center;
-        img {
-          background: #49425c;
-          border-radius: 15px;
-          padding: 10px;
-          cursor: pointer;
-        }
+      &__posts {
+         margin-top: 50px;
+         &__top {
+            display: flex;
+            justify-content: center;
+            img {
+               background: #49425c;
+               border-radius: 15px;
+               padding: 10px;
+               cursor: pointer;
+            }
+         }
+         .posts-null {
+            color: #454545;
+            margin: 30px 0 0 0;
+            font-weight: 400;
+         }
       }
-      .posts-null {
-        color: #454545;
-        margin: 30px 0 0 0;
-        font-weight: 400;
+   }
+}
+
+@media (max-width: 1060px) {
+   .players-profile-page {
+      margin: 30px;
+   }
+}
+@media (max-width: 655px) {
+   .players-profile-page {
+      margin: 30px 15px;
+      &__profile {
+         &__info {
+            flex-direction: column;
+            &__descr {
+               margin: 20px 0 0 0;
+               .profile-p {
+                  font-size: 18px;
+                  line-height: 28px;
+               }
+
+               .name {
+                  font-size: 28px;
+                  line-height: 32px;
+                  margin-bottom: 15px;
+               }
+            }
+         }
       }
-    }
-  }
+   }
 }

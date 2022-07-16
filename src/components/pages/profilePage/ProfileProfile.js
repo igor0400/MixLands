@@ -120,6 +120,17 @@ const ProfileProfile = ({
          .then(async () => {
             setAddNewPostProggres('succses');
             await getData();
+            setUser((state) => ({
+               ...state,
+               posts: {
+                  ...state.posts,
+                  [getClearDateTime()]: {
+                     text: textareaValue,
+                     date: getDateTime(),
+                     clearDate: getClearDateTime(),
+                  },
+               },
+            }));
             textarea.value = '';
             setTimeout(() => setAddNewPostProggres(false), 2000);
          })

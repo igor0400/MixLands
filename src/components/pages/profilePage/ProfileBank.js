@@ -288,7 +288,7 @@ const ProfileBank = ({
       }
    };
 
-   const getCard = (item, ratityBottom, showBalance, icon = false) => {
+   const getCard = (item, ratityBottom, showBalance, cardNum, icon = false) => {
       let cardName = {};
 
       defaultCards.forEach((defaultCard) => {
@@ -308,9 +308,9 @@ const ProfileBank = ({
             icon={icon}
             item={item}
             cardName={cardName}
-            getBalance={getBalance}
             ratityBottom={ratityBottom}
             showBalance={showBalance}
+            className={`card${cardNum}`}
          />
       );
    };
@@ -651,6 +651,7 @@ const ProfileBank = ({
                         <select
                            name="userCards"
                            id="user-cards"
+                           className="select1"
                            onChange={(e) => {
                               setActiveTransferCards((state) => ({
                                  ...state,
@@ -665,13 +666,14 @@ const ProfileBank = ({
                            ))}
                         </select>
 
-                        <div className="arrow-transfers">
+                        <div className="arrow-transfers arrow1">
                            <img src={arrowTransfers} alt="arrowTransfers" />
                         </div>
 
                         <select
                            name="allUsersCards"
                            id="all-users-cards"
+                           className="select2"
                            value={`ML-${activeTransferCards.allUsersActiveCard.id} » ${activeTransferCards.allUsersActiveCard.owner}`}
                            onChange={async (e) => {
                               await localStorage.setItem(
@@ -705,11 +707,12 @@ const ProfileBank = ({
 
                         {getCard(
                            activeTransferCards.userActiveCard,
-                           userActiveCardRatityBottom,
-                           true
+                           false,
+                           true,
+                           1
                         )}
 
-                        <div className="arrow-transfers">
+                        <div className="arrow-transfers arrow2">
                            <img src={arrowTransfers} alt="arrowTransfers" />
                         </div>
 
@@ -717,6 +720,7 @@ const ProfileBank = ({
                            activeTransferCards.allUsersActiveCard,
                            true,
                            false,
+                           2,
                            <TransferPopover
                               item={activeTransferCards.allUsersActiveCard}
                            />

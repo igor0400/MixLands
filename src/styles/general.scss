@@ -22,7 +22,7 @@ body {
 }
 
 html {
-	overflow-y: scroll;
+   overflow-y: scroll;
 }
 
 body {
@@ -285,6 +285,18 @@ a {
       margin: 0 20px;
    }
 }
+@media (max-width: 600px) {
+   .user__post {
+      padding: 13px;
+      margin: 15px 0;
+      .title {
+         font-size: 14px;
+      }
+      .text {
+         font-size: 18px;
+      }
+   }
+}
 
 @media (max-width: 426px) {
    .mw1400 {
@@ -346,5 +358,9 @@ a {
             }
          }
       }
+   }
+
+   .titleh2 {
+      font-size: 27px;
    }
 }

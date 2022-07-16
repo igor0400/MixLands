@@ -30,6 +30,7 @@
       &__clear {
          display: flex;
          button {
+            border: none;
             margin-top: 30px;
             width: 100%;
             background: #ff6b3d;
@@ -70,5 +71,18 @@
       .text-accent {
          color: #d2bdff;
       }
+   }
+}
+
+
+@media (max-width: 1200px) {
+   .notifications-page {
+      margin: 30px 10px;
+   }
+}
+@media (max-width: 375px) {
+   .notifications-page {
+      margin: 0;
+      padding: 20px 10px;
    }
 }
