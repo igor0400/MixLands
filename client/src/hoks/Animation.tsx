@@ -10,13 +10,14 @@ const PageAnimation: FC<PropsType> = (props: PropsType) => {
    );
    useEffect(() => {
       const timeout = setTimeout(
-         () => setAnimateClass('animate__animated'),
+         () => setAnimateClass(''),
          300
       );
       return () => {
          clearTimeout(timeout);
+         setAnimateClass('animate__animated animate__fadeIn');
       };
-   });
+   }, []);
    return <div className={animateCalss}>{props.children}</div>;
 };
 
