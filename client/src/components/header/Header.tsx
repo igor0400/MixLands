@@ -71,7 +71,8 @@ function NavTabs() {
                   label={label}
                   component={NavLink}
                   to={linkTo}
-                  className="py-20"
+                  className="nav-tab"
+                  disableRipple
                />
             ))}
          </Tabs>

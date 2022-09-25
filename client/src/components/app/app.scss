@@ -36,18 +36,11 @@ body {
    display: flex;
    flex-direction: column;
    color: #fff;
+   text-transform: inherit;
 }
 
 main {
    margin-top: 77px;
    // min-height: 100vh;
    flex: 1 1 auto;
-}
-
-.css-cjctlb-MuiButtonBase-root-MuiTab-root {
-   text-transform: inherit !important;
-}
-
-.css-8je8zh-MuiTouchRipple-root {
-   display: none;
 }
