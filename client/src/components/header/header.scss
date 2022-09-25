@@ -1,0 +1,16 @@
+.header {
+   background: rgba(24, 24, 24, 0.7);
+   backdrop-filter: blur(10px);
+   color: #fff;
+   position: fixed;
+   width: 100%;
+   z-index: 1000;
+   border-bottom: 1px solid #302822;
+   .MuiTabs-indicator {
+      background-color: #ff7a00;
+   }
+
+   .css-cjctlb-MuiButtonBase-root-MuiTab-root {
+      padding: 30px 20px;
+   }
+}

@@ -1,0 +1,70 @@
+.home {
+   margin-top: -77px;
+   &__top-content {
+      .towel-content {
+         &__descr {
+            margin-top: -10%;
+            max-width: 50%;
+            &__list {
+               ul {
+                  list-style-position: inside;
+                  li {
+                     &::before {
+                        content: '';
+                        list-style-type: disc;
+                        display: list-item;
+                        float: left;
+                        width: 1px;
+                        margin: 0 15px 0 0px;
+                     }
+                  }
+               }
+            }
+         }
+      }
+      .allay-content {
+         margin-top: -180px;
+         &__wrapper {
+            position: relative;
+            max-width: 24%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            img {
+               position: absolute;
+               width: 140px;
+               height: 140px;
+               top: -20%;
+               left: -50%;
+            }
+         }
+      }
+   }
+
+   &__center-content {
+      margin: 100px 0 0px;
+      &__cards {
+         max-width: 1200px !important;
+         grid-template-columns: repeat(auto-fit, 300px);
+      }
+      &__welcome {
+         margin: 100px 0 0;
+         &__wrapper {
+            max-width: 45% !important;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+         }
+      }
+   }
+
+   &__bottom-content {
+      height: 100%;
+      .bg-warder {
+         position: absolute;
+         bottom: -55px;
+         right: 15%;
+      }
+   }
+}

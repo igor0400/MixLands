@@ -1,0 +1,53 @@
+// импорты
+@import '../../styles/accets.scss';
+@import 'animate.css';
+
+// fonts
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+// переменные
+$background: #181818;
+
+// главные стили
+
+::-webkit-scrollbar {
+   height: 100%;
+   width: 10px;
+}
+::-webkit-scrollbar-track {
+   background: $background;
+}
+::-webkit-scrollbar-thumb {
+   border-radius: 5px;
+   background: #8b3d069a;
+}
+
+html,
+body {
+   height: 100%;
+}
+
+body {
+   background: $background;
+}
+
+.App {
+   min-height: 100vh;
+   display: flex;
+   flex-direction: column;
+   color: #fff;
+}
+
+main {
+   margin-top: 77px;
+   // min-height: 100vh;
+   flex: 1 1 auto;
+}
+
+.css-cjctlb-MuiButtonBase-root-MuiTab-root {
+   text-transform: inherit !important;
+}
+
+.css-8je8zh-MuiTouchRipple-root {
+   display: none;
+}
