@@ -1,4 +1,9 @@
 .footer {
    color: #fff;
    border-top: 1px solid #302822;
+   &__wrapper {
+      grid-template-columns: repeat(auto-fit, 260px);
+      gap: 10px;
+      justify-content: space-evenly;
+   }
 }

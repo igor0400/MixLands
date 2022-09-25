@@ -52,7 +52,7 @@ const Home: FC = () => {
          <div className="home__top-content relative">
             <div className="bg-ellipse bg-ellipse__orange"></div>
             <div className="towel-content flex justify-between 2xl:justify-center items-center container mx-auto px-4">
-               <div className="towel-content__descr">
+               <div className="towel-content__descr mr-10 xl:mr-0">
                   <h1 className="text-5xl font-black mb-2">
                      Высокотехнологичный ванильный <br /> сервер Minecraft.
                   </h1>
@@ -84,7 +84,12 @@ const Home: FC = () => {
                      <button className="btn white-btn">
                         Купить вход за 299₽
                      </button>
-                     <button className="btn none-bg-btn ml-4">Discord</button>
+                     <a
+                        className="btn none-bg-btn ml-4"
+                        href="https://discord.gg/sdVdG32d"
+                     >
+                        Discord
+                     </a>
                   </div>
                   <p className="font-normal pt-4">
                      Пиратка или лицензия 1.19.2

@@ -8,6 +8,7 @@ import Home from '../home/Home';
 import Stats from '../stats/Stats';
 import Wiki from '../wiki/Wiki';
 import Footer from '../footer/Footer';
+import Page404 from '../errors/Page404';
 
 import './app.scss';
 
@@ -41,6 +42,7 @@ const App: FC = () => {
                      </PageAnimation>
                   }
                />
+               <Route path="*" element={<Page404 />} />
             </Routes>
          </main>
          <Footer />

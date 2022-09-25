@@ -1,3 +1,4 @@
 {
-   "dbLink": "https://mixlands-8fd5a-default-rtdb.firebaseio.com"
+   "dbLink": "https://mixlands-8fd5a-default-rtdb.firebaseio.com",
+   "statsServer": "play.mixlands.space"
 }

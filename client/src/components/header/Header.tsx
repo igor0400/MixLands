@@ -46,7 +46,7 @@ function returnPageNum(location: locationType) {
       ({ linkTo }) => linkTo === location.pathname
    );
 
-   return page[0].id;
+   return page[0]?.id;
 }
 
 function NavTabs() {
