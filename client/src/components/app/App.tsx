@@ -10,8 +10,6 @@ import Wiki from '../wiki/Wiki';
 import Footer from '../footer/Footer';
 import Page404 from '../errors/Page404';
 
-import './app.scss';
-
 const App: FC = () => {
    return (
       <div className="App">

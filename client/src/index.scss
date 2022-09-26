@@ -1,15 +1,9 @@
-// импорты
-@import '../../styles/accets.scss';
-@import 'animate.css';
-
-// fonts
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import './styles/imports.scss';
 
 // переменные
 $background: #181818;
 
 // главные стили
-
 ::-webkit-scrollbar {
    height: 100%;
    width: 10px;
@@ -28,7 +22,16 @@ body {
 }
 
 body {
+   margin: 0;
+   font-family: 'inter';
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
    background: $background;
+}
+
+code {
+   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+      monospace;
 }
 
 .App {
