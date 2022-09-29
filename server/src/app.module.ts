@@ -15,6 +15,7 @@ import { UserModule } from './users/user.module';
       password: process.env.MYSQL_PASSWORD,
       database: process.env.MYSQL_DBNAME,
       models: [User],
+      define: { timestamps: false },
     }),
     UserModule,
   ],

@@ -10,15 +10,15 @@ export class UsersService {
   ) {}
 
   async getAllUsers(): Promise<User[]> {
-    const users = await this.userRepository.findAll();
+    const users = await this.userRepository.findAll({ include: { all: true } });
     return users;
   }
 
-  getOneUserById(id: string): Promise<User> {
-    return this.userRepository.findOne({
-      where: {
-        id,
-      },
+  async getUserById(id: string): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: { UUID: id },
+      include: { all: true },
     });
+    return user;
   }
 }
