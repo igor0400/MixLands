@@ -14,9 +14,9 @@ export class UsersService {
     return users;
   }
 
-  async getUserById(id: string): Promise<User> {
+  async getUserByNickname(nickname: string): Promise<User> {
     const user = await this.userRepository.findOne({
-      where: { UUID: id },
+      where: { LOWERCASENICKNAME: nickname },
       include: { all: true },
     });
     return user;

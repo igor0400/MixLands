@@ -10,8 +10,8 @@ export class UsersController {
     return this.usersService.getAllUsers();
   }
 
-  @Get('/:id')
-  getById(@Param('id') id: string) {
-    return this.usersService.getUserById(id);
+  @Get('/:nickname')
+  getById(@Param('nickname') nickname: string) {
+    return this.usersService.getUserByNickname(nickname.toLocaleLowerCase());
   }
 }

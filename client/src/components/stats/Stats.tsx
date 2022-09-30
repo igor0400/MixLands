@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
 import Graphics from './Graphics';
+import Users from './Users';
 
 import './stats.scss';
 
@@ -16,9 +17,7 @@ const Stats: FC = () => {
             <h2 className="text-center mt-12 text-xl font-black">
                Список игроков нашего сервера <br /> В реальном времени
             </h2>
-            <h2 className="text-center mt-6 text-lg font-semibold text-gray-500">
-               Временно недоступно
-            </h2>
+            <Users />
          </div>
       </div>
    );
