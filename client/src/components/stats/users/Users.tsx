@@ -1,31 +1,31 @@
-import axios from 'axios';
-import { FC, useEffect } from 'react';
-import { useGetUsersQuery } from '../../slices/usersSlice';
+import { FC } from 'react';
+import { useGetUsersQuery } from '../../../slices/usersSlice';
+
+import './users.scss';
+
+interface userType {
+   // написать поля и заменить тип item
+}
 
 const Users: FC = () => {
    const {
       data: users = [],
       isLoading,
       isError,
-      error,
    } = useGetUsersQuery(undefined, {
       selectFromResult: ({ data, isLoading, isError, error }) => ({
          data,
          isLoading,
          isError,
-         error,
       }),
    });
 
-   useEffect(() => {
-      if (users.length) console.log(users);
-      if (isError) console.log(error);
-   }, [users, isError]);
-
    return (
-      <div className="users">
+      <div className="users grid">
          {users.map((item: any, i: number) => (
-            <p key={i}>{item.NICKNAME}</p>
+            <div key={i} className="user p-4">
+               {i + 1}. {item.NICKNAME}
+            </div>
          ))}
       </div>
    );

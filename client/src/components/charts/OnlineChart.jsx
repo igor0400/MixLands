@@ -89,7 +89,7 @@ const OnlineChart = () => {
             type="line"
             options={options}
             height={isMedia ? 43 : 101}
-            style={{ borderRadius: '10px' }}
+            style={{ borderRadius: '20px' }}
          />
       </>
    );

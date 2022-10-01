@@ -5,7 +5,7 @@ import PageAnimation from '../../hoks/Animation';
 
 import Header from '../header/Header';
 import Home from '../home/Home';
-import Stats from '../stats/Stats';
+import Stats from '../stats';
 import Wiki from '../wiki/Wiki';
 import Footer from '../footer/Footer';
 import Page404 from '../errors/Page404';

@@ -28,6 +28,7 @@
     "@nestjs/sequelize": "^9.0.0",
     "@nestjs/typeorm": "^9.0.1",
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "cross-env": "^7.0.3",
     "mysql2": "^2.3.3",
     "nlogin": "^1.2.2",

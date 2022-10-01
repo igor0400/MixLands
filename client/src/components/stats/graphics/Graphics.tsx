@@ -1,11 +1,13 @@
 import { FC, useState, useEffect } from 'react';
 import axios from 'axios';
 
-import OnlineChart from '../charts/OnlineChart';
+import OnlineChart from '../../charts/OnlineChart';
 
-import logo from '../../images/icons/logo.png';
+import logo from '../../../images/icons/logo.png';
 
-import data from '../../config.json';
+import './graphics.scss';
+
+import data from '../../../config.json';
 
 interface onlineType {
    online: number;
@@ -37,14 +39,14 @@ const Graphics: FC = () => {
 
    return (
       <>
-         <div className="stats__top-content__graphics grid justify-center my-10">
+         <div className="graphics grid justify-center my-10">
             <div className="ml-roleplay graphic__wrapper">
                <div className="graphic__descr flex justify-between p-7">
                   <div className="graphic__descr__title flex">
                      <div>
                         <img src={logo} alt="logo" className="h-10" />
                      </div>
-                     <p className="uppercase font-bold px-1 text-sm green-text">
+                     <p className="uppercase font-bold px-1 text-sm orange-text">
                         roleplay
                      </p>
                   </div>
@@ -65,7 +67,7 @@ const Graphics: FC = () => {
                      <div>
                         <img src={logo} alt="logo" className="h-10" />
                      </div>
-                     <p className="uppercase font-bold px-1 text-sm orange-text">
+                     <p className="uppercase font-bold px-1 text-sm green-text">
                         creative
                      </p>
                   </div>

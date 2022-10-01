@@ -1,0 +1,10 @@
+.stats {
+   .users {
+      grid-template-columns: repeat(auto-fit, 300px);
+      justify-content: space-between;
+      gap: 20px;
+      .user {
+         background: #000;
+      }
+   }
+}
