@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router';
 
 import PageAnimation from '../../hoks/Animation';
@@ -11,6 +11,14 @@ import Footer from '../footer/Footer';
 import Page404 from '../errors/Page404';
 
 const App: FC = () => {
+   const [scrollHeight, setScrollHeight] = useState<number>(
+      document.body.scrollHeight
+   );
+   useEffect(
+      () => setScrollHeight(document.body.scrollHeight),
+      [document.body.scrollHeight]
+   );
+
    return (
       <div className="App">
          <Header />

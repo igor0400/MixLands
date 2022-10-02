@@ -1,56 +1,16 @@
 import { FC } from 'react';
+import { cardsItems } from '../../utils/someSettings';
 
 import tower from '../../images/tower.png';
 import allay from '../../images/allay.png';
-
-import bank from '../../images/icons/bank.svg';
-import plyments from '../../images/icons/payments.svg';
-import court from '../../images/icons/court.svg';
-import profile from '../../images/icons/profile.svg';
-import sync from '../../images/icons/sync.svg';
-import security from '../../images/icons/security.svg';
 import warden from '../../images/warden.png';
 
 import './home.scss';
 
-const cardsItems = [
-   {
-      iconUrl: bank,
-      title: 'Онлайн банк',
-      text: 'Система, которая позволит игрокам торговаться в разы легче, а так же хранить свои сбережения, не боясь за них. За все Ваши средства, которые находятся на балансе банка отвечает государство, в случае их потери будет возмещение.',
-   },
-   {
-      iconUrl: plyments,
-      title: 'Онлайн выплаты',
-      text: 'Благодаря этой системе Вы сможете в любой момент выплатить штраф/налог/пожертвование онлайн, при этом всём все переводы проходят без комиссии, что позволяет минимализировать любые неудобства и претензии.',
-   },
-   {
-      iconUrl: court,
-      title: 'Онлайн суды',
-      text: 'Ещё одна крутая фишка, с помощью которой можно подать дело в суд онлайн. Навредил игрок? Оставьте заявку с доказательствами на сайте, после чего Ваше дело будет рассмотрено и решено в голосовом судебном канале.',
-   },
-   {
-      iconUrl: profile,
-      title: 'Социальная сеть',
-      text: 'Наш проект основан на облачных технологиях, исходя из этого у нас есть своя социальная сеть, Вы можете в любой момент посмотреть профиль другого игрока и даже почитать его посты.',
-   },
-   {
-      iconUrl: sync,
-      title: 'Синхронизация',
-      text: 'Игровой сервер полностью синхронизирован с Discord и нашим сайтом. Ваш игровой аккаунт (пароль, никнейм) полностью отвечают данным на сайте, исходя из этого Вы можете войти в свой аккаунт на сайте под игровыми данными.',
-   },
-   {
-      iconUrl: security,
-      title: 'Безопасность',
-      text: 'Абсолютно все Ваши данные хранятся в полной безопасности, у нас присутствует самописное шифрование конфиденциальности, из-за чего никакой злоумышленник не сможет украсть Ваш пароль и тому подобное.',
-   },
-];
-
 const Home: FC = () => {
    return (
-      <div className="home">
+      <div className="home animate__animated animate__fadeIn">
          <div className="home__top-content relative">
-            <div className="bg-ellipse bg-ellipse__orange"></div>
             <div className="towel-content flex justify-between 2xl:justify-center items-center container mx-auto px-4">
                <div className="towel-content__descr mr-10 xl:mr-0">
                   <h1 className="text-5xl font-black mb-2">
@@ -86,7 +46,7 @@ const Home: FC = () => {
                      </button>
                      <a
                         className="btn none-bg-btn ml-4"
-                        href="https://discord.gg/sdVdG32d"
+                        href="https://discord.gg/g487w5cCQz"
                      >
                         Discord
                      </a>
@@ -115,7 +75,7 @@ const Home: FC = () => {
          </div>
 
          <div className="home__center-content relative">
-            <div className="bg-ellipse bg-ellipse__yellow"></div>
+            {/* <div className="bg-ellipse bg-ellipse__yellow"></div> */}
             <div className="home__center-content__cards container mx-auto px-4 justify-center grid gap-20">
                {cardsItems.map(({ iconUrl, title, text }, i) => (
                   <div
@@ -148,7 +108,7 @@ const Home: FC = () => {
          </div>
 
          <div className="home__bottom-content relative">
-            <div className="bg-ellipse bg-ellipse__green"></div>
+            {/* <div className="bg-ellipse bg-ellipse__green"></div> */}
             <p className="mx-auto max-w-2xl text-center py-20">
                Администрация проекта MixLands старается для Вас, что бы принести
                максимально комфортную игру для Вас. <br /> Мы ценим абсолютно

@@ -2,11 +2,11 @@
 
 .stats {
    .graphics {
-      grid-template-columns: repeat(auto-fit, 600px);
-      gap: 40px;
+      gap: 20px;
       .graphic {
          &__wrapper {
-            background: rgba(24, 24, 24, 0.5);
+            width: 400px;
+            background: $blurBackground;
             border: 2px solid $orangeBorder;
             backdrop-filter: blur(35px);
             border-radius: 10px;
@@ -26,6 +26,10 @@
                .orange-text {
                   background: rgba(255, 214, 0, 0.2);
                   color: #ff8a00;
+               }
+               .purple-text {
+                  background: #b300ff41;
+                  color: #b300ff;
                }
             }
             &__online {
