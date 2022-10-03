@@ -30,17 +30,13 @@ const Users: FC<Props> = ({ inputValue, activeFilter }: Props) => {
       }),
    });
 
-   const {
-      data: onlineUsers = [],
-      isLoading: isOnlineUsersLoading,
-      isError: isOnlineUsersError,
-   } = useGetOnlineUsersQuery(undefined, {
-      selectFromResult: ({ data, isLoading, isError }) => ({
-         data,
-         isLoading,
-         isError,
-      }),
-   });
+   const { data: onlineUsers = [], isLoading: isOnlineUsersLoading } =
+      useGetOnlineUsersQuery(undefined, {
+         selectFromResult: ({ data, isLoading }) => ({
+            data,
+            isLoading,
+         }),
+      });
 
    const isOnlineUsersLoad = activeFilter === 'online' && isOnlineUsersLoading;
 
@@ -53,7 +49,7 @@ const Users: FC<Props> = ({ inputValue, activeFilter }: Props) => {
    }
 
    if (isUsersError) {
-      return <p>Error</p>;
+      return <p className="text-center text-xl font-medium my-10 text-gray-400">Ошибка :(</p>;
    }
 
    const filteredUsers = getFilteredUsers(
@@ -65,7 +61,7 @@ const Users: FC<Props> = ({ inputValue, activeFilter }: Props) => {
 
    if (!filteredUsers.length) {
       return (
-         <p className="text-center text-gray-500 text-lg font-medium">
+         <p className="text-center text-gray-500 text-lg font-medium my-10">
             Игроки не найдены
          </p>
       );

@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const serverInfoSlice = createApi({
    reducerPath: 'serverInfo',
    baseQuery: fetchBaseQuery({
-      baseUrl: 'http://localhost:8080/server-info',
+      baseUrl: 'http://188.225.60.27:8080/server-info',
    }),
    endpoints: (builder) => ({
       getOnlineCount: builder.query({
