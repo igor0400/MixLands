@@ -8,6 +8,14 @@
          border: 1px solid $orangeBorder;
          border-radius: 5px;
          background: $blurBackground;
+         transition: 0.3s;
+         cursor: default;
+         img {
+            cursor: pointer;
+         }
+         &:hover {
+            border: 1px solid $orangeBorderActive;
+         }
          &__active__circle {
             position: absolute;
             width: 20px;

@@ -49,7 +49,11 @@ const Users: FC<Props> = ({ inputValue, activeFilter }: Props) => {
    }
 
    if (isUsersError) {
-      return <p className="text-center text-xl font-medium my-10 text-gray-400">Ошибка :(</p>;
+      return (
+         <p className="text-center text-xl font-medium my-10 text-gray-400">
+            Ошибка :(
+         </p>
+      );
    }
 
    const filteredUsers = getFilteredUsers(
@@ -70,8 +74,8 @@ const Users: FC<Props> = ({ inputValue, activeFilter }: Props) => {
    return (
       <div className="users grid justify-center lg:justify-between">
          {filteredUsers.map((item: userType, i: number) => (
-            <Link to={item.NICKNAME} key={i}>
-               <div className="user p-4 flex">
+            <div className="user p-4 flex" key={i}>
+               <Link to={item.NICKNAME}>
                   <div className="relative">
                      <img
                         src={`https://mc-heads.net/avatar/${item.NICKNAME}`}
@@ -90,17 +94,17 @@ const Users: FC<Props> = ({ inputValue, activeFilter }: Props) => {
                           )
                         : null}
                   </div>
+               </Link>
 
-                  <div className="pl-4">
-                     <h4 className="text-lg">
-                        {getSlicedNickname(item.NICKNAME)}
-                     </h4>
-                     <p>
-                        <span className="text-gray-400">Наиграно:</span> 0 ч.
-                     </p>
-                  </div>
+               <div className="pl-4">
+                  <h4 className="text-lg">
+                     {getSlicedNickname(item.NICKNAME)}
+                  </h4>
+                  <p>
+                     <span className="text-gray-400">Наиграно:</span> 0 ч.
+                  </p>
                </div>
-            </Link>
+            </div>
          ))}
       </div>
    );
