@@ -1,39 +1,27 @@
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import { useGetUsersQuery } from '../../../slices/usersSlice';
+import { useGetOnlineUsersQuery } from '../../../slices/serverInfoSlice';
 import { getSlicedNickname } from '../../../utils/supportFunctions';
-import { userType } from '../../../utils/types';
+import { userType, onlineUserType } from '../../../utils/types';
 import { getFilteredUsers } from '../../../utils/supportFunctions';
+
 import { Link } from 'react-router-dom';
+import { CircularProgress, Box } from '@mui/material';
 
 import faceDefault from '../../../images/face-default.png';
 
 import './users.scss';
-
-import data from '../../../config.json';
-import axios from 'axios';
 
 interface Props {
    inputValue: string;
    activeFilter: string;
 }
 
-const { statsServer } = data;
-
 const Users: FC<Props> = ({ inputValue, activeFilter }: Props) => {
-   const [onlinePlayers, setOnlinePlayers] = useState<string[]>([]);
-
-   useEffect(() => {
-      axios.get(`https://api.mcsrvstat.us/2/${statsServer}`).then((res) => {
-         if (res.data?.players) {
-            setOnlinePlayers(res.data.players?.list);
-         }
-      });
-   }, []);
-
    const {
       data: users = [],
-      isLoading,
-      isError,
+      isLoading: isUsersLoading,
+      isError: isUsersError,
    } = useGetUsersQuery(undefined, {
       selectFromResult: ({ data, isLoading, isError }) => ({
          data,
@@ -42,11 +30,29 @@ const Users: FC<Props> = ({ inputValue, activeFilter }: Props) => {
       }),
    });
 
-   if (isLoading) {
-      return <p>Loading...</p>;
+   const {
+      data: onlineUsers = [],
+      isLoading: isOnlineUsersLoading,
+      isError: isOnlineUsersError,
+   } = useGetOnlineUsersQuery(undefined, {
+      selectFromResult: ({ data, isLoading, isError }) => ({
+         data,
+         isLoading,
+         isError,
+      }),
+   });
+
+   const isOnlineUsersLoad = activeFilter === 'online' && isOnlineUsersLoading;
+
+   if (isUsersLoading || isOnlineUsersLoad) {
+      return (
+         <Box className="flex my-10 justify-center">
+            <CircularProgress sx={{ color: '#ff8a00' }} />
+         </Box>
+      );
    }
 
-   if (isError) {
+   if (isUsersError) {
       return <p>Error</p>;
    }
 
@@ -54,7 +60,7 @@ const Users: FC<Props> = ({ inputValue, activeFilter }: Props) => {
       users,
       inputValue,
       activeFilter,
-      onlinePlayers
+      onlineUsers
    );
 
    if (!filteredUsers.length) {
@@ -77,9 +83,9 @@ const Users: FC<Props> = ({ inputValue, activeFilter }: Props) => {
                         alt="avatar"
                         className="w-16 h-16 rounded"
                      />
-                     {onlinePlayers
-                        ? onlinePlayers.map((player: string, i: number) =>
-                             item.NICKNAME === player ? (
+                     {onlineUsers
+                        ? onlineUsers.map((player: onlineUserType, i: number) =>
+                             item.NICKNAME === player.nickname ? (
                                 <div
                                    className="user__active__circle"
                                    key={i}
@@ -90,7 +96,7 @@ const Users: FC<Props> = ({ inputValue, activeFilter }: Props) => {
                   </div>
 
                   <div className="pl-4">
-                     <h4 className="text-2xl">
+                     <h4 className="text-lg">
                         {getSlicedNickname(item.NICKNAME)}
                      </h4>
                      <p>

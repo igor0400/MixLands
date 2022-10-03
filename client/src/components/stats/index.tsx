@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState } from 'react';
 
 import Graphics from './graphics/Graphics';
 import Users from './users/Users';
@@ -12,9 +12,8 @@ const Stats: FC = () => {
    const [inputValue, setInputValue] = useState<string>('');
 
    return (
-      <div className="stats my-20">
+      <div className="stats fade-animation my-20">
          <div className="stats__top-content">
-            {/* <div className="bg-ellipse bg-ellipse__orange"></div> */}
             <h2 className="text-center text-xl font-black">
                Статистика наших серверов <br /> В реальном времени
             </h2>

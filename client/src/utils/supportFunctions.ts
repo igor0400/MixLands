@@ -1,8 +1,8 @@
-import { userType } from './types';
+import { userType, onlineUserType } from './types';
 
 export function getSlicedNickname(nickname: string): string {
-   if (nickname.length > 11) {
-      return `${nickname.slice(0, 9)}...`;
+   if (nickname.length > 16) {
+      return `${nickname.slice(0, 13)}...`;
    }
 
    return nickname;
@@ -21,7 +21,7 @@ const searchEmp = (items: userType[], inputValue: string) => {
 const filterUsersByActive = (
    users: userType[],
    filter: string,
-   onlineUsers: string[]
+   onlineUsers: onlineUserType[]
 ) => {
    const data: userType[] = [];
 
@@ -29,8 +29,8 @@ const filterUsersByActive = (
       case 'online':
          if (onlineUsers) {
             users.map((item) => {
-               onlineUsers.map((player) => {
-                  if (item.NICKNAME === player) {
+               onlineUsers.map((player: onlineUserType) => {
+                  if (item.NICKNAME === player.nickname) {
                      data.push(item);
                   }
                });
@@ -46,7 +46,7 @@ export function getFilteredUsers(
    users: userType[],
    inputValue: string,
    activeFilter: string,
-   onlineUsers: string[]
+   onlineUsers: onlineUserType[]
 ): userType[] {
    const visibleData = filterUsersByActive(
       searchEmp(users, inputValue),

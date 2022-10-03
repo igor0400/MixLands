@@ -9,8 +9,9 @@ import './home.scss';
 
 const Home: FC = () => {
    return (
-      <div className="home animate__animated animate__fadeIn">
+      <div className="home fade-animation">
          <div className="home__top-content relative">
+            <div className="bg-ellipse bg-ellipse__orange"></div>
             <div className="towel-content flex justify-between 2xl:justify-center items-center container mx-auto px-4">
                <div className="towel-content__descr mr-10 xl:mr-0">
                   <h1 className="text-5xl font-black mb-2">
@@ -75,7 +76,7 @@ const Home: FC = () => {
          </div>
 
          <div className="home__center-content relative">
-            {/* <div className="bg-ellipse bg-ellipse__yellow"></div> */}
+            <div className="bg-ellipse bg-ellipse__yellow"></div>
             <div className="home__center-content__cards container mx-auto px-4 justify-center grid gap-20">
                {cardsItems.map(({ iconUrl, title, text }, i) => (
                   <div
@@ -108,7 +109,7 @@ const Home: FC = () => {
          </div>
 
          <div className="home__bottom-content relative">
-            {/* <div className="bg-ellipse bg-ellipse__green"></div> */}
+            <div className="bg-ellipse bg-ellipse__green"></div>
             <p className="mx-auto max-w-2xl text-center py-20">
                Администрация проекта MixLands старается для Вас, что бы принести
                максимально комфортную игру для Вас. <br /> Мы ценим абсолютно

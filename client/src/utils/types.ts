@@ -8,3 +8,8 @@ export interface userType {
    UUID: string;
    BALANCE?: number;
 }
+
+export interface onlineUserType {
+   nickname: string;
+   server: string;
+}

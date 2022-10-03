@@ -4,10 +4,11 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from './users/users.model';
 import { UserModule } from './users/user.module';
 import { AuthModule } from './auth/auth.module';
+import { ServerInfoModule } from './server-info/server-info.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ envFilePath: `.${process.env.NODE_ENV}.env` }),
+    ConfigModule.forRoot({ envFilePath: `.env` }),
     SequelizeModule.forRoot({
       dialect: 'mysql',
       host: process.env.MYSQL_HOST,
@@ -20,6 +21,7 @@ import { AuthModule } from './auth/auth.module';
     }),
     UserModule,
     AuthModule,
+    ServerInfoModule,
   ],
   controllers: [],
   providers: [],

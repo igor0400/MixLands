@@ -39,51 +39,9 @@ code {
    color: #fff;
    text-transform: inherit;
    position: relative;
-   background: no-repeat 100% / 100% url('./images/background.png');
-   background-size: 100% 100%;
 }
 
 main {
    margin-top: 77px;
-   // min-height: 100vh;
    flex: 1 1 auto;
-}
-
-.background {
-   position: absolute;
-   z-index: -100;
-   top: 0;
-   left: 0;
-   height: 100%;
-   width: 100%;
-   .bg-ellipse {
-      filter: blur(200px);
-      backdrop-filter: blur(15px);
-      position: absolute;
-      &__orange {
-         width: 70%;
-         height: 30%;
-         top: 5%;
-         right: 5%;
-         background: rgba(255, 122, 0, 0.23);
-      }
-
-      &__yellow {
-         position: absolute;
-         width: 60%;
-         height: 35%;
-         top: 40%;
-         left: 0;
-         background: rgba(255, 208, 86, 0.18);
-      }
-
-      &__green {
-         position: absolute;
-         width: 40%;
-         height: 10%;
-         bottom: 0;
-         right: 10%;
-         background: rgba(112, 255, 0, 0.4);
-      }
-   }
 }

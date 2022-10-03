@@ -43,15 +43,15 @@
       height: 80%;
       top: 15%;
       right: 5%;
-      background: rgba(255, 122, 0, 0.23);
+      background: rgba(255, 122, 0, 0.15);
    }
    &__yellow {
       position: absolute;
       width: 60%;
-      height: 60%;
+      height: 70%;
       top: 0%;
       left: 0%;
-      background: rgba(255, 208, 86, 0.18);
+      background: rgba(255, 208, 86, 0.11);
    }
 
    &__green {
@@ -60,6 +60,32 @@
       height: 80%;
       bottom: 10%;
       right: 10%;
-      background: rgba(112, 255, 0, 0.4);
+      background: rgba(112, 255, 0, 0.3);
+   }
+}
+
+.fade-animation {
+   -webkit-animation-duration: 0.5s;
+   animation-duration: 0.5s;
+   -webkit-animation-name: pageSpawn;
+   animation-name: pageSpawn;
+}
+
+@-webkit-keyframes pageSpawn {
+   from {
+      opacity: 0;
+   }
+
+   to {
+      opacity: 1;
+   }
+}
+@keyframes pageSpawn {
+   from {
+      opacity: 0;
+   }
+
+   to {
+      opacity: 1;
    }
 }

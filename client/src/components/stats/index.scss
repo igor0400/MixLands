@@ -1,4 +1,10 @@
 @import '../../styles/variables.scss';
+.stats {
+   .bg-ellipse__orange {
+      top: 0;
+      height: 800px;
+   }
+}
 
 @media (min-width: 1256px) {
    .stats {
