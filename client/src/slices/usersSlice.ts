@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import data from '../config.json';
 
 export const usersSlice = createApi({
    reducerPath: 'users',
    baseQuery: fetchBaseQuery({
-      baseUrl: 'http://188.225.60.27:8080',
+      baseUrl: data.proxy,
    }),
    // сделать tagTypes
    endpoints: (builder) => ({

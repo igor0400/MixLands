@@ -1,13 +1,14 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import data from '../config.json';
 
 export const serverInfoSlice = createApi({
    reducerPath: 'serverInfo',
    baseQuery: fetchBaseQuery({
-      baseUrl: 'http://188.225.60.27:8080/server-info',
+      baseUrl: `${data.proxy}/server-info`,
    }),
    endpoints: (builder) => ({
       getOnlineCount: builder.query({
-         query: (id: string) => `/online-count?server=${id}`,
+         query: (server: string) => `/online-count?server=${server}`,
       }),
       getOnlineUsers: builder.query({
          query: () => '/online-users',
