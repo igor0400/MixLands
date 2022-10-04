@@ -43,7 +43,7 @@ const Wiki: FC = () => {
    return (
       <div className="wiki fade-animation">
          <div className="bg-ellipse bg-ellipse__orange"></div>
-         <div className="wiki__wrapper flex max-w-7xl mx-auto my-10">
+         <div className="wiki__wrapper flex max-w-7xl mx-auto mt-10 mb-20">
             <div className="wiki__nav-bar">
                <ul>
                   {navs.map(({ name, text }, i) => (
