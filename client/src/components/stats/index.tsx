@@ -1,61 +1,51 @@
 import { FC, useState } from 'react';
+import { filterButtons } from './settings';
 
 import Graphics from './graphics/Graphics';
 import Users from './users/Users';
 
 import './index.scss';
 
-const activeFilterStyles = { background: '#FF7A00', color: '#fff' };
+const navClass = 'users-serch__btn px-8 py-2 mt-2 font-semibold rounded-lg';
 
 const Stats: FC = () => {
-   const [activeFilter, setActiveFilter] = useState<'all' | 'online'>('all');
+   const [activeFilter, setActiveFilter] = useState<string>('all');
    const [inputValue, setInputValue] = useState<string>('');
 
    return (
       <div className="stats fade-animation my-20">
-         <div className="stats__top-content">
-            <h2 className="text-center text-xl font-black">
-               Статистика наших серверов <br /> В реальном времени
-            </h2>
-            <Graphics />
-            <h2 className="text-center mt-12 text-xl font-black">
-               Список игроков нашего сервера <br /> В реальном времени
-            </h2>
-            <div className="users-cards container mx-auto px-4 pt-6">
-               <div className="users-serch pb-5">
-                  <div className="users-serch__btns mb-2">
+         <h2 className="text-center text-xl font-black">
+            Статистика наших серверов <br /> В реальном времени
+         </h2>
+         <Graphics />
+         <h2 className="text-center mt-12 text-xl font-black">
+            Список игроков нашего сервера <br /> В реальном времени
+         </h2>
+         <div className="users-cards container mx-auto px-4 pt-10">
+            <div className="users-serch pb-5">
+               <div className="users-serch__btns mb-2">
+                  {filterButtons.map(({ name, text }, i) => (
                      <button
-                        className="users-serch__btn px-8 py-2 mr-1 font-semibold rounded-lg"
-                        onClick={() => setActiveFilter('all')}
-                        style={
-                           activeFilter === 'all'
-                              ? activeFilterStyles
-                              : undefined
+                        key={i}
+                        className={
+                           activeFilter === name
+                              ? navClass + ' active-nav'
+                              : navClass
                         }
+                        onClick={() => setActiveFilter(name)}
                      >
-                        Все
+                        {text}
                      </button>
-                     <button
-                        className="users-serch__btn px-8 py-2 font-semibold rounded-lg"
-                        onClick={() => setActiveFilter('online')}
-                        style={
-                           activeFilter === 'online'
-                              ? activeFilterStyles
-                              : undefined
-                        }
-                     >
-                        Онлайн
-                     </button>
-                  </div>
-                  <input
-                     className="users-serch__input w-full py-2 px-3 rounded-md text-lg"
-                     type="text"
-                     placeholder="Поиск..."
-                     onChange={(e) => setInputValue(e.target.value)}
-                  />
+                  ))}
                </div>
-               <Users inputValue={inputValue} activeFilter={activeFilter} />
+               <input
+                  className="users-serch__input w-full py-2 px-3 rounded-md text-lg"
+                  type="text"
+                  placeholder="Поиск..."
+                  onChange={(e) => setInputValue(e.target.value)}
+               />
             </div>
+            <Users inputValue={inputValue} activeFilter={activeFilter} />
          </div>
       </div>
    );

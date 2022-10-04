@@ -1,0 +1,13 @@
+@import '../../../styles/variables.scss';
+
+.wiki-card {
+   width: calc(50% - 0.8rem);
+   border: 1px solid $orangeBorder;
+   background: $blurBackground;
+   a {
+      color: #0075ff;
+      &:hover {
+         color: #0075ff;
+      }
+   }
+}

@@ -7,6 +7,8 @@ import { getFilteredUsers } from '../../../utils/supportFunctions';
 
 import { Link } from 'react-router-dom';
 import { CircularProgress, Box } from '@mui/material';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 import faceDefault from '../../../images/face-default.png';
 
@@ -65,7 +67,7 @@ const Users: FC<Props> = ({ inputValue, activeFilter }: Props) => {
 
    if (!filteredUsers.length) {
       return (
-         <p className="text-center text-gray-500 text-lg font-medium my-10">
+         <p className="text-center text-gray-500 text-lg font-medium mt-10 mb-32">
             Игроки не найдены
          </p>
       );
@@ -86,10 +88,19 @@ const Users: FC<Props> = ({ inputValue, activeFilter }: Props) => {
                      {onlineUsers
                         ? onlineUsers.map((player: onlineUserType, i: number) =>
                              item.NICKNAME === player.nickname ? (
-                                <div
-                                   className="user__active__circle"
+                                <OverlayTrigger
+                                   placement={'top'}
+                                   overlay={
+                                      <Tooltip id="tooltip-top">
+                                         <b>В игре</b>
+                                      </Tooltip>
+                                   }
                                    key={i}
-                                ></div>
+                                >
+                                   <div
+                                      className={`user__active__circle`}
+                                   ></div>
+                                </OverlayTrigger>
                              ) : null
                           )
                         : null}

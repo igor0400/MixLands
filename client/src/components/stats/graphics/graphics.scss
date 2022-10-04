@@ -21,15 +21,15 @@
                }
                .green-text {
                   background: rgba(82, 255, 0, 0.3);
-                  color: #00ff19;
+                  color: $creativeColor;
                }
                .orange-text {
                   background: rgba(255, 214, 0, 0.2);
-                  color: #ff8a00;
+                  color: $roleplayColor;
                }
                .purple-text {
                   background: #b300ff41;
-                  color: #b300ff;
+                  color: $adventureColor;
                }
             }
             &__online {

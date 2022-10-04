@@ -5,6 +5,10 @@ export const usersSlice = createApi({
    reducerPath: 'users',
    baseQuery: fetchBaseQuery({
       baseUrl: data.proxy,
+      prepareHeaders: (headers, { getState }) => {
+         headers.set('Content-Security-Policy', 'upgrade-insecure-requests');
+         return headers;
+      },
    }),
    // сделать tagTypes
    endpoints: (builder) => ({

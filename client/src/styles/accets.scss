@@ -7,6 +7,12 @@
    transition: 0.3s;
 }
 
+.active-nav {
+   background: #ff7a00;
+   color: #fff !important;
+   cursor: default !important;
+}
+
 .accent-btn {
    background: #ff7a00;
    &:hover {
@@ -43,7 +49,7 @@
       height: 80%;
       top: 15%;
       right: 5%;
-      background: rgba(255, 122, 0, 0.15);
+      background: rgba(255, 122, 0, 0.12);
    }
    &__yellow {
       position: absolute;
@@ -51,7 +57,7 @@
       height: 70%;
       top: 0%;
       left: 0%;
-      background: rgba(255, 208, 86, 0.11);
+      background: rgba(255, 208, 86, 0.09);
    }
 
    &__green {
@@ -60,8 +66,13 @@
       height: 80%;
       bottom: 10%;
       right: 10%;
-      background: rgba(112, 255, 0, 0.3);
+      background: rgba(112, 255, 0, 0.2);
    }
+}
+
+.tooltip {
+   --bs-tooltip-color: #000;
+   --bs-tooltip-bg: #fff;
 }
 
 .fade-animation {

@@ -5,6 +5,10 @@ export const serverInfoSlice = createApi({
    reducerPath: 'serverInfo',
    baseQuery: fetchBaseQuery({
       baseUrl: `${data.proxy}/server-info`,
+      prepareHeaders: (headers, { getState }) => {
+         headers.set('Content-Security-Policy', 'upgrade-insecure-requests');
+         return headers;
+      },
    }),
    endpoints: (builder) => ({
       getOnlineCount: builder.query({

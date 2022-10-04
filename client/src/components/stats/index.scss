@@ -21,8 +21,11 @@
       &__btn {
          color: #a27d51;
          transition: 0.2s;
-         &:hover {
+         &:hover:not(.active-nav) {
             background: rgba(165, 105, 36, 0.2);
+         }
+         &:not(&:last-child) {
+            margin-right: 5px;
          }
       }
       &__btns {

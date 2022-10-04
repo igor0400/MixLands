@@ -13,3 +13,9 @@ export interface onlineUserType {
    nickname: string;
    server: string;
 }
+
+export interface userTypeWithOnline extends userType {
+   online: {
+      server: string;
+   };
+}

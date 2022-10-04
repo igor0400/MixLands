@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { cardsItems } from '../../utils/someSettings';
+import { cardsItems } from './settings';
 
 import tower from '../../images/tower.png';
 import allay from '../../images/allay.png';

@@ -1,0 +1,20 @@
+.wiki {
+   .bg-ellipse__orange {
+      top: 0;
+      height: 600px;
+      background: rgba(255, 122, 0, 0.06);
+   }
+   &__nav-bar {
+      ul {
+         li {
+            &:not(.active-nav) {
+               color: #b6b6b6;
+            }
+            &:not(&:last-child) {
+               margin-bottom: 5px;
+            }
+            white-space: nowrap;
+         }
+      }
+   }
+}

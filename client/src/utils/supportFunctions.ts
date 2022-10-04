@@ -1,4 +1,5 @@
-import { userType, onlineUserType } from './types';
+import { userType, onlineUserType, userTypeWithOnline } from './types';
+import { servers } from './someSettings';
 
 export function getSlicedNickname(nickname: string): string {
    if (nickname.length > 16) {
@@ -23,23 +24,41 @@ const filterUsersByActive = (
    filter: string,
    onlineUsers: onlineUserType[]
 ) => {
-   const data: userType[] = [];
+   let data: userType[] = [];
 
-   switch (filter) {
-      case 'online':
-         if (onlineUsers) {
-            users.map((item) => {
-               onlineUsers.map((player: onlineUserType) => {
-                  if (item.NICKNAME === player.nickname) {
-                     data.push(item);
-                  }
-               });
-            });
-         }
-         return data;
-      default:
-         return users;
+   if (filter === 'all') {
+      return users;
    }
+
+   if (onlineUsers) {
+      const onlineFilteredPlayers: any = [];
+
+      // получание онлайн пользователей
+      users.map((item: userType) => {
+         onlineUsers.map((player: onlineUserType) => {
+            if (item.NICKNAME === player.nickname) {
+               onlineFilteredPlayers.push({
+                  ...item,
+                  online: { server: player.server },
+               });
+            }
+         });
+      });
+
+      if (filter === 'online') {
+         data = onlineFilteredPlayers;
+      }
+
+      servers.forEach((server) => {
+         if (filter === server) {
+            data = onlineFilteredPlayers.filter(
+               (item: userTypeWithOnline) => item?.online?.server === server
+            );
+         }
+      });
+   }
+
+   return data;
 };
 
 export function getFilteredUsers(
