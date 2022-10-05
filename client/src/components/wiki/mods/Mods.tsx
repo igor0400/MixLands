@@ -10,7 +10,7 @@ import './mods.scss';
 
 const Mods: FC = () => {
    return (
-      <div className="mods">
+      <div className="mods fade-animation">
          <h3 className="text-center font-bold text-xl mt-3 mb-4">Моды</h3>
          <div className="cards flex flex-wrap gap-4">
             {wikiMods.map((item, i) => (

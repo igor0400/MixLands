@@ -22,12 +22,14 @@ const ModeCard: FC<modeCardType> = ({ name, descr, link, children, full }) => {
             {descr} {children}
          </p>
          {typeof link == 'string' ? (
-            <a href={link} className="flex mt-auto font-black text-sm">
-               <div className="flex items-center mr-1">
-                  <img src={download} alt="download" />
-               </div>
-               Скачать
-            </a>
+            <div className="flex mt-auto">
+               <a href={link} className="flex font-black text-sm">
+                  <div className="flex items-center mr-1">
+                     <img src={download} alt="download" />
+                  </div>
+                  Скачать
+               </a>
+            </div>
          ) : null}
       </div>
    );

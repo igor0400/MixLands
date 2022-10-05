@@ -8,13 +8,13 @@ import data from '../../config.json';
 
 const { dbLink } = data;
 
-const OnlineChart = () => {
+const OnlineChart = ({ server }) => {
    const [labels, setLabel] = useState([]);
    const [data, setData] = useState([]);
    const isMedia = useMediaQuery('(max-width: 425px)');
 
    useEffect(() => {
-      axios.get(`${dbLink}/online.json`).then((res) => {
+      axios.get(`${dbLink}/online/${server}.json`).then((res) => {
          const date = [];
          const online = [];
          for (let key in res.data) {
@@ -89,7 +89,7 @@ const OnlineChart = () => {
             type="line"
             options={options}
             height={isMedia ? 43 : 101}
-            style={{ borderRadius: '20px' }}
+            style={{ borderRadius: '0 0 20px 30px' }}
          />
       </>
    );

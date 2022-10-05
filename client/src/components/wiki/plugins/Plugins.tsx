@@ -4,7 +4,7 @@ import Card from '../card/Card';
 
 const Plugins: FC = () => {
    return (
-      <div className="plugins">
+      <div className="plugins fade-animation">
          <h3 className="text-center font-bold text-xl mt-3 mb-4">Плагины</h3>
          <div className="cards flex flex-wrap gap-4">
             {wikiPlugins.map((item, i) => (

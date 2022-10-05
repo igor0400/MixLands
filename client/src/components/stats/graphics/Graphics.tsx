@@ -46,19 +46,19 @@ const Graphics: FC = () => {
          name: 'roleplay',
          info: rolePlayInfo,
          textClass: 'orange-text',
-         disableGraphic: true,
+         disableGraphic: false,
       },
       {
          name: 'creative',
          info: creativeInfo,
          textClass: 'green-text',
-         disableGraphic: true,
+         disableGraphic: false,
       },
       {
          name: 'adventure',
          info: adventureInfo,
          textClass: 'purple-text',
-         disableGraphic: true,
+         disableGraphic: false,
       },
    ];
 
@@ -97,7 +97,7 @@ const Graphics: FC = () => {
                         </p>
                      ) : (
                         <div className="graphic__chart">
-                           <OnlineChart />
+                           <OnlineChart server={name} />
                         </div>
                      )}
                   </div>
