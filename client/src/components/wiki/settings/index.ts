@@ -2,7 +2,7 @@ export const wikiMods = [
    {
       name: 'PlasmoVoice',
       descr: 'Мод на голосовой чат, который нужен для общения и отыгровки RolePlay на нашем сервере.',
-      link: '',
+      link: 'https://minecraft-inside.ru/download/229567',
    },
    {
       name: 'EmoteCraft',
@@ -12,12 +12,12 @@ export const wikiMods = [
    {
       name: 'Sodium',
       descr: 'Мод на оптимизацию, который спокойно заменяет оптифайн, и даже имеет титул лучшего аналога.',
-      link: '',
+      link: 'https://minecraft-inside.ru/download/234554',
    },
    {
       name: 'Cit Resewn',
       descr: 'Мод на поддержку ресурспаков с OptiFine (которые используют Cit элементы). Предназначен для работы вместе с Sodium.',
-      link: '',
+      link: 'https://dl4.9minecraft.net/index.php?act=download&id=1661986465&hash=633d7d22ec739',
    },
    {
       name: 'FabricAPI',
