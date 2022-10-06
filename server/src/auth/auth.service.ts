@@ -1,15 +1,54 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { UserDto } from 'src/users/dto/user.dto';
 import * as bcrypt from 'bcryptjs';
+import { User } from '../users/user.model';
+import { UsersService } from 'src/users/users.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  async comparePasswords(password: string, hash: string): Promise<boolean> {
-    const match = await bcrypt.compare(password, hash);
+  constructor(
+    private userService: UsersService,
+    private jwtService: JwtService,
+  ) {}
 
-    if (match) {
-      return true;
+  async login(userDto: UserDto) {
+    const user = await this.validateUser(userDto);
+    return this.generateToken(user);
+  }
+
+  async refresh(token: string) {
+    try {
+      const decoded = this.jwtService.verify(token);
+      return this.userService.getUserById(decoded?.id);
+    } catch (e) {
+      throw new UnauthorizedException({
+        message: 'Некорректный токен',
+      });
+    }
+  }
+
+  private async generateToken(user: User) {
+    const payload = { nickname: user.LOWERCASENICKNAME, id: user.UUID };
+    return {
+      token: this.jwtService.sign(payload),
+      user,
+    };
+  }
+
+  private async validateUser(userDto: UserDto) {
+    const user = await this.userService.getUserByNickname(
+      userDto.nickname.toLowerCase(),
+    );
+    if (user) {
+      const passwordEquals = await bcrypt.compare(userDto.password, user.HASH);
+      if (passwordEquals) {
+        return user;
+      }
     }
 
-    return false;
+    throw new UnauthorizedException({
+      message: 'Некорректный никнейм или пароль',
+    });
   }
 }

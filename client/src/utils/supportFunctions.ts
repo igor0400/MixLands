@@ -1,4 +1,4 @@
-import { userType, onlineUserType, userTypeWithOnline } from './types';
+import { UserType, OnlineUserType, UserTypeWithOnline } from './types';
 import { servers } from './someSettings';
 
 export function getSlicedNickname(nickname: string): string {
@@ -9,7 +9,7 @@ export function getSlicedNickname(nickname: string): string {
    return nickname;
 }
 
-const searchEmp = (items: userType[], inputValue: string) => {
+const searchEmp = (items: UserType[], inputValue: string) => {
    if (inputValue.length === 0) {
       return items;
    }
@@ -20,11 +20,11 @@ const searchEmp = (items: userType[], inputValue: string) => {
 };
 
 const filterUsersByActive = (
-   users: userType[],
+   users: UserType[],
    filter: string,
-   onlineUsers: onlineUserType[]
+   onlineUsers: OnlineUserType[]
 ) => {
-   let data: userType[] = [];
+   let data: UserType[] = [];
 
    if (filter === 'all') {
       return users;
@@ -34,8 +34,8 @@ const filterUsersByActive = (
       const onlineFilteredPlayers: any = [];
 
       // получание онлайн пользователей
-      users.map((item: userType) => {
-         onlineUsers.map((player: onlineUserType) => {
+      users.map((item: UserType) => {
+         onlineUsers.map((player: OnlineUserType) => {
             if (item.NICKNAME === player.nickname) {
                onlineFilteredPlayers.push({
                   ...item,
@@ -52,7 +52,7 @@ const filterUsersByActive = (
       servers.forEach((server) => {
          if (filter === server) {
             data = onlineFilteredPlayers.filter(
-               (item: userTypeWithOnline) => item?.online?.server === server
+               (item: UserTypeWithOnline) => item?.online?.server === server
             );
          }
       });
@@ -62,11 +62,11 @@ const filterUsersByActive = (
 };
 
 export function getFilteredUsers(
-   users: userType[],
+   users: UserType[],
    inputValue: string,
    activeFilter: string,
-   onlineUsers: onlineUserType[]
-): userType[] {
+   onlineUsers: OnlineUserType[]
+): UserType[] {
    const visibleData = filterUsersByActive(
       searchEmp(users, inputValue),
       activeFilter,

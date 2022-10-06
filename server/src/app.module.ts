@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { User } from './users/users.model';
-import { UserModule } from './users/user.module';
+import { User } from './users/user.model';
+import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ServerInfoModule } from './server-info/server-info.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ envFilePath: `.env` }),
+    ConfigModule.forRoot({ envFilePath: '.env' }),
     SequelizeModule.forRoot({
       dialect: 'mysql',
       host: process.env.MYSQL_HOST,
@@ -19,7 +19,7 @@ import { ServerInfoModule } from './server-info/server-info.module';
       models: [User],
       define: { timestamps: false },
     }),
-    UserModule,
+    UsersModule,
     AuthModule,
     ServerInfoModule,
   ],

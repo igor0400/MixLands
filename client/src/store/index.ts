@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import { usersSlice } from '../slices/usersSlice';
 import { serverInfoSlice } from '../slices/serverInfoSlice';
+import user from '../slices/userSlice';
 
 const stringMiddleware =
    () => (next: Function) => (action: string | object) => {
@@ -16,6 +17,7 @@ const stringMiddleware =
 
 const store = configureStore({
    reducer: {
+      user,
       [usersSlice.reducerPath]: usersSlice.reducer,
       [serverInfoSlice.reducerPath]: serverInfoSlice.reducer,
    },

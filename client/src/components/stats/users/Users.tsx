@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { useGetUsersQuery } from '../../../slices/usersSlice';
 import { useGetOnlineUsersQuery } from '../../../slices/serverInfoSlice';
 import { getSlicedNickname } from '../../../utils/supportFunctions';
-import { userType, onlineUserType } from '../../../utils/types';
+import { UserType, OnlineUserType } from '../../../utils/types';
 import { getFilteredUsers } from '../../../utils/supportFunctions';
 
 import { Link } from 'react-router-dom';
@@ -75,7 +75,7 @@ const Users: FC<Props> = ({ inputValue, activeFilter }: Props) => {
 
    return (
       <div className="users grid justify-center lg:justify-between">
-         {filteredUsers.map((item: userType, i: number) => (
+         {filteredUsers.map((item: UserType, i: number) => (
             <div className="user p-4 flex" key={i}>
                <Link to={item.NICKNAME}>
                   <div className="relative">
@@ -86,13 +86,13 @@ const Users: FC<Props> = ({ inputValue, activeFilter }: Props) => {
                         className="w-16 h-16 rounded"
                      />
                      {onlineUsers
-                        ? onlineUsers.map((player: onlineUserType, i: number) =>
+                        ? onlineUsers.map((player: OnlineUserType, i: number) =>
                              item.NICKNAME === player.nickname ? (
                                 <OverlayTrigger
                                    placement={'top'}
                                    overlay={
                                       <Tooltip id="tooltip-top">
-                                         <b>В игре</b>
+                                         <b>На сервере {player.server}</b>
                                       </Tooltip>
                                    }
                                    key={i}

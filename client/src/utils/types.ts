@@ -1,4 +1,4 @@
-export interface userType {
+export interface UserType {
    HASH: string;
    IP: string;
    LOWERCASENICKNAME: string;
@@ -9,13 +9,18 @@ export interface userType {
    BALANCE?: number;
 }
 
-export interface onlineUserType {
+export interface OnlineUserType {
    nickname: string;
    server: string;
 }
 
-export interface userTypeWithOnline extends userType {
+export interface UserTypeWithOnline extends UserType {
    online: {
       server: string;
    };
+}
+
+export interface ResponseType {
+   status: number;
+   data: UserType | string;
 }

@@ -1,48 +1,18 @@
 import { FC } from 'react';
 import { useState, SyntheticEvent } from 'react';
-import Box from '@mui/material/Box';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import { NavLink, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
+import { NavLink, useLocation, Link } from 'react-router-dom';
+import { LocationType, NavItemType, navsItems } from './utils';
+
+import { Box, Tabs, Tab } from '@mui/material';
 
 import logo from '../../images/icons/logo.svg';
 
 import './header.scss';
 
-interface locationType {
-   pathname: string;
-   search: string;
-   hash: string;
-   state: null | [];
-   key: string;
-}
-
-interface navItemType {
-   linkTo: string;
-   label: string;
-   id: number;
-}
-
-const navsItems = [
-   {
-      linkTo: '/',
-      label: 'Главная',
-      id: 0,
-   },
-   {
-      linkTo: '/stats',
-      label: 'Статистика',
-      id: 1,
-   },
-   {
-      linkTo: '/wiki',
-      label: 'Вики',
-      id: 2,
-   },
-];
-
-function returnPageNum(location: locationType) {
-   const page: Array<navItemType> = navsItems.filter(
+function returnPageNum(location: LocationType) {
+   const page: Array<NavItemType> = navsItems.filter(
       ({ linkTo }) => linkTo === location.pathname
    );
 
@@ -81,13 +51,21 @@ function NavTabs() {
 }
 
 const Header: FC = () => {
+   const { userAuth } = useSelector((state: any) => state.user);
+
    return (
       <header className="header">
          <div className="header__wrapper container mx-auto flex justify-between px-4">
             <img src={logo} alt="logo" />
             <NavTabs />
-            <div className="login flex items-center">
-               <button className="btn accent-btn ">Войти</button>
+            <div className="flex items-center">
+               {userAuth ? (
+                  <Link to="/profile">Профиль</Link>
+               ) : (
+                  <Link to="/login">
+                     <button className="btn accent-btn">Войти</button>
+                  </Link>
+               )}
             </div>
          </div>
       </header>
