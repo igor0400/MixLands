@@ -12,16 +12,19 @@ const RequireAuth: FC<Props> = ({ children }) => {
    const { isLoading } = useSelector((state: any) => state.user);
    const location = useLocation();
    const dispatch = useDispatch();
+   const token = localStorage.getItem('token');
 
    useEffect(() => {
-      pageRefresh(dispatch);
+      if (token) {
+         pageRefresh(dispatch);
+      }
    }, []);
 
    if (isLoading) {
       return <Loading />;
    }
 
-   if (!localStorage.getItem('token')) {
+   if (!token) {
       return <Navigate to="/login" state={{ from: location }} />;
    }
 

@@ -28,6 +28,8 @@ const Login: FC = () => {
    async function authUser() {
       if (nickname !== '' && password !== '') {
          setLoading(true);
+         setNickname('');
+         setPassword('');
          const { status, data } = await login(nickname, password);
 
          if (status === 200) {
