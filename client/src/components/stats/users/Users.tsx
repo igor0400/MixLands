@@ -40,9 +40,7 @@ const Users: FC<Props> = ({ inputValue, activeFilter }: Props) => {
          }),
       });
 
-   const isOnlineUsersLoad = activeFilter === 'online' && isOnlineUsersLoading;
-
-   if (isUsersLoading || isOnlineUsersLoad) {
+   if (isUsersLoading || isOnlineUsersLoading) {
       return (
          <Box className="flex my-10 justify-center">
             <CircularProgress sx={{ color: '#ff8a00' }} />

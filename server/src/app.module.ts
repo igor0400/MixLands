@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { User } from './users/user.model';
+import { PrivateUser } from './users/models/private-user.model';
+import { User } from './users/models/user.model';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ServerInfoModule } from './server-info/server-info.module';
@@ -16,7 +17,7 @@ import { ServerInfoModule } from './server-info/server-info.module';
       username: process.env.MYSQL_USERNAME,
       password: process.env.MYSQL_PASSWORD,
       database: process.env.MYSQL_DBNAME,
-      models: [User],
+      models: [User, PrivateUser],
       define: { timestamps: false },
     }),
     UsersModule,

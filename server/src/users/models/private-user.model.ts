@@ -1,7 +1,7 @@
 import { Column, Model, Table, DataType } from 'sequelize-typescript';
 
 @Table({ tableName: 'AUTH' })
-export class User extends Model {
+export class PrivateUser extends Model {
   @Column({ type: DataType.STRING, allowNull: false, unique: true })
   NICKNAME: string;
 

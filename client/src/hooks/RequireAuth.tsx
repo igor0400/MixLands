@@ -19,7 +19,10 @@ const RequireAuth: FC<Props> = ({ children }) => {
    useEffect(() => {
       if (token) {
          axios
-            .post(`${data.proxy}/auth/refresh`, { token })
+            .get(`${data.proxy}/auth/refresh`, {
+               withCredentials: true,
+               headers: { Authorization: `Bearer ${token}` },
+            })
             .then((res) => {
                dispatch(userLogin(res.data));
             })

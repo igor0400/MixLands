@@ -18,7 +18,7 @@ const Stats: FC = () => {
             Статистика наших серверов <br /> В реальном времени
          </h2>
          <Graphics />
-         <h2 className="text-center mt-12 text-xl font-black">
+         <h2 className="text-center mt-20 text-xl font-black">
             Список игроков нашего сервера <br /> В реальном времени
          </h2>
          <div className="users-cards container mx-auto px-4 pt-10">

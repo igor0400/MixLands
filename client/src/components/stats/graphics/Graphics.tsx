@@ -17,7 +17,7 @@ interface serverType {
 const defaultInfo = {
    players: {
       online: 0,
-      max: 0,
+      max: 200,
    },
 };
 
@@ -87,7 +87,7 @@ const Graphics: FC = () => {
                         <div className="graphic__descr__online">
                            <p className="title font-bold">Онлайн:</p>
                            <p>
-                              {info.online || 0}/{info.max || 0}
+                              {info.online || 0}/{defaultInfo.players.max}
                            </p>
                         </div>
                      </div>
