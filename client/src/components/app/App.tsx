@@ -1,5 +1,6 @@
 import { FC, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
 
 import Header from '../header/Header';
 import Footer from '../footer/Footer';
@@ -20,6 +21,18 @@ const App: FC = () => {
          <Header />
          <main>
             <AppRoutes />
+            <ToastContainer
+               position="bottom-right"
+               autoClose={5000}
+               hideProgressBar={false}
+               newestOnTop={false}
+               closeOnClick
+               rtl={false}
+               pauseOnFocusLoss
+               draggable
+               pauseOnHover
+               theme='colored'
+            />
          </main>
          <Footer />
       </div>

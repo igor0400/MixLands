@@ -6,7 +6,6 @@ interface UserState {
    userAuth: boolean;
    user: UserType | {};
    isLoading: boolean;
-   errors: string[];
 }
 
 const userAdapter = createEntityAdapter();
@@ -15,7 +14,6 @@ const initialState: UserState = {
    userAuth: false,
    user: {},
    isLoading: false,
-   errors: [],
 };
 
 export const userSlice = createSlice({
@@ -33,16 +31,10 @@ export const userSlice = createSlice({
       setLoading: (state, action: PayloadAction<boolean>) => {
          state.isLoading = action.payload;
       },
-      addError: (state, action: PayloadAction<any>) => {
-         state.errors.push(action.payload);
-      },
-      removeError: (state, action: PayloadAction<string>) => {
-         state.errors.filter((item) => item !== action.payload);
-      },
    },
 });
 
-export const { userLogin, userLogout, setLoading, addError, removeError } =
+export const { userLogin, userLogout, setLoading } =
    userSlice.actions;
 
 export const { selectAll } = userAdapter.getSelectors(

@@ -1,16 +1,16 @@
 import React, { useState, FC } from 'react';
 import { login } from '../../utils/auth';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router';
 import { userLogin } from '../../slices/userSlice';
-import { addError } from '../../slices/userSlice';
+import { toast } from 'react-toastify';
 
 import './login.scss';
 
 const Login: FC = () => {
    const [nickname, setNickname] = useState<string>('');
    const [password, setPassword] = useState<string>('');
-   const { errors } = useSelector((state: any) => state.user);
+   const [loading, setLoading] = useState<boolean>(false);
 
    const dispatch = useDispatch();
    const navigate = useNavigate();
@@ -26,17 +26,22 @@ const Login: FC = () => {
    }
 
    async function authUser() {
-      const { status, data } = await login(nickname, password);
+      if (nickname !== '' && password !== '') {
+         setLoading(true);
+         const { status, data } = await login(nickname, password);
 
-      if (status === 200) {
-         dispatch(userLogin(data));
-         navigate(fromPage);
-      } else {
-         dispatch(addError(data));
+         if (status === 200) {
+            dispatch(userLogin(data));
+            navigate(fromPage);
+         } else {
+            if (typeof data === 'string') {
+               toast.error(data);
+            }
+         }
+
+         setLoading(false);
       }
    }
-
-   if (errors.length) console.log(errors);
 
    return (
       <div className="login fade-animation mx-auto max-w-xl my-20">
@@ -56,7 +61,9 @@ const Login: FC = () => {
          />
          <br />
          <br />
-         <button onClick={authUser}>Войти</button>
+         <button onClick={authUser} disabled={loading}>
+            Войти
+         </button>
       </div>
    );
 };
