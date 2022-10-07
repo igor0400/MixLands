@@ -63,48 +63,46 @@ const Graphics: FC = () => {
    ];
 
    return (
-      <>
-         <div className="graphics flex flex-wrap justify-center my-10">
-            <div className="bg-ellipse bg-ellipse__orange"></div>
+      <div className="graphics flex flex-wrap justify-center my-10">
+         <div className="bg-ellipse bg-ellipse__orange"></div>
 
-            {servers.map(
-               (
-                  { name, info, textClass, disableGraphic }: serverType,
-                  i: number
-               ) => (
-                  <div className="graphic__wrapper" key={i}>
-                     <div className="graphic__descr flex justify-between p-7">
-                        <div className="graphic__descr__title flex">
-                           <div>
-                              <img src={logo} alt="logo" className="h-10" />
-                           </div>
-                           <p
-                              className={`uppercase font-bold px-1 text-sm ${textClass}`}
-                           >
-                              {name}
-                           </p>
+         {servers.map(
+            (
+               { name, info, textClass, disableGraphic }: serverType,
+               i: number
+            ) => (
+               <div className="graphic__wrapper" key={i}>
+                  <div className="graphic__descr flex justify-between p-7">
+                     <div className="graphic__descr__title flex">
+                        <div>
+                           <img src={logo} alt="logo" className="h-10" />
                         </div>
-                        <div className="graphic__descr__online">
-                           <p className="title font-bold">Онлайн:</p>
-                           <p>
-                              {info.online || 0}/{defaultInfo.players.max}
-                           </p>
-                        </div>
-                     </div>
-                     {disableGraphic ? (
-                        <p className="w-full h-32 flex justify-center items-center text-gray-400">
-                           Временно недоступно
+                        <p
+                           className={`uppercase font-bold px-1 text-sm ${textClass}`}
+                        >
+                           {name}
                         </p>
-                     ) : (
-                        <div className="graphic__chart">
-                           <OnlineChart server={name} />
-                        </div>
-                     )}
+                     </div>
+                     <div className="graphic__descr__online">
+                        <p className="title font-bold">Онлайн:</p>
+                        <p>
+                           {info.online || 0}/{defaultInfo.players.max}
+                        </p>
+                     </div>
                   </div>
-               )
-            )}
-         </div>
-      </>
+                  {disableGraphic ? (
+                     <p className="w-full h-32 flex justify-center items-center text-gray-400">
+                        Временно недоступно
+                     </p>
+                  ) : (
+                     <div className="graphic__chart">
+                        <OnlineChart server={name} />
+                     </div>
+                  )}
+               </div>
+            )
+         )}
+      </div>
    );
 };
 

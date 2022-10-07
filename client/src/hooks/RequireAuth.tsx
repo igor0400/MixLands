@@ -1,37 +1,29 @@
-import axios from 'axios';
-import { FC, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { userLogin } from '../slices/userSlice';
-import { useLocation, useNavigate } from 'react-router';
-
-import data from '../config.json';
+import { FC, useEffect } from 'react';
+import { useLocation, Navigate } from 'react-router';
+import { useSelector, useDispatch } from 'react-redux';
+import { pageRefresh } from '../utils/auth';
+import Loading from '../components/loading/Loading';
 
 interface Props {
    children: any;
 }
 
 const RequireAuth: FC<Props> = ({ children }) => {
-   const token = localStorage.getItem('token');
-   const dispatch = useDispatch();
+   const { isLoading } = useSelector((state: any) => state.user);
    const location = useLocation();
-   const navigate = useNavigate();
+   const dispatch = useDispatch();
 
    useEffect(() => {
-      if (token) {
-         axios
-            .get(`${data.proxy}/auth/refresh`, {
-               withCredentials: true,
-               headers: { Authorization: `Bearer ${token}` },
-            })
-            .then((res) => {
-               dispatch(userLogin(res.data));
-            })
-            .catch(() => {
-               localStorage.removeItem('token');
-               navigate('/login', { state: { from: location } });
-            });
-      }
+      pageRefresh(dispatch);
    }, []);
+
+   if (isLoading) {
+      return <Loading />;
+   }
+
+   if (!localStorage.getItem('token')) {
+      return <Navigate to="/login" state={{ from: location }} />;
+   }
 
    return children;
 };

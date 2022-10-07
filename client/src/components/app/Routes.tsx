@@ -11,7 +11,7 @@ import Page404 from '../errors/Page404';
 import RequireAuth from '../../hooks/RequireAuth';
 
 const AppRoutes: FC = () => {
-   const { userAuth } = useSelector((state: any) => state.user);
+   const { userAuth, isLoading } = useSelector((state: any) => state.user);
 
    return (
       <Routes>
@@ -27,7 +27,9 @@ const AppRoutes: FC = () => {
             }
          />
          <Route path="*" element={<Page404 />} />
-         {userAuth ? null : <Route path="login" element={<Login />} />}
+         {userAuth || isLoading ? null : (
+            <Route path="login" element={<Login />} />
+         )}
       </Routes>
    );
 };

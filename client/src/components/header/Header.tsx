@@ -1,65 +1,41 @@
 import { FC } from 'react';
-import { useState, SyntheticEvent } from 'react';
 import { useSelector } from 'react-redux';
 
-import { NavLink, useLocation, Link } from 'react-router-dom';
-import { LocationType, NavItemType, navsItems } from './utils';
-
-import { Box, Tabs, Tab } from '@mui/material';
+import { NavLink, Link, useLocation } from 'react-router-dom';
+import { navsItems } from './utils';
 
 import logo from '../../images/icons/logo.svg';
 
 import './header.scss';
 
-function returnPageNum(location: LocationType) {
-   const page: Array<NavItemType> = navsItems.filter(
-      ({ linkTo }) => linkTo === location.pathname
-   );
-
-   return page[0]?.id;
-}
-
-function NavTabs() {
-   const location = useLocation();
-   const [value, setValue] = useState(returnPageNum(location));
-
-   const handleChange = (event: SyntheticEvent, newValue: number) => {
-      setValue(newValue);
-   };
-
-   return (
-      <Box sx={{ width: '100%' }}>
-         <Tabs
-            value={value}
-            onChange={handleChange}
-            textColor="inherit"
-            centered
-         >
-            {navsItems.map(({ linkTo, label, id }) => (
-               <Tab
-                  key={id}
-                  label={label}
-                  component={NavLink}
-                  to={linkTo}
-                  className="nav-tab"
-                  disableRipple
-               />
-            ))}
-         </Tabs>
-      </Box>
-   );
-}
-
 const Header: FC = () => {
    const { userAuth } = useSelector((state: any) => state.user);
+   const location = useLocation();
 
    return (
       <header className="header">
          <div className="header__wrapper container mx-auto flex justify-between px-4">
             <img src={logo} alt="logo" />
-            <NavTabs />
+            <nav className="header__tabs flex">
+               {navsItems.map(({ linkTo, label }) => (
+                  <NavLink
+                     key={label}
+                     to={linkTo}
+                     className={
+                        location?.pathname === linkTo
+                           ? 'header__tab__active'
+                           : undefined
+                     }
+                  >
+                     <div className="header__tab opacity-50">{label}</div>
+                     {location?.pathname === linkTo ? (
+                        <div className="header__tab__active__border"></div>
+                     ) : null}
+                  </NavLink>
+               ))}
+            </nav>
             <div className="flex items-center">
-               {userAuth ? (
+               {userAuth || localStorage.getItem('token') ? (
                   <Link to="/profile">Профиль</Link>
                ) : (
                   <Link to="/login">
