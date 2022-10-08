@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import cors from 'cors';
 import fs from 'fs';
+import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const devOption = process.env.NODE_ENV;
@@ -29,6 +30,7 @@ async function bootstrap() {
     optionSuccessStatus: 200,
   };
 
+  app.use(cookieParser());
   app.use(cors(corsOptions));
 
   await app.listen(process.env.PORT, () =>

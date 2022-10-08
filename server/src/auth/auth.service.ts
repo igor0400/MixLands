@@ -1,55 +1,49 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserDto } from 'src/users/dto/user.dto';
-import * as bcrypt from 'bcryptjs';
-import { PrivateUser } from '../users/models/private-user.model';
+import { compare } from 'bcryptjs';
 import { UsersService } from 'src/users/users.service';
-import { JwtService } from '@nestjs/jwt';
-import { TokenDto } from './dto/token.dto';
+import { TokensService } from './tokens.service';
+import { LoginRequest } from './requests';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UsersService,
-    private jwtService: JwtService,
+    private tokensService: TokensService,
   ) {}
 
-  async login(userDto: UserDto) {
-    const user = await this.validateUser(userDto);
-    return this.generateToken(user);
-  }
+  async login(loginRequest: LoginRequest, response: Response) {
+    const user = await this.userService.getPrivateUserByNickname(
+      loginRequest.nickname,
+    );
+    const valid = user
+      ? await compare(loginRequest.password, user.HASH)
+      : false;
 
-  async refresh(token: TokenDto) {
-    try {
-      const decoded = this.jwtService.verify(token.authorization.split(' ')[1]);
-      return this.userService.getPrivateUserById(decoded?.id);
-    } catch (e) {
-      throw new UnauthorizedException({
-        message: 'Некорректный токен',
-      });
+    if (!valid) {
+      throw new UnauthorizedException('Некорректный никнейм или пароль');
     }
-  }
 
-  private async generateToken(user: PrivateUser) {
-    const payload = { nickname: user.LOWERCASENICKNAME, id: user.UUID };
-    return {
-      token: this.jwtService.sign(payload),
+    const accessToken = await this.tokensService.generateAccessToken(user);
+    const refreshToken = await this.tokensService.generateRefreshToken(
       user,
+      15 * 24 * 60 * 60,
+    );
+
+    response.cookie('refreshToken', refreshToken);
+    return {
+      user,
+      accessToken,
     };
   }
 
-  private async validateUser(userDto: UserDto) {
-    const user = await this.userService.getPrivateUserByNickname(
-      userDto.nickname.toLowerCase(),
-    );
-    if (user) {
-      const passwordEquals = await bcrypt.compare(userDto.password, user.HASH);
-      if (passwordEquals) {
-        return user;
-      }
-    }
+  async refresh(refreshToken: string) {
+    const { user, token } =
+      await this.tokensService.createAccessTokenFromRefreshToken(refreshToken);
 
-    throw new UnauthorizedException({
-      message: 'Некорректный никнейм или пароль',
-    });
+    return {
+      user,
+      accessToken: token,
+    };
   }
 }

@@ -6,6 +6,7 @@ import { User } from './users/models/user.model';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ServerInfoModule } from './server-info/server-info.module';
+import { RefreshToken } from './auth/models/refresh-token.model';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { ServerInfoModule } from './server-info/server-info.module';
       username: process.env.MYSQL_USERNAME,
       password: process.env.MYSQL_PASSWORD,
       database: process.env.MYSQL_DBNAME,
-      models: [User, PrivateUser],
+      models: [User, PrivateUser, RefreshToken],
       define: { timestamps: false },
     }),
     UsersModule,
