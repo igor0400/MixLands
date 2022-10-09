@@ -10,7 +10,12 @@ import {
 
 const { proxy } = data;
 
-export async function login(nickname: string, password: string) {
+export async function login(
+   nickname: string,
+   password: string,
+   navigate: Function,
+   fromPage: string
+) {
    let response: ResponseType = { status: 500, data: '' };
 
    await axios
@@ -21,6 +26,7 @@ export async function login(nickname: string, password: string) {
       )
       .then((res) => {
          const body = res.data;
+         navigate(fromPage);
          localStorage.setItem('token', body.accessToken);
          response = { status: 200, data: body.user };
       })
