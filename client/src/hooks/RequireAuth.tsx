@@ -10,7 +10,7 @@ interface Props {
 }
 
 const RequireAuth: FC<Props> = ({ children }) => {
-   const { isLoading } = useSelector((state: any) => state.user);
+   const { isLoading, isError } = useSelector((state: any) => state.user);
    const location = useLocation();
    const dispatch = useDispatch();
    const token = localStorage.getItem('token');
@@ -25,6 +25,10 @@ const RequireAuth: FC<Props> = ({ children }) => {
 
    if (isLoading) {
       return <Loading />;
+   }
+
+   if (isError) {
+      return <h2>Error</h2>;
    }
 
    if (!token) {

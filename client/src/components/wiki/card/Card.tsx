@@ -7,20 +7,17 @@ interface modeCardType {
    name: string;
    descr: string;
    link?: string;
-   children?: any;
    full?: boolean;
 }
 
-const ModeCard: FC<modeCardType> = ({ name, descr, link, children, full }) => {
+const ModeCard: FC<modeCardType> = ({ name, descr, link, full }) => {
    return (
       <div
          className="wiki-card rounded-lg p-3 flex flex-column"
          style={typeof full === 'boolean' ? { width: 'auto' } : undefined}
       >
          <h4 className="font-black text-lg mb-1">{name}</h4>
-         <p className="mb-2 text-base">
-            {descr} {children}
-         </p>
+         <p className="mb-2 text-base">{descr}</p>
          {typeof link == 'string' ? (
             <div className="flex mt-auto">
                <a href={link} className="flex font-black text-sm">

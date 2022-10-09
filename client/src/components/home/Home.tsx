@@ -42,12 +42,17 @@ const Home: FC = () => {
                      </ul>
                   </div>
                   <div className="towel-content__descr__btns flex pt-5">
-                     <button className="default-btn white-btn">
+                     <a
+                        className="default-btn white-btn"
+                        href="https://discord.gg/g487w5cCQz"
+                        target="_blank"
+                     >
                         Купить вход за 299₽
-                     </button>
+                     </a>
                      <a
                         className="default-btn none-bg-btn ml-4"
                         href="https://discord.gg/g487w5cCQz"
+                        target="_blank"
                      >
                         Discord
                      </a>

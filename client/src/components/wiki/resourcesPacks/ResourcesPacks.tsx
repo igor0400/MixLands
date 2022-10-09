@@ -9,13 +9,7 @@ const ResourcesPacks: FC = () => {
          <div className="cards flex flex-wrap gap-4">
             {wikiResourcespacks.map((item, i) => {
                if (item.name === 'VanillaTweaks') {
-                  return (
-                     <Card key={i} {...item}>
-                        <a href="https://vanillatweaks.net">
-                           https://vanillatweaks.net
-                        </a>
-                     </Card>
-                  );
+                  return <Card key={i} {...item} />;
                }
                return <Card key={i} {...item} />;
             })}

@@ -1,7 +1,12 @@
 import axios from 'axios';
 import { ResponseType } from './types';
 import data from '../config.json';
-import { userLogin, setLoading, userLogout } from '../slices/userSlice';
+import {
+   userLogin,
+   setLoading,
+   userLogout,
+   setError,
+} from '../slices/userSlice';
 
 const { proxy } = data;
 
@@ -22,7 +27,7 @@ export async function login(nickname: string, password: string) {
       .catch((err) => {
          response = {
             status: err.response.status,
-            data: err.response.data.message,
+            data: err.response?.data?.message || err.message,
          };
       });
 
@@ -57,9 +62,14 @@ export async function pageRefresh(dispatch: Function) {
          { userAgent: navigator.userAgent },
          { withCredentials: true }
       )
-      .catch(() => {
-         localStorage.removeItem('token');
-         dispatch(userLogout());
+      .catch((e) => {
+         console.log(e);
+         if (e.code === 'ERR_NETWORK') {
+            dispatch(setError(true));
+         } else {
+            localStorage.removeItem('token');
+            dispatch(userLogout());
+         }
       })
       .finally(() => dispatch(setLoading(false)));
 }

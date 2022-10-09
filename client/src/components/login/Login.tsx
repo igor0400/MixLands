@@ -35,8 +35,8 @@ const Login: FC = () => {
          const { status, data } = await login(nickname, password);
 
          if (status === 200) {
-            dispatch(userLogin(data));
             navigate(fromPage);
+            dispatch(userLogin(data));
          } else {
             if (typeof data === 'string') {
                toast.error(data);
@@ -44,6 +44,8 @@ const Login: FC = () => {
          }
 
          setLoading(false);
+      } else {
+         toast.error('Заполните все поля')
       }
    }
 
