@@ -26,7 +26,6 @@ function ChangePassModal() {
          <Modal
             show={show}
             onHide={handleClose}
-            onEnter={() => (document.body.style.paddingRight = '0')}
             className="change-pass-modal w-screen"
          >
             <Modal.Header>
