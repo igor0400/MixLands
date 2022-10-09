@@ -5,6 +5,8 @@ import { useNavigate, useLocation } from 'react-router';
 import { userLogin } from '../../slices/userSlice';
 import { toast } from 'react-toastify';
 
+import LoginView from './View';
+
 import './login.scss';
 
 const Login: FC = () => {
@@ -45,29 +47,16 @@ const Login: FC = () => {
       }
    }
 
-   return (
-      <div className="login fade-animation mx-auto max-w-xl my-20">
-         <input
-            type="text"
-            placeholder="nickname..."
-            value={nickname}
-            onChange={changeNicknameValue}
-         />
-         <br />
-         <br />
-         <input
-            type="password"
-            placeholder="password..."
-            value={password}
-            onChange={changePasswordValue}
-         />
-         <br />
-         <br />
-         <button onClick={authUser} disabled={loading}>
-            Войти
-         </button>
-      </div>
-   );
+   const props = {
+      nickname,
+      changeNicknameValue,
+      password,
+      changePasswordValue,
+      authUser,
+      loading,
+   };
+
+   return <LoginView {...props} />;
 };
 
 export default Login;

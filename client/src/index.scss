@@ -51,3 +51,9 @@ main {
    margin-top: 77px;
    flex: 1 1 auto;
 }
+
+input {
+   &:focus-visible {
+      outline: none;
+   }
+}

@@ -4,7 +4,7 @@ import { UserType } from '../utils/types';
 
 interface UserState {
    userAuth: boolean;
-   user: UserType | {};
+   userData: UserType | {};
    isLoading: boolean;
 }
 
@@ -12,7 +12,7 @@ const userAdapter = createEntityAdapter();
 
 const initialState: UserState = {
    userAuth: false,
-   user: {},
+   userData: {},
    isLoading: false,
 };
 
@@ -22,11 +22,11 @@ export const userSlice = createSlice({
    reducers: {
       userLogin: (state, action: PayloadAction<any>) => {
          state.userAuth = true;
-         state.user = action.payload;
+         state.userData = action.payload;
       },
       userLogout: (state) => {
          state.userAuth = false;
-         state.user = {};
+         state.userData = {};
       },
       setLoading: (state, action: PayloadAction<boolean>) => {
          state.isLoading = action.payload;

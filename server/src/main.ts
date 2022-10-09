@@ -25,13 +25,12 @@ async function bootstrap() {
   }
 
   const corsOptions = {
-    origin: '*',
     credentials: true,
-    optionSuccessStatus: 200,
+    origin: process.env.CLIENT_URL,
   };
 
-  app.use(cookieParser());
   app.use(cors(corsOptions));
+  app.use(cookieParser());
 
   await app.listen(process.env.PORT, () =>
     console.log(`Server started on port: ${process.env.PORT}`),

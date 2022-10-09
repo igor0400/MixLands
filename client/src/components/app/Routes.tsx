@@ -11,6 +11,8 @@ import Page404 from '../errors/Page404';
 import RequireAuth from '../../hooks/RequireAuth';
 
 const AppRoutes: FC = () => {
+   const { authUser, isLoading } = useSelector((state: any) => state.user);
+
    return (
       <Routes>
          <Route index element={<Home />} />
@@ -25,7 +27,7 @@ const AppRoutes: FC = () => {
             }
          />
          <Route path="*" element={<Page404 />} />
-         {localStorage.getItem('token') ? null : (
+         {localStorage.getItem('token') || authUser ? null : (
             <Route path="login" element={<Login />} />
          )}
       </Routes>

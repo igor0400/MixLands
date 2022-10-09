@@ -8,17 +8,29 @@ import { AuthService } from './auth.service';
 import { RefreshToken } from './models/refresh-token.model';
 import { RefreshTokensRepository } from './refresh-tokens.repository';
 import { TokensService } from './tokens.service';
+import { PrivateUser } from '../users/models/private-user.model';
+import { User } from '../users/models/user.model';
 
 @Module({
   controllers: [AuthController],
   providers: [AuthService, TokensService, RefreshTokensRepository],
   imports: [
-    ConfigModule.forRoot({ envFilePath: '.env' }),
+    ConfigModule.forRoot({ envFilePath: `.${process.env.NODE_ENV}.env` }),
+    SequelizeModule.forRoot({
+      dialect: 'mysql',
+      host: process.env.MYSQL_HOST,
+      port: Number(process.env.MYSQL_PORT),
+      username: process.env.MYSQL_USERNAME,
+      password: process.env.MYSQL_PASSWORD,
+      database: process.env.MYSQL_DBNAME,
+      models: [User, PrivateUser, RefreshToken],
+      define: { timestamps: false },
+    }),
     forwardRef(() => UsersModule),
     JwtModule.register({
       secret: process.env.PRIVATE_KEY,
       signOptions: {
-        expiresIn: '15m',
+        expiresIn: '5m',
       },
     }),
     SequelizeModule.forFeature([RefreshToken]),

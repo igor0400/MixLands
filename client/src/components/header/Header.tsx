@@ -9,7 +9,7 @@ import logo from '../../images/icons/logo.svg';
 import './header.scss';
 
 const Header: FC = () => {
-   const { userAuth } = useSelector((state: any) => state.user);
+   const { userAuth, isLoading } = useSelector((state: any) => state.user);
    const location = useLocation();
 
    return (
@@ -35,11 +35,11 @@ const Header: FC = () => {
                ))}
             </nav>
             <div className="flex items-center">
-               {userAuth || localStorage.getItem('token') ? (
+               {userAuth || isLoading || localStorage.getItem('token') ? (
                   <Link to="/profile">Профиль</Link>
                ) : (
                   <Link to="/login">
-                     <button className="btn accent-btn">Войти</button>
+                     <button className="default-btn accent-btn">Войти</button>
                   </Link>
                )}
             </div>

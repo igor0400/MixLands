@@ -1,4 +1,4 @@
-# MixLands - высокотехнологичный ванильный Minecraft сервер
+# MixLands - Minecraft сервер
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

@@ -9,10 +9,14 @@ export async function login(nickname: string, password: string) {
    let response: ResponseType = { status: 500, data: '' };
 
    await axios
-      .post(`${proxy}/auth/login`, { nickname, password })
+      .post(
+         `${proxy}/auth/login`,
+         { nickname, password, userAgent: navigator.userAgent },
+         { withCredentials: true }
+      )
       .then((res) => {
          const body = res.data;
-         localStorage.setItem('token', body.token);
+         localStorage.setItem('token', body.accessToken);
          response = { status: 200, data: body.user };
       })
       .catch((err) => {
@@ -28,17 +32,18 @@ export async function login(nickname: string, password: string) {
 export async function refresh(dispatch: Function) {
    dispatch(setLoading(true));
 
-   const token = localStorage.getItem('token');
-
    await axios
-      .get(`${proxy}/auth/refresh`, {
-         headers: { Authorization: `Bearer ${token}` },
-      })
+      .post(
+         `${proxy}/auth/refresh`,
+         { userAgent: navigator.userAgent },
+         { withCredentials: true }
+      )
       .then((res) => {
-         dispatch(userLogin(res.data));
+         dispatch(userLogin(res.data.user));
       })
       .catch(() => {
          localStorage.removeItem('token');
+         dispatch(userLogout());
       })
       .finally(() => dispatch(setLoading(false)));
 }
@@ -46,12 +51,12 @@ export async function refresh(dispatch: Function) {
 export async function pageRefresh(dispatch: Function) {
    dispatch(setLoading(true));
 
-   const token = localStorage.getItem('token');
-
    await axios
-      .get(`${proxy}/auth/refresh`, {
-         headers: { Authorization: `Bearer ${token}` },
-      })
+      .post(
+         `${proxy}/auth/refresh`,
+         { userAgent: navigator.userAgent },
+         { withCredentials: true }
+      )
       .catch(() => {
          localStorage.removeItem('token');
          dispatch(userLogout());

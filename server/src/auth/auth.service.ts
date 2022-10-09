@@ -1,9 +1,14 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { compare } from 'bcryptjs';
 import { UsersService } from 'src/users/users.service';
-import { TokensService } from './tokens.service';
+import {
+  refreshTokenTime,
+  refreshTokenTimeCookie,
+  TokensService,
+} from './tokens.service';
 import { LoginRequest } from './requests';
-import { Response } from 'express';
+import { Response, Request } from 'express';
+import { RefreshToken } from './models/refresh-token.model';
 
 @Injectable()
 export class AuthService {
@@ -12,7 +17,14 @@ export class AuthService {
     private tokensService: TokensService,
   ) {}
 
-  async login(loginRequest: LoginRequest, response: Response) {
+  async login(
+    loginRequest: LoginRequest,
+    response: Response,
+    request: Request,
+  ) {
+    const user_ip = request.ip;
+    const user_agent = loginRequest.userAgent;
+
     const user = await this.userService.getPrivateUserByNickname(
       loginRequest.nickname,
     );
@@ -24,26 +36,49 @@ export class AuthService {
       throw new UnauthorizedException('Некорректный никнейм или пароль');
     }
 
+    const userSession = await RefreshToken.findOne({
+      where: {
+        user_id: user.UUID,
+        user_ip,
+        user_agent,
+      },
+      include: { all: true },
+    });
+
     const accessToken = await this.tokensService.generateAccessToken(user);
     const refreshToken = await this.tokensService.generateRefreshToken(
+      userSession,
       user,
-      15 * 24 * 60 * 60,
+      { user_ip, user_agent },
+      refreshTokenTime,
     );
 
-    response.cookie('refreshToken', refreshToken);
+    response.cookie('refreshToken', refreshToken, {
+      maxAge: refreshTokenTimeCookie,
+      httpOnly: true,
+    });
+
     return {
       user,
       accessToken,
     };
   }
 
-  async refresh(refreshToken: string) {
-    const { user, token } =
-      await this.tokensService.createAccessTokenFromRefreshToken(refreshToken);
+  async refresh(request: Request, response: Response, userAgent: string) {
+    const { user, accessToken, refreshToken } =
+      await this.tokensService.createTokensFromRefreshToken(
+        request.cookies.refreshToken,
+        userAgent,
+        request.ip,
+      );
 
+    response.cookie('refreshToken', refreshToken, {
+      maxAge: refreshTokenTimeCookie,
+      httpOnly: true,
+    });
     return {
       user,
-      accessToken: token,
+      accessToken,
     };
   }
 }

@@ -8,6 +8,9 @@ export class RefreshToken extends Model<RefreshToken> {
     unique: true,
     primaryKey: true,
   })
+  id: string;
+
+  @Column({ type: DataType.STRING, allowNull: false })
   user_id: string;
 
   @Column({ type: DataType.BOOLEAN, allowNull: false })
@@ -15,4 +18,10 @@ export class RefreshToken extends Model<RefreshToken> {
 
   @Column({ type: DataType.DATE, allowNull: false })
   expires: Date;
+
+  @Column({ type: DataType.STRING, allowNull: false })
+  user_ip: string;
+
+  @Column({ type: DataType.STRING, allowNull: false })
+  user_agent: string;
 }

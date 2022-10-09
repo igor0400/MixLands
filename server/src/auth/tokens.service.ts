@@ -8,10 +8,33 @@ import { PrivateUser } from 'src/users/models/private-user.model';
 import { UsersService } from 'src/users/users.service';
 import { RefreshTokensRepository } from './refresh-tokens.repository';
 
+import { v4 } from 'uuid';
+
 export interface RefreshTokenPayload {
-  jti: number;
+  jti: string;
   sub: string;
+  user_ip: string;
+  user_agent: string;
 }
+
+export interface AddOptionsType {
+  user_ip: string;
+  user_agent: string;
+}
+
+interface CreateTokensType {
+  accessToken: string;
+  refreshToken: string;
+  user: PrivateUser;
+}
+
+interface RefreshTokenOptions {
+  user_ip: string;
+  user_agent: string;
+}
+
+export const refreshTokenTime = 15 * 24 * 60 * 60;
+export const refreshTokenTimeCookie = 15 * 24 * 60 * 60 * 1000;
 
 @Injectable()
 export class TokensService {
@@ -38,18 +61,47 @@ export class TokensService {
   }
 
   public async generateRefreshToken(
+    userSession: RefreshToken | undefined,
     user: PrivateUser,
+    addOptions: AddOptionsType,
     expiresIn: number,
   ): Promise<string> {
-    const token = await this.tokens.createRefreshToken(user, expiresIn);
+    let token;
+    const { user_ip, user_agent } = addOptions;
 
+    const tokenId: string = v4();
     const opts: SignOptions = {
       expiresIn,
       subject: user.UUID,
-      jwtid: String(token.id),
+      jwtid: userSession ? userSession.id : tokenId,
     };
 
-    return this.jwt.signAsync({}, opts);
+    const refreshOpts: RefreshTokenOptions = {
+      user_ip,
+      user_agent,
+    };
+
+    if (userSession) {
+      token = this.jwt.signAsync(refreshOpts, opts);
+
+      const expiration = new Date();
+      expiration.setTime(expiration.getTime() + expiresIn);
+
+      userSession.expires = expiration;
+      userSession.save();
+    } else {
+      token = this.jwt.signAsync(refreshOpts, opts);
+
+      const addTokenOptions = {
+        user_ip,
+        user_agent,
+        tokenId,
+      };
+
+      await this.tokens.createRefreshToken(user, expiresIn, addTokenOptions);
+    }
+
+    return token;
   }
 
   public async resolveRefreshToken(
@@ -57,8 +109,6 @@ export class TokensService {
   ): Promise<{ user: PrivateUser; token: RefreshToken }> {
     const payload = await this.decodeRefreshToken(encoded);
     const token = await this.getStoredTokenFromRefreshTokenPayload(payload);
-
-    console.log(payload);
 
     if (!token) {
       throw new UnprocessableEntityException('Refresh token not found');
@@ -77,14 +127,43 @@ export class TokensService {
     return { user, token };
   }
 
-  public async createAccessTokenFromRefreshToken(
+  public async createTokensFromRefreshToken(
     refresh: string,
-  ): Promise<{ token: string; user: PrivateUser }> {
+    user_agent: string,
+    user_ip: string,
+  ): Promise<CreateTokensType> {
     const { user } = await this.resolveRefreshToken(refresh);
 
-    const token = await this.generateAccessToken(user);
+    const userSession = await RefreshToken.findOne({
+      where: {
+        user_id: user.UUID,
+        user_ip,
+        user_agent,
+      },
+      include: { all: true },
+    });
 
-    return { user, token };
+    if (!userSession) {
+      throw new UnprocessableEntityException('Refresh token not found');
+    }
+
+    const addOptions = { user_ip, user_agent };
+
+    const expiration = new Date();
+    expiration.setTime(expiration.getTime() + refreshTokenTime);
+
+    userSession.expires = expiration;
+    userSession.save();
+
+    const accessToken = await this.generateAccessToken(user);
+    const refreshToken = await this.generateRefreshToken(
+      userSession,
+      user,
+      addOptions,
+      refreshTokenTime,
+    );
+
+    return { user, accessToken, refreshToken };
   }
 
   private async decodeRefreshToken(
@@ -116,7 +195,7 @@ export class TokensService {
   private async getStoredTokenFromRefreshTokenPayload(
     payload: RefreshTokenPayload,
   ): Promise<RefreshToken | null> {
-    const tokenId = payload.sub;
+    const tokenId = payload.jti;
 
     if (!tokenId) {
       throw new UnprocessableEntityException('Refresh token malformed');

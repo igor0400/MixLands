@@ -3,6 +3,7 @@ import { useLocation, Navigate } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { pageRefresh } from '../utils/auth';
 import Loading from '../components/loading/Loading';
+import { userLogout } from '../slices/userSlice';
 
 interface Props {
    children: any;
@@ -17,8 +18,10 @@ const RequireAuth: FC<Props> = ({ children }) => {
    useEffect(() => {
       if (token) {
          pageRefresh(dispatch);
+      } else {
+         dispatch(userLogout());
       }
-   }, []);
+   }, [token]);
 
    if (isLoading) {
       return <Loading />;

@@ -1,7 +1,25 @@
 @import '../../styles/variables.scss';
 
 .login {
-  input {
-   color: #000;
-  }
+   &__content {
+      background: $background;
+      border: 1px solid $orangeBorder;
+      input {
+         background: $inputBackground;
+         margin: 2px;
+         &::placeholder {
+            color: $inputPlaceholderColor;
+         }
+         &:focus-visible {
+            border: 2px solid $orangeBorderActive;
+            margin: 0;
+         }
+      }
+      .gray-line {
+         background: #332e2a;
+      }
+      .orange-line {
+         background: $orangeBorder;
+      }
+   }
 }

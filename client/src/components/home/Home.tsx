@@ -42,11 +42,11 @@ const Home: FC = () => {
                      </ul>
                   </div>
                   <div className="towel-content__descr__btns flex pt-5">
-                     <button className="btn white-btn">
+                     <button className="default-btn white-btn">
                         Купить вход за 299₽
                      </button>
                      <a
-                        className="btn none-bg-btn ml-4"
+                        className="default-btn none-bg-btn ml-4"
                         href="https://discord.gg/g487w5cCQz"
                      >
                         Discord
@@ -112,11 +112,10 @@ const Home: FC = () => {
             <div className="bg-ellipse bg-ellipse__green"></div>
             <p className="mx-auto max-w-2xl text-center py-20">
                Администрация проекта MixLands старается для Вас, что бы принести
-               максимально комфортную игру. Мы ценим абсолютно
-               каждого нашего игрока, поэтому просим Вас, пожалуйста, не
-               нарушайте правила, тем самым Вы проявите ответное уважение к нам,
-               а так же предоставите меньше работы как для администрации, так и
-               для модерации.
+               максимально комфортную игру. Мы ценим абсолютно каждого нашего
+               игрока, поэтому просим Вас, пожалуйста, не нарушайте правила, тем
+               самым Вы проявите ответное уважение к нам, а так же предоставите
+               меньше работы как для администрации, так и для модерации.
             </p>
             <img className="bg-warder" src={warden} alt="warden" />
          </div>
