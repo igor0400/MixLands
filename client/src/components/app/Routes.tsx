@@ -9,9 +9,10 @@ import Login from '../login/Login';
 import Profile from '../profile';
 import Page404 from '../errors/Page404';
 import RequireAuth from '../../hooks/RequireAuth';
+import DiscordAuth from '../auth/discord';
 
 const AppRoutes: FC = () => {
-   const { authUser, isLoading } = useSelector((state: any) => state.user);
+   const { authUser, isDiscordAuth } = useSelector((state: any) => state.user);
 
    return (
       <Routes>
@@ -26,6 +27,18 @@ const AppRoutes: FC = () => {
                </RequireAuth>
             }
          />
+         <Route path="auth">
+            {isDiscordAuth ? null : (
+               <Route
+                  path="discord"
+                  element={
+                     <RequireAuth>
+                        <DiscordAuth />
+                     </RequireAuth>
+                  }
+               />
+            )}
+         </Route>
          <Route path="*" element={<Page404 />} />
          {localStorage.getItem('token') || authUser ? null : (
             <Route path="login" element={<Login />} />

@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { ResponseType } from './types';
-import data from '../config.json';
 import {
    userLogin,
    setLoading,
@@ -8,7 +7,7 @@ import {
    setError,
 } from '../slices/userSlice';
 
-const { proxy } = data;
+import { proxy } from '../config';
 
 export async function login(
    nickname: string,

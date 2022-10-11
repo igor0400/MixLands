@@ -1,10 +1,14 @@
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { UserType } from '../utils/types';
+import { PrivateUserType } from '../utils/types';
+
+type DiscordUserDataType = any;
 
 interface UserState {
-   userAuth: boolean;
-   userData: UserType | {};
+   isUserAuth: boolean;
+   isDiscordAuth: boolean;
+   userData: PrivateUserType | {};
+   discordUserData: DiscordUserDataType | {};
    isLoading: boolean;
    isError: boolean;
 }
@@ -12,8 +16,10 @@ interface UserState {
 const userAdapter = createEntityAdapter();
 
 const initialState: UserState = {
-   userAuth: false,
+   isUserAuth: false,
+   isDiscordAuth: false,
    userData: {},
+   discordUserData: {},
    isLoading: false,
    isError: false,
 };
@@ -22,12 +28,16 @@ export const userSlice = createSlice({
    name: 'user',
    initialState,
    reducers: {
-      userLogin: (state, action: PayloadAction<any>) => {
-         state.userAuth = true;
+      userLogin: (state, action: PayloadAction<PrivateUserType | string>) => {
+         state.isUserAuth = true;
          state.userData = action.payload;
       },
+      discordLogin: (state, action: PayloadAction<DiscordUserDataType>) => {
+         state.isDiscordAuth = true;
+         state.discordUserData = action.payload;
+      },
       userLogout: (state) => {
-         state.userAuth = false;
+         state.isUserAuth = false;
          state.userData = {};
       },
       setLoading: (state, action: PayloadAction<boolean>) => {
@@ -36,10 +46,26 @@ export const userSlice = createSlice({
       setError: (state, action: PayloadAction<boolean>) => {
          state.isError = action.payload;
       },
+      addDiscordUserData: (
+         state,
+         action: PayloadAction<DiscordUserDataType>
+      ) => {
+         state.discordUserData = {
+            ...state.discordUserData,
+            ...action.payload,
+         };
+      },
    },
 });
 
-export const { userLogin, userLogout, setLoading, setError } = userSlice.actions;
+export const {
+   userLogin,
+   discordLogin,
+   userLogout,
+   setLoading,
+   setError,
+   addDiscordUserData,
+} = userSlice.actions;
 
 export const { selectAll } = userAdapter.getSelectors(
    (state: any) => state.user

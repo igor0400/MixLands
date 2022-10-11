@@ -33,4 +33,62 @@
          }
       }
    }
+   .profile-btn {
+      svg {
+         z-index: 100;
+         margin: auto 0 auto 10px;
+         transform: rotate(180deg);
+         transition: 0.5s;
+         opacity: 0.5;
+         path {
+            transition: 0.3s;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+         }
+      }
+      .animated__profile-btn {
+         transform: rotate(0deg);
+         opacity: 1;
+      }
+      .profile-modal {
+         position: absolute;
+         top: 40px;
+         right: 0px;
+         a {
+            &:not(&:last-child) {
+               .profile-modal__nav {
+                  padding-bottom: 10px;
+               }
+            }
+         }
+
+         .dropdown__item {
+            background: $background;
+            border: 1px solid $orangeBorder;
+            min-width: 260px;
+            img {
+               width: 50px;
+               height: 50px;
+            }
+            h5 {
+               line-height: 1.125rem;
+            }
+            p {
+               opacity: 0.5;
+               cursor: pointer;
+               transition: 0.3s;
+               &:hover {
+                  opacity: 1;
+               }
+            }
+            .discord-btn {
+               font-size: 10px;
+               color: #fff;
+               background: #685bff;
+               border-radius: 3px;
+            }
+         }
+      }
+   }
 }

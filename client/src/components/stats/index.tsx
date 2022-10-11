@@ -22,7 +22,7 @@ const Stats: FC = () => {
             Список игроков нашего сервера <br /> В реальном времени
          </h2>
          <div className="users-cards container mx-auto px-4 pt-10">
-            <div className="users-serch pb-5">
+            <div className="users-serch pb-4">
                <div className="users-serch__btns mb-2">
                   {filterButtons.map(({ name, text }, i) => (
                      <button

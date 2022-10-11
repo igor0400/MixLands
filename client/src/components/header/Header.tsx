@@ -1,16 +1,28 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { navsItems } from './utils';
 
 import logo from '../../images/icons/logo.svg';
+import faceDefault from '../../images/face-default.png';
 
 import './header.scss';
+import ProfileModal from './ProfileModal';
 
 const Header: FC = () => {
-   const { userAuth, isLoading } = useSelector((state: any) => state.user);
+   const [isProfileHovered, setIsProfileHovered] = useState<boolean>(false);
+   const { userData, userAuth, isLoading } = useSelector(
+      (state: any) => state.user
+   );
    const location = useLocation();
+
+   const handleHover = () => {
+      setIsProfileHovered(true);
+   };
+   const handleUnHover = () => {
+      setIsProfileHovered(false);
+   };
 
    return (
       <header className="header">
@@ -36,7 +48,40 @@ const Header: FC = () => {
             </nav>
             <div className="flex items-center">
                {userAuth || isLoading || localStorage.getItem('token') ? (
-                  <Link to="/profile">Профиль</Link>
+                  <div
+                     className="profile-btn flex relative"
+                     onMouseLeave={handleUnHover}
+                     onMouseEnter={handleHover}
+                  >
+                     <img
+                        src={
+                           userData.NICKNAME
+                              ? `https://mc-heads.net/avatar/${userData.NICKNAME}`
+                              : faceDefault
+                        }
+                        onError={(e: any) => (e.target.src = faceDefault)}
+                        alt="avatar"
+                        className="w-11 h-11 rounded-md cursor-pointer"
+                     />
+                     <svg
+                        className={
+                           isProfileHovered
+                              ? 'cursor-pointer animated__profile-btn'
+                              : 'cursor-pointer'
+                        }
+                        width="18"
+                        height="18"
+                        viewBox="0 0 18 18"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                     >
+                        <path d="M15 12L9 6L3 12" stroke="#fff" />
+                     </svg>
+                     <ProfileModal
+                        userData={userData}
+                        isProfileHovered={isProfileHovered}
+                     />
+                  </div>
                ) : (
                   <Link to="/login">
                      <button className="default-btn accent-btn">Войти</button>

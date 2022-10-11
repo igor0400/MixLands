@@ -4,9 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-import data from '../../config.json';
-
-const { dbLink } = data;
+import { dbLink } from '../../config';
 
 const OnlineChart = ({ server }) => {
    const [labels, setLabel] = useState([]);

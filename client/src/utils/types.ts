@@ -1,4 +1,11 @@
 export interface UserType {
+   LOWERCASENICKNAME: string;
+   NICKNAME: string;
+   REGDATE: number;
+   HOURS: number;
+}
+
+export interface PrivateUserType {
    HASH: string;
    IP: string;
    LOWERCASENICKNAME: string;
@@ -6,6 +13,7 @@ export interface UserType {
    PREMIUMUUID: string;
    REGDATE: number;
    UUID: string;
+   HOURS: number;
    BALANCE?: number;
 }
 
@@ -22,5 +30,5 @@ export interface UserTypeWithOnline extends UserType {
 
 export interface ResponseType {
    status: number;
-   data: UserType | string;
+   data: PrivateUserType | string;
 }

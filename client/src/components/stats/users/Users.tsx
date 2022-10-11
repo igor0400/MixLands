@@ -73,19 +73,19 @@ const Users: FC<Props> = ({ inputValue, activeFilter }: Props) => {
 
    return (
       <div className="users grid justify-center lg:justify-between">
-         {filteredUsers.map((item: UserType, i: number) => (
+         {filteredUsers.map((user: UserType, i: number) => (
             <div className="user p-4 flex" key={i}>
-               <Link to={item.NICKNAME}>
+               <Link to={user.NICKNAME}>
                   <div className="relative">
                      <img
-                        src={`https://mc-heads.net/avatar/${item.NICKNAME}`}
+                        src={`https://mc-heads.net/avatar/${user.NICKNAME}`}
                         onError={(e: any) => (e.target.src = faceDefault)}
                         alt="avatar"
                         className="w-16 h-16 rounded"
                      />
                      {onlineUsers
                         ? onlineUsers.map((player: OnlineUserType, i: number) =>
-                             item.NICKNAME === player.nickname ? (
+                             user.NICKNAME === player.nickname ? (
                                 <OverlayTrigger
                                    placement={'top'}
                                    overlay={
@@ -107,10 +107,10 @@ const Users: FC<Props> = ({ inputValue, activeFilter }: Props) => {
 
                <div className="pl-4">
                   <h4 className="text-lg">
-                     {getSlicedNickname(item.NICKNAME)}
+                     {getSlicedNickname(user.NICKNAME, 16, 13)}
                   </h4>
                   <p>
-                     <span className="text-gray-400">Наиграно:</span> 0 ч.
+                     <span className="text-gray-400">Наиграно:</span> {user.HOURS} ч.
                   </p>
                </div>
             </div>

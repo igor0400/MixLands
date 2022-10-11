@@ -35,9 +35,6 @@ code {
    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
       monospace;
 }
-a:hover {
-   color: inherit;
-}
 
 .App {
    min-height: 100vh;
@@ -51,6 +48,10 @@ a:hover {
 main {
    margin-top: 77px;
    flex: 1 1 auto;
+}
+
+a:hover {
+   color: inherit;
 }
 
 input {

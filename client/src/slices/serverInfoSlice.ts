@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import data from '../config.json';
+import { proxy } from '../config';
 
 export const serverInfoSlice = createApi({
    reducerPath: 'serverInfo',
    baseQuery: fetchBaseQuery({
-      baseUrl: `${data.proxy}/server-info`,
+      baseUrl: `${proxy}/server-info`,
       prepareHeaders: (headers, { getState }) => {
          headers.set('Content-Security-Policy', 'upgrade-insecure-requests');
          return headers;

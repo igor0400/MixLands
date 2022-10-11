@@ -1,3 +1,5 @@
+@import '../../styles/variables.scss';
+
 .wiki {
    .bg-ellipse__orange {
       top: 0;
@@ -8,7 +10,7 @@
       ul {
          li {
             &:not(.active-nav) {
-               color: #b6b6b6;
+               color: $grayTextColor;
             }
             &:not(&:last-child) {
                margin-bottom: 5px;

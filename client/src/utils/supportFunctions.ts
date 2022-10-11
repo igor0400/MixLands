@@ -1,9 +1,13 @@
 import { UserType, OnlineUserType, UserTypeWithOnline } from './types';
 import { servers } from './someSettings';
 
-export function getSlicedNickname(nickname: string): string {
-   if (nickname.length > 16) {
-      return `${nickname.slice(0, 13)}...`;
+export function getSlicedNickname(
+   nickname: string,
+   length: number,
+   sliceLingth: number
+): string {
+   if (nickname.length > length) {
+      return `${nickname.slice(0, sliceLingth)}...`;
    }
 
    return nickname;
@@ -73,6 +77,5 @@ export function getFilteredUsers(
       onlineUsers
    );
 
-   return visibleData;
-   // const sortVisibleData = visibleData.sort((a, b) => b.hours - a.hours); сортировка по часам
+   return [...visibleData].sort((a, b) => a.HOURS - b.HOURS).reverse();
 }
