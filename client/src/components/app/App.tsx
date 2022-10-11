@@ -5,7 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import Header from '../header/Header';
 import Footer from '../footer/Footer';
 import AppRoutes from './Routes';
-import { refresh } from '../../utils/auth';
+import { getDiscordUserData, refresh } from '../../utils/auth';
 
 const App: FC = () => {
    const dispatch = useDispatch();
@@ -13,6 +13,14 @@ const App: FC = () => {
    useEffect(() => {
       if (localStorage.getItem('token')) {
          refresh(dispatch);
+      }
+
+      const discordOauthData = localStorage.getItem('discordOauthData');
+
+      if (discordOauthData) {
+         const oauthData = JSON.parse(discordOauthData);
+
+         getDiscordUserData(oauthData, dispatch);
       }
    }, []);
 

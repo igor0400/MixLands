@@ -5,9 +5,21 @@ import {
    setLoading,
    userLogout,
    setError,
+   discordLogin,
 } from '../slices/userSlice';
 
-import { proxy } from '../config';
+import { DSServer_id, DSServer_name, proxy, siteLink } from '../config';
+import { discordRoles } from '../utils/someSettings';
+
+interface serverUserDataType {
+   features: any[];
+   icon: string;
+   id: string;
+   name: string;
+   owner: boolean;
+   permissions: number;
+   permissions_new: string;
+}
 
 export async function login(
    nickname: string,
@@ -78,3 +90,34 @@ export async function pageRefresh(dispatch: Function) {
       })
       .finally(() => dispatch(setLoading(false)));
 }
+
+export const getDiscordUserData = async (
+   oauthData: any,
+   dispatch: Function
+) => {
+   const roles: any = [];
+
+   const serverUserData = await axios.get(
+      `https://discord.com/api/users/@me/guilds/${DSServer_id}/member`,
+      {
+         headers: {
+            authorization: `${oauthData.token_type} ${oauthData.access_token}`,
+         },
+      }
+   );
+
+   await discordRoles.forEach((item) => {
+      serverUserData.data?.roles.forEach((role: any) => {
+         if (item.id === role) {
+            roles.push(item);
+         }
+      });
+   });
+
+   dispatch(
+      discordLogin({
+         ...serverUserData.data,
+         roles,
+      })
+   );
+};
