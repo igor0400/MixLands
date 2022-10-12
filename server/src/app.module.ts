@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ServerInfoModule } from './server-info/server-info.module';
+import { AuthDiscordModule } from './auth-discord/auth-discord.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { ServerInfoModule } from './server-info/server-info.module';
     UsersModule,
     AuthModule,
     ServerInfoModule,
+    AuthDiscordModule,
   ],
   controllers: [],
   providers: [],

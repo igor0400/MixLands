@@ -22,7 +22,7 @@ import { User } from '../users/models/user.model';
       port: Number(process.env.MYSQL_PORT),
       username: process.env.MYSQL_USERNAME,
       password: process.env.MYSQL_PASSWORD,
-      database: process.env.MYSQL_DBNAME,
+      database: process.env.MYSQL_MAIN_DBNAME,
       models: [User, PrivateUser, RefreshToken],
       define: { timestamps: false },
     }),

@@ -8,6 +8,7 @@ import { AuthModule } from '../auth/auth.module';
 import { RefreshToken } from 'src/auth/models/refresh-token.model';
 import { UserHoursRolePlay } from './models/user-hours-roleplay.model';
 import { UserHoursCreative } from './models/user-hours-creative.model';
+import { SiteUserData } from './models/site-user-data.model';
 
 @Module({
   controllers: [UsersController],
@@ -18,6 +19,7 @@ import { UserHoursCreative } from './models/user-hours-creative.model';
       PrivateUser,
       UserHoursCreative,
       UserHoursRolePlay,
+      SiteUserData,
     ]),
     SequelizeModule.forRoot({
       dialect: 'mysql',
@@ -25,8 +27,8 @@ import { UserHoursCreative } from './models/user-hours-creative.model';
       port: Number(process.env.MYSQL_PORT),
       username: process.env.MYSQL_USERNAME,
       password: process.env.MYSQL_PASSWORD,
-      database: process.env.MYSQL_DBNAME,
-      models: [User, PrivateUser, RefreshToken],
+      database: process.env.MYSQL_MAIN_DBNAME,
+      models: [User, PrivateUser, RefreshToken, SiteUserData],
       define: { timestamps: false },
     }),
     SequelizeModule.forRoot({

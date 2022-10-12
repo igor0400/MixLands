@@ -1,13 +1,16 @@
 import { FC, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 
 import Header from '../header/Header';
 import Footer from '../footer/Footer';
 import AppRoutes from './Routes';
-import { getDiscordUserData, refresh } from '../../utils/auth';
+import { refresh } from '../../utils/auth';
 
 const App: FC = () => {
+   const { is_discord_auth } = useSelector(
+      (state: any) => state.user.userData.siteData
+   );
    const dispatch = useDispatch();
 
    useEffect(() => {
@@ -15,12 +18,8 @@ const App: FC = () => {
          refresh(dispatch);
       }
 
-      const discordOauthData = localStorage.getItem('discordOauthData');
-
-      if (discordOauthData) {
-         const oauthData = JSON.parse(discordOauthData);
-
-         getDiscordUserData(oauthData, dispatch);
+      if (is_discord_auth) {
+        
       }
    }, []);
 

@@ -4,6 +4,7 @@ import { User } from './models/user.model';
 import { PrivateUser } from './models/private-user.model';
 import { UserHoursCreative } from './models/user-hours-creative.model';
 import { UserHoursRolePlay } from './models/user-hours-roleplay.model';
+import { SiteUserData } from './models/site-user-data.model';
 
 @Injectable()
 export class UsersService {
@@ -16,6 +17,8 @@ export class UsersService {
     private privateUHCRepository: typeof UserHoursCreative,
     @InjectModel(UserHoursRolePlay)
     private privateUHRRepository: typeof UserHoursRolePlay,
+    @InjectModel(SiteUserData)
+    private siteUserDataRepository: typeof SiteUserData,
   ) {}
 
   async getAllUsers(): Promise<User[]> {
@@ -110,16 +113,21 @@ export class UsersService {
     return this.getPrivateUserObj(user, rTime + cTime);
   }
 
-  private getUserObj(user: User, hours: number) {
+  private async getUserObj(user: User, hours: number) {
+    const siteData = await this.getSiteUserData(user.LOWERCASENICKNAME);
+
     return {
       NICKNAME: user.NICKNAME,
       LOWERCASENICKNAME: user.LOWERCASENICKNAME,
       REGDATE: user.REGDATE,
       HOURS: Math.ceil(hours / 3.6e6),
+      siteData,
     };
   }
 
-  private getPrivateUserObj(user: PrivateUser, hours: number) {
+  private async getPrivateUserObj(user: PrivateUser, hours: number) {
+    const siteData = await this.getSiteUserData(user.LOWERCASENICKNAME);
+
     return {
       NICKNAME: user.NICKNAME,
       LOWERCASENICKNAME: user.LOWERCASENICKNAME,
@@ -129,6 +137,16 @@ export class UsersService {
       UUID: user.UUID,
       PREMIUMUUID: user.PREMIUMUUID,
       HOURS: Math.ceil(hours / 3.6e6),
+      siteData,
     };
+  }
+
+  private async getSiteUserData(nickname: string) {
+    const userData = await this.siteUserDataRepository.findOne({
+      where: { nickname },
+      include: { all: true },
+    });
+
+    return userData;
   }
 }
