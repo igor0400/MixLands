@@ -46,26 +46,11 @@ export const userSlice = createSlice({
       setError: (state, action: PayloadAction<boolean>) => {
          state.isError = action.payload;
       },
-      addDiscordUserData: (
-         state,
-         action: PayloadAction<DiscordUserDataType>
-      ) => {
-         state.discordUserData = {
-            ...state.discordUserData,
-            ...action.payload,
-         };
-      },
    },
 });
 
-export const {
-   userLogin,
-   discordLogin,
-   userLogout,
-   setLoading,
-   setError,
-   addDiscordUserData,
-} = userSlice.actions;
+export const { userLogin, discordLogin, userLogout, setLoading, setError } =
+   userSlice.actions;
 
 export const { selectAll } = userAdapter.getSelectors(
    (state: any) => state.user

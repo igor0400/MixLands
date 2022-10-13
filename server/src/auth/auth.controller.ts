@@ -1,7 +1,8 @@
-import { Body, Controller, Post, Res, Req } from '@nestjs/common';
+import { Body, Controller, Post, Res, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginRequest } from './requests';
 import { Response, Request } from 'express';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -16,12 +17,13 @@ export class AuthController {
     return this.authService.login(loginRequest, response, request);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('/refresh')
   public async refresh(
     @Req() request: Request,
     @Res({ passthrough: true }) response: Response,
-    @Body() userAgent: { userAgent: string },
+    @Body('userAgent') userAgent: string,
   ) {
-    return this.authService.refresh(request, response, userAgent.userAgent);
+    return this.authService.refresh(request, response, userAgent);
   }
 }

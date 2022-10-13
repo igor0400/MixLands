@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Query,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Query, Res, Param, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { AuthDiscordService } from './auth-discord.service';
 import { Response } from 'express';
@@ -23,9 +15,9 @@ export class AuthDiscordController {
     }
   }
 
-  @UseGuards(JwtAuthGuard) // ошибка
-  @Post('/user')
-  user(@Body('nickname') nickname: string) {
+  @UseGuards(JwtAuthGuard)
+  @Get('/user/:nickname')
+  user(@Param('nickname') nickname: string) {
     return this.authDiscordService.getUser(nickname);
   }
 }

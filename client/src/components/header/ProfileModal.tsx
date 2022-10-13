@@ -14,7 +14,7 @@ interface Props {
 }
 
 const ProfileModal: FC<Props> = ({ isProfileHovered, userData }) => {
-   const { isDiscordAuth } = useSelector((state: any) => state.user);
+   const { isDiscordRequired } = useSelector((state: any) => state.user);
 
    return (
       <div
@@ -41,7 +41,7 @@ const ProfileModal: FC<Props> = ({ isProfileHovered, userData }) => {
                         17
                      )}
                   </h5>
-                  {isDiscordAuth ? (
+                  {isDiscordRequired ? (
                      <div></div>
                   ) : (
                      <a

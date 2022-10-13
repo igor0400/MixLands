@@ -33,8 +33,8 @@ interface RefreshTokenOptions {
   user_agent: string;
 }
 
-export const refreshTokenTime = 15 * 24 * 60 * 60;
-export const refreshTokenTimeCookie = 15 * 24 * 60 * 60 * 1000;
+export const refreshTokenTime = 30 * 24 * 60 * 60;
+export const refreshTokenTimeCookie = 30 * 24 * 60 * 60 * 1000;
 
 @Injectable()
 export class TokensService {

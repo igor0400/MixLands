@@ -59,7 +59,7 @@ export class AuthService {
     });
 
     return {
-      user,
+      user: this.getSlicedUser(user),
       accessToken,
     };
   }
@@ -76,9 +76,20 @@ export class AuthService {
       maxAge: refreshTokenTimeCookie,
       httpOnly: true,
     });
+
     return {
-      user,
+      user: this.getSlicedUser(user),
       accessToken,
     };
+  }
+
+  private getSlicedUser(user) {
+    const slicedUser = JSON.parse(JSON.stringify(user));
+    delete slicedUser.UUID;
+    delete slicedUser.PREMIUMUUID;
+    delete slicedUser.IP;
+    delete slicedUser.HASH;
+
+    return slicedUser;
   }
 }

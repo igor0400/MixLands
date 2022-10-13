@@ -41,12 +41,20 @@ export async function login(
 
 export async function refresh(dispatch: Function) {
    dispatch(setLoading(true));
+   const token = localStorage.getItem('token');
 
    await axios
       .post(
          `${proxy}/auth/refresh`,
-         { userAgent: navigator.userAgent },
-         { withCredentials: true }
+         {
+            userAgent: navigator.userAgent,
+         },
+         {
+            headers: {
+               Authorization: `Bearer ${token}`,
+            },
+            withCredentials: true,
+         }
       )
       .then((res) => {
          dispatch(userLogin(res.data.user));
@@ -60,12 +68,18 @@ export async function refresh(dispatch: Function) {
 
 export async function pageRefresh(dispatch: Function) {
    dispatch(setLoading(true));
+   const token = localStorage.getItem('token');
 
    await axios
       .post(
          `${proxy}/auth/refresh`,
          { userAgent: navigator.userAgent },
-         { withCredentials: true }
+         {
+            headers: {
+               Authorization: `Bearer ${token}`,
+            },
+            withCredentials: true,
+         }
       )
       .catch((e) => {
          console.log(e);

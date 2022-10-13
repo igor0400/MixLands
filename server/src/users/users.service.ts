@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './models/user.model';
 import { PrivateUser } from './models/private-user.model';
@@ -21,8 +21,12 @@ export class UsersService {
     private siteUserDataRepository: typeof SiteUserData,
   ) {}
 
-  async getAllUsers(): Promise<User[]> {
+  async getAllUsers(): Promise<any[]> {
     const users = await this.userRepository.findAll({ include: { all: true } });
+
+    const usersSiteData = await this.siteUserDataRepository.findAll({
+      include: { all: true },
+    });
 
     const usersHoursR = await this.privateUHCRepository.findAll({
       include: { all: true },
@@ -36,6 +40,7 @@ export class UsersService {
 
     users.forEach((user) => {
       let hours: number = 0;
+      let siteData: any = undefined;
 
       usersHoursR.forEach((userHoursR) => {
         if (userHoursR.name === user.NICKNAME) {
@@ -47,8 +52,16 @@ export class UsersService {
           hours += userHoursC.time;
         }
       });
+      usersSiteData.forEach((item) => {
+        if (item.nickname === user.LOWERCASENICKNAME) {
+          siteData = {
+            bio: item.bio,
+            liked: item.liked,
+          };
+        }
+      });
 
-      usersWithHours.push(this.getUserObj(user, hours));
+      usersWithHours.push(this.getUserObj(user, hours, siteData));
     });
 
     return usersWithHours;
@@ -60,7 +73,8 @@ export class UsersService {
       include: { all: true },
     });
 
-    return this.getUserWithHours(user);
+    if (user) return this.getUserWithHours(user);
+    else throw new NotFoundException('Игрок не найден');
   }
 
   async getPrivateUserByNickname(nickname: string): Promise<PrivateUser> {
@@ -110,12 +124,10 @@ export class UsersService {
     const rTime = userHoursR?.time || 0;
     const cTime = userHoursC?.time || 0;
 
-    return this.getPrivateUserObj(user, rTime + cTime);
+    return await this.getPrivateUserObj(user, rTime + cTime);
   }
 
-  private async getUserObj(user: User, hours: number) {
-    const siteData = await this.getSiteUserData(user.LOWERCASENICKNAME);
-
+  private getUserObj(user: User, hours: number, siteData: any = undefined) {
     return {
       NICKNAME: user.NICKNAME,
       LOWERCASENICKNAME: user.LOWERCASENICKNAME,
@@ -126,18 +138,25 @@ export class UsersService {
   }
 
   private async getPrivateUserObj(user: PrivateUser, hours: number) {
+    let returnedSiteData: any = null;
+
     const siteData = await this.getSiteUserData(user.LOWERCASENICKNAME);
+    if (siteData) {
+      const siteDataCopy = JSON.parse(JSON.stringify(siteData));
+      delete siteDataCopy.discord_refresh_token;
+      returnedSiteData = siteDataCopy;
+    }
 
     return {
       NICKNAME: user.NICKNAME,
       LOWERCASENICKNAME: user.LOWERCASENICKNAME,
       REGDATE: user.REGDATE,
-      HASH: user.HASH,
-      IP: user.IP,
       UUID: user.UUID,
       PREMIUMUUID: user.PREMIUMUUID,
+      IP: user.IP,
+      HASH: user.HASH,
       HOURS: Math.ceil(hours / 3.6e6),
-      siteData,
+      siteData: returnedSiteData,
     };
   }
 

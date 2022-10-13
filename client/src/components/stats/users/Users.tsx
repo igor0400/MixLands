@@ -70,7 +70,6 @@ const Users: FC<Props> = ({ inputValue, activeFilter }: Props) => {
          </p>
       );
    }
-
    return (
       <div className="users grid justify-center lg:justify-between">
          {filteredUsers.map((user: UserType, i: number) => (
@@ -110,7 +109,8 @@ const Users: FC<Props> = ({ inputValue, activeFilter }: Props) => {
                      {getSlicedNickname(user.NICKNAME, 16, 13)}
                   </h4>
                   <p>
-                     <span className="text-gray-400">Наиграно:</span> {user.HOURS} ч.
+                     <span className="text-gray-400">Наиграно:</span>{' '}
+                     {user.HOURS} ч.
                   </p>
                </div>
             </div>

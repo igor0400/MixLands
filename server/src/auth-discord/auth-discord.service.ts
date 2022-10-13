@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import axios from 'axios';
 import { Response } from 'express';
@@ -42,11 +46,19 @@ export class AuthDiscordService {
         },
       );
 
-      const authData = new SiteUserData();
-      authData.nickname = userServerResponse.nick.toLowerCase();
-      authData.discord_refresh_token = refresh_token;
-      authData.is_discord_auth = true;
-      authData.save();
+      const nickname = userServerResponse.nick.toLowerCase();
+
+      const authData = await this.siteUserDataRepository.findOne({
+        where: { nickname },
+        include: { all: true },
+      });
+
+      const savedAuthData = authData || new SiteUserData();
+      savedAuthData.nickname = nickname;
+      savedAuthData.discord_refresh_token = refresh_token;
+      savedAuthData.is_discord_auth = true;
+      savedAuthData.is_discord_repeat_auth = false;
+      savedAuthData.save();
     } catch (e) {
       console.log(e);
       throw new UnauthorizedException();
@@ -56,16 +68,44 @@ export class AuthDiscordService {
   }
 
   async getUser(nickname: string) {
-    // сначала получать токен из бд по нику и делать запрос
-    //   const { data: userServerResponse } = await axios.get(
-    //     `https://discord.com/api/users/@me/guilds/${process.env.DS_SERVER_ID}/member`,
-    //     {
-    //       headers: {
-    //         Authorization: `Bearer ${access_token}`,
-    //       },
-    //     },
-    //   );
-    // потом сделать получение юзера и обновление токена в бд
+    try {
+      const userSession = await this.siteUserDataRepository.findOne({
+        where: { nickname },
+        include: { all: true },
+      });
+
+      const { discord_refresh_token } = userSession;
+
+      const { new_refresh_token, new_access_token } =
+        await this.getNewTokensByRefresh(discord_refresh_token);
+
+      const { data: userServerResponse } = await axios.get(
+        `https://discord.com/api/users/@me/guilds/${process.env.DS_SERVER_ID}/member`,
+        {
+          headers: {
+            Authorization: `Bearer ${new_access_token}`,
+          },
+        },
+      );
+
+      userSession.discord_refresh_token = new_refresh_token;
+      userSession.save();
+
+      return userServerResponse;
+    } catch (e) {
+      const userSession = await this.siteUserDataRepository.findOne({
+        where: { nickname },
+        include: { all: true },
+      });
+
+      if (userSession) {
+        userSession.is_discord_repeat_auth = true;
+        userSession.save();
+      }
+
+      console.log(e);
+      throw new BadRequestException();
+    }
   }
 
   private async getNewTokensByRefresh(refresh_token: string) {
@@ -87,8 +127,8 @@ export class AuthDiscordService {
     );
 
     return {
-      refresh_token: response.refresh_token,
-      access_token: response.access_token,
+      new_refresh_token: response.refresh_token,
+      new_access_token: response.access_token,
     };
   }
 }

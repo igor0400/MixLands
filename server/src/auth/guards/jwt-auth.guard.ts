@@ -26,10 +26,12 @@ export class JwtAuthGuard implements CanActivate {
         });
       }
 
-      const user = this.jwtService.verify(token);
+      const key: any = 'SUPER_PRIVATE_MIXLANDS_KEY_FROM_IGOR';
+      const user = this.jwtService.verify(token, key);
       req.user = user;
       return true;
     } catch (e) {
+      console.log(e);
       throw new UnauthorizedException({
         message: 'Пользователь не авторизован',
       });
