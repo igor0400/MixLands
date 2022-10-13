@@ -3,12 +3,12 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { AuthDiscordController } from './auth-discord.controller';
 import { AuthDiscordService } from './auth-discord.service';
 import { SiteUserData } from 'src/users/models/site-user-data.model';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
   controllers: [AuthDiscordController],
-  providers: [AuthDiscordService, JwtService],
+  providers: [AuthDiscordService],
   imports: [
     ConfigModule.forRoot({ envFilePath: `.${process.env.NODE_ENV}.env` }),
     SequelizeModule.forFeature([SiteUserData]),
@@ -24,11 +24,7 @@ import { ConfigModule } from '@nestjs/config';
     }),
     JwtModule.register({
       secret: process.env.PRIVATE_KEY,
-      signOptions: {
-        expiresIn: '5m',
-      },
     }),
   ],
-  exports: [JwtModule],
 })
 export class AuthDiscordModule {}

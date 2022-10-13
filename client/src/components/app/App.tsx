@@ -1,10 +1,7 @@
 import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { toast, ToastContainer } from 'react-toastify';
-import { refresh } from '../../utils/auth';
-import axios from 'axios';
-import { proxy } from '../../config';
-import { discordLogin } from '../../slices/userSlice';
+import { ToastContainer } from 'react-toastify';
+import { refresh, refreshDiscord } from '../../utils/auth';
 
 import Header from '../header/Header';
 import Footer from '../footer/Footer';
@@ -21,25 +18,7 @@ const App: FC = () => {
          refresh(dispatch);
 
          if (userData?.siteData?.is_discord_auth) {
-            // ПЕРЕНЕСТИ ЭТО В AUTH
-            axios
-               .get(
-                  `${proxy}/auth/discord/user/${userData.LOWERCASENICKNAME}`,
-                  {
-                     headers: {
-                        Authorization: `Bearer ${token}`,
-                     },
-                     withCredentials: true
-                  }
-               )
-               .then((res) => {
-                  dispatch(discordLogin(res.data));
-               })
-               .catch(() => {
-                  if (userData?.siteData?.is_discord_repeat_auth) {
-                     toast.info('Повторите привязку Discord');
-                  }
-               });
+            refreshDiscord(userData, dispatch);
          }
       }
    }, [userData?.siteData?.is_discord_auth]);

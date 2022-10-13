@@ -1,7 +1,7 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { PrivateUserType } from '../../utils/types';
-import { getSlicedNickname } from '../../utils/supportFunctions';
+import { PrivateUserType, RoleType } from '../../utils/types';
+import { getSlicedNickname, getUserRoles } from '../../utils/supportFunctions';
 import { useSelector } from 'react-redux';
 
 import faceDefault from '../../images/face-default.png';
@@ -14,7 +14,24 @@ interface Props {
 }
 
 const ProfileModal: FC<Props> = ({ isProfileHovered, userData }) => {
-   const { isDiscordRequired } = useSelector((state: any) => state.user);
+   const [hightestRole, setHightestRole] = useState<RoleType>({
+      name: 'Loading...',
+      id: '000000000',
+      prioritet: 0,
+   });
+   const { isDiscordRequired, discordUserData } = useSelector(
+      (state: any) => state.user
+   );
+
+   useEffect(() => {
+      if (discordUserData.roles) {
+         setHightestRole(
+            getUserRoles(discordUserData.roles).sort(
+               (a, b) => b.prioritet - a.prioritet
+            )[0]
+         );
+      }
+   }, [discordUserData.roles]);
 
    return (
       <div
@@ -42,7 +59,7 @@ const ProfileModal: FC<Props> = ({ isProfileHovered, userData }) => {
                      )}
                   </h5>
                   {isDiscordRequired ? (
-                     <div></div>
+                     <div>{hightestRole.name}</div>
                   ) : (
                      <a
                         href={discordAuthLink}

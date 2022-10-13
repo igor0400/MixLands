@@ -32,3 +32,9 @@ export interface ResponseType {
    status: number;
    data: PrivateUserType | string;
 }
+
+export interface RoleType {
+   name: string;
+   id: string;
+   prioritet: number;
+}

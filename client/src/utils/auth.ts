@@ -5,9 +5,11 @@ import {
    setLoading,
    userLogout,
    setError,
+   discordLogin,
 } from '../slices/userSlice';
 
 import { proxy } from '../config';
+import { toast } from 'react-toastify';
 
 export async function login(
    nickname: string,
@@ -41,7 +43,6 @@ export async function login(
 
 export async function refresh(dispatch: Function) {
    dispatch(setLoading(true));
-   const token = localStorage.getItem('token');
 
    await axios
       .post(
@@ -49,15 +50,12 @@ export async function refresh(dispatch: Function) {
          {
             userAgent: navigator.userAgent,
          },
-         {
-            headers: {
-               Authorization: `Bearer ${token}`,
-            },
-            withCredentials: true,
-         }
+         { withCredentials: true }
       )
       .then((res) => {
-         dispatch(userLogin(res.data.user));
+         const data = res.data;
+         dispatch(userLogin(data.user));
+         localStorage.setItem('token', data.accessToken);
       })
       .catch(() => {
          localStorage.removeItem('token');
@@ -68,18 +66,12 @@ export async function refresh(dispatch: Function) {
 
 export async function pageRefresh(dispatch: Function) {
    dispatch(setLoading(true));
-   const token = localStorage.getItem('token');
 
    await axios
       .post(
          `${proxy}/auth/refresh`,
          { userAgent: navigator.userAgent },
-         {
-            headers: {
-               Authorization: `Bearer ${token}`,
-            },
-            withCredentials: true,
-         }
+         { withCredentials: true }
       )
       .catch((e) => {
          console.log(e);
@@ -91,4 +83,30 @@ export async function pageRefresh(dispatch: Function) {
          }
       })
       .finally(() => dispatch(setLoading(false)));
+}
+
+export async function refreshDiscord(userData: any, dispatch: Function) {
+   const token = localStorage.getItem('token');
+
+   axios
+      .get(`${proxy}/auth/discord/user/${userData.LOWERCASENICKNAME}`, {
+         headers: {
+            Authorization: `Bearer ${token}`,
+         },
+         withCredentials: true,
+      })
+      .then((res) => {
+         dispatch(discordLogin(res.data));
+      })
+      .catch(() => {
+         try {
+            refresh(dispatch);
+            // refreshDiscord(userData, dispatch);
+         } catch (e) {
+            if (userData?.siteData?.is_discord_repeat_auth) {
+               toast.info('Повторите привязку Discord');
+            }
+            toast.error('При ошибке повторите попытку привязки позже');
+         }
+      });
 }

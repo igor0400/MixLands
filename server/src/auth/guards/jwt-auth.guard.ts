@@ -26,8 +26,7 @@ export class JwtAuthGuard implements CanActivate {
         });
       }
 
-      const key: any = 'SUPER_PRIVATE_MIXLANDS_KEY_FROM_IGOR';
-      const user = this.jwtService.verify(token, key);
+      const user = this.jwtService.verify(token);
       req.user = user;
       return true;
     } catch (e) {
