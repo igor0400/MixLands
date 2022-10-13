@@ -5,11 +5,9 @@ import {
    setLoading,
    userLogout,
    setError,
-   discordLogin,
 } from '../slices/userSlice';
 
 import { proxy } from '../config';
-import { toast } from 'react-toastify';
 
 export async function login(
    nickname: string,
@@ -85,28 +83,3 @@ export async function pageRefresh(dispatch: Function) {
       .finally(() => dispatch(setLoading(false)));
 }
 
-export async function refreshDiscord(userData: any, dispatch: Function) {
-   const token = localStorage.getItem('token');
-
-   axios
-      .get(`${proxy}/auth/discord/user/${userData.LOWERCASENICKNAME}`, {
-         headers: {
-            Authorization: `Bearer ${token}`,
-         },
-         withCredentials: true,
-      })
-      .then((res) => {
-         dispatch(discordLogin(res.data));
-      })
-      .catch(() => {
-         try {
-            refresh(dispatch);
-            // refreshDiscord(userData, dispatch);
-         } catch (e) {
-            if (userData?.siteData?.is_discord_repeat_auth) {
-               toast.info('Повторите привязку Discord');
-            }
-            toast.error('При ошибке повторите попытку привязки позже');
-         }
-      });
-}

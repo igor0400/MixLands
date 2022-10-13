@@ -1,12 +1,9 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PrivateUserType, RoleType } from '../../utils/types';
-import { getSlicedNickname, getUserRoles } from '../../utils/supportFunctions';
-import { useSelector } from 'react-redux';
+import { getSlicedNickname } from '../../utils/supportFunctions';
 
 import faceDefault from '../../images/face-default.png';
-
-import { discordAuthLink } from '../../config';
 
 interface Props {
    isProfileHovered: boolean;
@@ -19,19 +16,6 @@ const ProfileModal: FC<Props> = ({ isProfileHovered, userData }) => {
       id: '000000000',
       prioritet: 0,
    });
-   const { isDiscordRequired, discordUserData } = useSelector(
-      (state: any) => state.user
-   );
-
-   useEffect(() => {
-      if (discordUserData.roles) {
-         setHightestRole(
-            getUserRoles(discordUserData.roles).sort(
-               (a, b) => b.prioritet - a.prioritet
-            )[0]
-         );
-      }
-   }, [discordUserData.roles]);
 
    return (
       <div
@@ -58,16 +42,7 @@ const ProfileModal: FC<Props> = ({ isProfileHovered, userData }) => {
                         17
                      )}
                   </h5>
-                  {isDiscordRequired ? (
-                     <div>{hightestRole.name}</div>
-                  ) : (
-                     <a
-                        href={discordAuthLink}
-                        className="discord-btn font-semibold p-1"
-                     >
-                        Привязать Discord
-                     </a>
-                  )}
+                  <div className='font-sm'>{hightestRole.name}</div>
                </div>
             </div>
 

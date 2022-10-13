@@ -1,7 +1,10 @@
-import { UserType, OnlineUserType, UserTypeWithOnline, RoleType } from './types';
+import {
+   UserType,
+   OnlineUserType,
+   UserTypeWithOnline,
+   RoleType,
+} from './types';
 import { servers, discordRoles } from './someSettings';
-
-
 
 export function getUserRoles(roles: string[]) {
    const rightRoles: RoleType[] = [];
