@@ -15,7 +15,7 @@ const Home: FC = () => {
             <div className="towel-content flex justify-between 2xl:justify-center items-center container mx-auto px-4">
                <div className="towel-content__descr mr-10 xl:mr-0">
                   <h1 className="text-5xl font-black mb-2">
-                     Высокотехнологичный ванильный <br /> сервер Minecraft.
+                     Высокотехнологичный ванильный <br /> сервер Minecraft
                   </h1>
                   <p className="font-semibold py-4">
                      Выживайте, отыгрывайте RolePlay, стройте города и ищите
