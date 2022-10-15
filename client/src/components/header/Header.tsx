@@ -12,6 +12,7 @@ import ProfileModal from './ProfileModal';
 
 const Header: FC = () => {
    const [isProfileHovered, setIsProfileHovered] = useState<boolean>(false);
+
    const { userData, userAuth, isLoading } = useSelector(
       (state: any) => state.user
    );
@@ -78,7 +79,6 @@ const Header: FC = () => {
                         <path d="M15 12L9 6L3 12" stroke="#fff" />
                      </svg>
                      <ProfileModal
-                        userData={userData}
                         isProfileHovered={isProfileHovered}
                      />
                   </div>

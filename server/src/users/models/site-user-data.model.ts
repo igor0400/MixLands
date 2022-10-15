@@ -10,17 +10,11 @@ export class SiteUserData extends Model<SiteUserData> {
   })
   nickname: string;
 
-  @Column({ type: DataType.BOOLEAN, allowNull: true })
-  is_discord_auth?: boolean;
-
-  @Column({ type: DataType.BOOLEAN, allowNull: true })
-  is_discord_repeat_auth?: boolean;
-
-  @Column({ type: DataType.STRING, allowNull: true })
-  discord_refresh_token?: string;
-
   @Column({ type: DataType.STRING, allowNull: true })
   bio?: string;
+
+  @Column({ type: DataType.STRING, allowNull: true })
+  lor?: string;
 
   @Column({ type: DataType.INTEGER, allowNull: true })
   liked?: number;

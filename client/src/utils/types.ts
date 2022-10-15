@@ -35,6 +35,6 @@ export interface ResponseType {
 
 export interface RoleType {
    name: string;
-   id: string;
-   prioritet: number;
+   color: string;
+   top_role: boolean;
 }

@@ -88,6 +88,18 @@
                background: #685bff;
                border-radius: 3px;
             }
+            .role {
+               width: fit-content;
+               background: rgba(82, 82, 82, 0.3);
+               &__circle {
+                  display: flex;
+                  margin: auto;
+                  border-radius: 50%;
+                  width: 13px;
+                  height: 13px;
+                  margin-right: 5px;
+               }
+            }
          }
       }
    }

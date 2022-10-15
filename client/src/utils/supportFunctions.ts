@@ -2,23 +2,8 @@ import {
    UserType,
    OnlineUserType,
    UserTypeWithOnline,
-   RoleType,
 } from './types';
-import { servers, discordRoles } from './someSettings';
-
-export function getUserRoles(roles: string[]) {
-   const rightRoles: RoleType[] = [];
-
-   roles.forEach((userRole) => {
-      discordRoles.forEach((discordRole) => {
-         if (userRole === discordRole.id) {
-            rightRoles.push(discordRole);
-         }
-      });
-   });
-
-   return rightRoles;
-}
+import { servers } from './someSettings';
 
 export function getSlicedNickname(
    nickname: string,

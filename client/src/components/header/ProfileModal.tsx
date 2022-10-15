@@ -1,21 +1,30 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { PrivateUserType, RoleType } from '../../utils/types';
+import { RoleType } from '../../utils/types';
 import { getSlicedNickname } from '../../utils/supportFunctions';
 
 import faceDefault from '../../images/face-default.png';
+import { useSelector } from 'react-redux';
 
 interface Props {
    isProfileHovered: boolean;
-   userData: PrivateUserType;
 }
 
-const ProfileModal: FC<Props> = ({ isProfileHovered, userData }) => {
+const ProfileModal: FC<Props> = ({ isProfileHovered }) => {
+   const { userData } = useSelector((state: any) => state.user);
    const [hightestRole, setHightestRole] = useState<RoleType>({
       name: 'Loading...',
-      id: '000000000',
-      prioritet: 0,
+      color: '#09a6e9',
+      top_role: true,
    });
+
+   useEffect(() => {
+      userData?.siteData?.roles.forEach((item: RoleType) => {
+         if (item.top_role) {
+            setHightestRole(item);
+         }
+      });
+   }, [userData?.siteData?.roles]);
 
    return (
       <div
@@ -42,7 +51,13 @@ const ProfileModal: FC<Props> = ({ isProfileHovered, userData }) => {
                         17
                      )}
                   </h5>
-                  <div className='font-sm'>{hightestRole.name}</div>
+                  <div className="flex role rounded-md py-1 px-2">
+                     <div
+                        className="role__circle"
+                        style={{ background: hightestRole.color }}
+                     ></div>
+                     <h6 className="text-xs">{hightestRole.name}</h6>
+                  </div>
                </div>
             </div>
 

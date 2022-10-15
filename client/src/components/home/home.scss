@@ -28,6 +28,7 @@
          }
       }
       .allay-content {
+         backdrop-filter: blur(35px);
          margin-top: -180px;
          &__wrapper {
             position: relative;

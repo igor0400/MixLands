@@ -1,3 +1,5 @@
+@import './variables.scss';
+
 .default-btn {
    padding: 10px 40px;
    color: #fff;
@@ -36,8 +38,7 @@
 }
 
 .blur-dark-bg {
-   background: rgba(24, 24, 24, 0.5);
-   backdrop-filter: blur(35px);
+   background: $blurBackground;
 }
 
 .bg-ellipse {
