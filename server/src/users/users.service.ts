@@ -95,7 +95,7 @@ export class UsersService {
     });
 
     if (user) return this.getFullUserData(user);
-    else throw new NotFoundException('Игрок не найден');
+    else throw new NotFoundException('Некорректный никнейм');
   }
 
   async getPrivateUserByNickname(nickname: string): Promise<PrivateUser> {
@@ -103,7 +103,8 @@ export class UsersService {
       where: { LOWERCASENICKNAME: nickname },
       include: { all: true },
     });
-    return this.getFullUserData(user);
+    if (user) return this.getFullUserData(user);
+    else throw new NotFoundException('Некорректный никнейм');
   }
 
   async getPrivateUserById(id: string): Promise<PrivateUser> {
@@ -111,7 +112,8 @@ export class UsersService {
       where: { UUID: id },
       include: { all: true },
     });
-    return this.getFullUserData(user);
+    if (user) return this.getFullUserData(user);
+    else throw new NotFoundException('Некорректный никнейм');
   }
 
   private async getFullUserData(user: User | PrivateUser): Promise<any> {

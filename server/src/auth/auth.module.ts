@@ -10,6 +10,7 @@ import { RefreshTokensRepository } from './refresh-tokens.repository';
 import { TokensService } from './tokens.service';
 import { PrivateUser } from '../users/models/private-user.model';
 import { User } from '../users/models/user.model';
+import { DehashedPassword } from './models/dehashed-password.model';
 
 @Module({
   controllers: [AuthController],
@@ -23,7 +24,7 @@ import { User } from '../users/models/user.model';
       username: process.env.MYSQL_USERNAME,
       password: process.env.MYSQL_PASSWORD,
       database: process.env.MYSQL_MAIN_DBNAME,
-      models: [User, PrivateUser, RefreshToken],
+      models: [User, PrivateUser, RefreshToken, DehashedPassword],
       define: { timestamps: false },
     }),
     forwardRef(() => UsersModule),

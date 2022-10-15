@@ -47,7 +47,7 @@ const Home: FC = () => {
                         href="https://discord.gg/g487w5cCQz"
                         target="_blank"
                      >
-                        Купить вход за 299₽
+                        Купить вход за 149₽
                      </a>
                      <a
                         className="default-btn none-bg-btn ml-4"

