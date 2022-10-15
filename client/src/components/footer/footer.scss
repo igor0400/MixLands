@@ -1,6 +1,7 @@
 .footer {
    color: #fff;
    border-top: 1px solid #302822;
+   backdrop-filter: blur(35px);
    &__wrapper {
       grid-template-columns: repeat(auto-fit, 260px);
       gap: 10px;
