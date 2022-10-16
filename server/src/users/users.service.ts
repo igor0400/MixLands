@@ -6,6 +6,10 @@ import { UserHoursCreative } from './models/user-hours-creative.model';
 import { UserHoursRolePlay } from './models/user-hours-roleplay.model';
 import { SiteUserData } from './models/site-user-data.model';
 import axios from 'axios';
+import {
+  OnlineDataType,
+  ServerInfoService,
+} from 'src/server-info/server-info.service';
 
 interface RoleType {
   name: string;
@@ -26,6 +30,7 @@ export class UsersService {
     private privateUHRRepository: typeof UserHoursRolePlay,
     @InjectModel(SiteUserData)
     private siteUserDataRepository: typeof SiteUserData,
+    private serverInfoService: ServerInfoService,
   ) {}
 
   async getAllUsers(): Promise<any[]> {
@@ -54,11 +59,14 @@ export class UsersService {
       include: { all: true },
     });
 
+    const onlineUsers = await this.serverInfoService.getOnlineUsers();
+
     const usersWithHours = [];
 
     users.forEach((user) => {
       let hours: number = 0;
       let siteData: any = undefined;
+      let status: string = 'Неактивен';
 
       usersHoursR.forEach((userHoursR) => {
         if (userHoursR.name === user.NICKNAME) {
@@ -79,10 +87,18 @@ export class UsersService {
         }
       });
 
+      onlineUsers.forEach((item: OnlineDataType) => {
+        if (item.nickname === user.NICKNAME) {
+          status = item.server;
+        }
+      });
+
       const userRoles =
         roles && roles[user.NICKNAME] ? roles[user.NICKNAME] : [];
 
-      usersWithHours.push(this.getUserObj(user, hours, siteData, userRoles));
+      usersWithHours.push(
+        this.getUserObj(user, hours, siteData, userRoles, status),
+      );
     });
 
     return usersWithHours;
@@ -95,7 +111,7 @@ export class UsersService {
     });
 
     if (user) return this.getFullUserData(user);
-    else throw new NotFoundException('Некорректный никнейм');
+    else throw new NotFoundException('Неверный никнейм');
   }
 
   async getPrivateUserByNickname(nickname: string): Promise<PrivateUser> {
@@ -104,7 +120,7 @@ export class UsersService {
       include: { all: true },
     });
     if (user) return this.getFullUserData(user);
-    else throw new NotFoundException('Некорректный никнейм');
+    else throw new NotFoundException('Неверный никнейм');
   }
 
   async getPrivateUserById(id: string): Promise<PrivateUser> {
@@ -113,7 +129,7 @@ export class UsersService {
       include: { all: true },
     });
     if (user) return this.getFullUserData(user);
-    else throw new NotFoundException('Некорректный никнейм');
+    else throw new NotFoundException('Неверный никнейм');
   }
 
   private async getFullUserData(user: User | PrivateUser): Promise<any> {
@@ -143,47 +159,43 @@ export class UsersService {
       include: { all: true },
     });
 
+    const status = await this.serverInfoService.checkPlayerOnline(
+      user.NICKNAME,
+    );
+
     const rTime = userHoursR?.time || 0;
     const cTime = userHoursC?.time || 0;
 
-    if (user instanceof PrivateUser) {
-      return await this.getPrivateUserObj(user, rTime + cTime, siteData, roles);
-    } else {
-      return this.getUserObj(user, rTime + cTime, siteData, roles);
-    }
+    return this.getUserObj(user, rTime + cTime, siteData, roles, status);
   }
 
   private getUserObj(
-    user: User,
+    user: User | PrivateUser,
     hours: number,
     siteData: any = undefined,
     roles: RoleType[] = undefined,
+    status: string | boolean,
   ) {
-    return {
+    const defaultData = {
       NICKNAME: user.NICKNAME,
       LOWERCASENICKNAME: user.LOWERCASENICKNAME,
       REGDATE: user.REGDATE,
       HOURS: Math.ceil(hours / 3.6e6),
-      siteData: { ...siteData, roles },
+      STATUS: status,
+      siteData: { ...siteData?.dataValues, roles },
     };
-  }
 
-  private async getPrivateUserObj(
-    user: PrivateUser,
-    hours: number,
-    siteData: any = undefined,
-    roles: RoleType[] = undefined,
-  ) {
-    return {
-      NICKNAME: user.NICKNAME,
-      LOWERCASENICKNAME: user.LOWERCASENICKNAME,
-      REGDATE: user.REGDATE,
-      UUID: user.UUID,
-      PREMIUMUUID: user.PREMIUMUUID,
-      IP: user.IP,
-      HASH: user.HASH,
-      HOURS: Math.ceil(hours / 3.6e6),
-      siteData: { ...siteData, roles },
-    };
+    const data =
+      user instanceof PrivateUser
+        ? {
+            ...defaultData,
+            UUID: user.UUID,
+            PREMIUMUUID: user.PREMIUMUUID,
+            IP: user.IP,
+            HASH: user.HASH,
+          }
+        : defaultData;
+
+    return data;
   }
 }

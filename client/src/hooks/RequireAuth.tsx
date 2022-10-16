@@ -3,7 +3,7 @@ import { useLocation, Navigate } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { pageRefresh } from '../utils/auth';
 import Loading from '../components/loading/Loading';
-import { userLogout } from '../slices/userSlice';
+import { setLoading, userLogout } from '../slices/userSlice';
 
 interface Props {
    children: any;
@@ -16,6 +16,7 @@ const RequireAuth: FC<Props> = ({ children }) => {
    const token = localStorage.getItem('token');
 
    useEffect(() => {
+      dispatch(setLoading(true));
       if (token) {
          pageRefresh(dispatch);
       } else {
@@ -27,12 +28,12 @@ const RequireAuth: FC<Props> = ({ children }) => {
       return <Loading />;
    }
 
-   if (isError) {
-      return <h2>Error</h2>;
-   }
-
    if (!token) {
       return <Navigate to="/login" state={{ from: location }} />;
+   }
+
+   if (isError) {
+      return <h2>Error</h2>;
    }
 
    return children;

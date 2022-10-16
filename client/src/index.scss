@@ -54,8 +54,13 @@ a:hover {
    color: inherit;
 }
 
-input {
+input,
+textarea {
    &:focus-visible {
       outline: none;
    }
+}
+
+.Toastify__toast-theme--dark {
+   background: rgb(44, 44, 44);
 }

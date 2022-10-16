@@ -83,3 +83,19 @@ export async function pageRefresh(dispatch: Function) {
       .finally(() => dispatch(setLoading(false)));
 }
 
+export async function getNewToken() {
+   try {
+      const { data } = await axios.post(
+         `${proxy}/auth/refresh`,
+         {
+            userAgent: navigator.userAgent,
+         },
+         { withCredentials: true }
+      );
+
+      localStorage.setItem('token', data.accessToken);
+      return data.accessToken;
+   } catch (e) {
+      localStorage.removeItem('token');
+   }
+}

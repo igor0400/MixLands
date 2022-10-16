@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from 'react-router';
 import { userLogin } from '../../slices/userSlice';
 import { toast } from 'react-toastify';
 
-import LoginView from './View';
+import LoginView from './LoginView';
 
 import './login.scss';
 
@@ -30,8 +30,6 @@ const Login: FC = () => {
    async function authUser() {
       if (nickname !== '' && password !== '') {
          setLoading(true);
-         setNickname('');
-         setPassword('');
          const { status, data } = await login(
             nickname,
             password,
@@ -40,6 +38,8 @@ const Login: FC = () => {
          );
 
          if (status === 200) {
+            setNickname('');
+            setPassword('');
             dispatch(userLogin(data));
          } else {
             if (typeof data === 'string') {

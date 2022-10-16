@@ -9,6 +9,32 @@
    transition: 0.3s;
 }
 
+.default-background {
+   background: $background;
+}
+
+.role {
+   display: flex;
+   width: fit-content;
+   padding: 4px 8px;
+   border-radius: 6px;
+   &__circle {
+      display: flex;
+      margin: auto;
+      border-radius: 50%;
+      width: 10px;
+      height: 10px;
+      margin-right: 5px;
+   }
+   h6 {
+      font-size: 12px;
+   }
+}
+
+.accent-border {
+   border: 1px solid $orangeBorder;
+}
+
 .active-nav {
    background: #ff7a00;
    color: #fff !important;

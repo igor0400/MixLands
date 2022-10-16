@@ -1,18 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 
+export interface OnlineDataType {
+  nickname: string;
+  server: string;
+}
+
 @Injectable()
 export class ServerInfoService {
   ports = {
-    roleplay: process.env.ROLEPLAY_PORT,
-    creative: process.env.CREATIVE_PORT,
-    adventure: process.env.ADVENTURE_PORT,
-    lobby: process.env.LOBBY_PORT,
-    builders: process.env.BUILDERS_PORT,
+    RolePlay: process.env.ROLEPLAY_PORT,
+    Creative: process.env.CREATIVE_PORT,
+    Adventure: process.env.ADVENTURE_PORT,
+    Lobby: process.env.LOBBY_PORT,
+    Builders: process.env.BUILDERS_PORT,
   };
 
   serverIp = process.env.SERVER_IP;
-  apiLink = 'https://api.mcsrvstat.us/2/';
+  apiLink = process.env.GET_STATS_LINK;
 
   async getOnlineCount(server: string) {
     let count = {
@@ -43,10 +48,12 @@ export class ServerInfoService {
           const players = res.data?.players?.list;
 
           if (players) {
-            const proPlayers = players.map((item) => ({
-              nickname: item,
-              server: key,
-            }));
+            const proPlayers = players.map(
+              (item: string): OnlineDataType => ({
+                nickname: item,
+                server: key,
+              }),
+            );
 
             users = [...users, ...proPlayers];
           }
@@ -54,5 +61,18 @@ export class ServerInfoService {
     }
 
     return users;
+  }
+
+  async checkPlayerOnline(nickname: string): Promise<boolean | string> {
+    const users = await this.getOnlineUsers();
+    let isOnline: boolean | string = false;
+
+    users.forEach((item: OnlineDataType) => {
+      if (item.nickname === nickname) {
+        isOnline = item.server;
+      }
+    });
+
+    return isOnline;
   }
 }

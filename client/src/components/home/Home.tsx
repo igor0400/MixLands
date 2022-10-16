@@ -6,6 +6,7 @@ import allay from '../../images/allay.png';
 import warden from '../../images/warden.png';
 
 import './home.scss';
+import { dsServerLink } from '../../config';
 
 const Home: FC = () => {
    return (
@@ -44,14 +45,14 @@ const Home: FC = () => {
                   <div className="towel-content__descr__btns flex pt-5">
                      <a
                         className="default-btn white-btn"
-                        href="https://discord.gg/g487w5cCQz"
+                        href={dsServerLink}
                         target="_blank"
                      >
                         Купить вход за 149₽
                      </a>
                      <a
                         className="default-btn none-bg-btn ml-4"
-                        href="https://discord.gg/g487w5cCQz"
+                        href={dsServerLink}
                         target="_blank"
                      >
                         Discord

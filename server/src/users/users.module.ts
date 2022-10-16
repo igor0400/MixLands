@@ -9,10 +9,11 @@ import { RefreshToken } from 'src/auth/models/refresh-token.model';
 import { UserHoursRolePlay } from './models/user-hours-roleplay.model';
 import { UserHoursCreative } from './models/user-hours-creative.model';
 import { SiteUserData } from './models/site-user-data.model';
+import { ServerInfoService } from 'src/server-info/server-info.service';
 
 @Module({
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [UsersService, ServerInfoService],
   imports: [
     SequelizeModule.forFeature([
       User,

@@ -23,19 +23,19 @@ const defaultInfo = {
 
 const Graphics: FC = () => {
    const { data: rolePlayInfo = defaultInfo } = useGetOnlineCountQuery(
-      'roleplay',
+      'RolePlay',
       {
          selectFromResult: ({ data }) => ({ data }),
       }
    );
    const { data: creativeInfo = defaultInfo } = useGetOnlineCountQuery(
-      'creative',
+      'Creative',
       {
          selectFromResult: ({ data }) => ({ data }),
       }
    );
    const { data: adventureInfo = defaultInfo } = useGetOnlineCountQuery(
-      'adventure',
+      'Adventure',
       {
          selectFromResult: ({ data }) => ({ data }),
       }

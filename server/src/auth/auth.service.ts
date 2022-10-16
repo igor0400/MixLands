@@ -34,7 +34,7 @@ export class AuthService {
     const valid = user ? await compare(userPassword, user.HASH) : false;
 
     if (!valid) {
-      throw new UnauthorizedException('Некорректный пароль');
+      throw new UnauthorizedException('Неверный пароль');
     }
 
     let isBaned: boolean = false;

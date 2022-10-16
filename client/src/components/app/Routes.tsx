@@ -6,7 +6,7 @@ import Home from '../home/Home';
 import Stats from '../stats';
 import Wiki from '../wiki';
 import Login from '../login/Login';
-import Profile from '../profile';
+import ProfileMain from '../profile/main/Main';
 import Page404 from '../errors/Page404';
 import RequireAuth from '../../hooks/RequireAuth';
 
@@ -19,14 +19,15 @@ const AppRoutes: FC = () => {
          <Route path="stats" element={<Stats />} />
          <Route path="wiki" element={<Wiki />} />
          <Route
-            path="profile"
+            path="profile/main"
             element={
                <RequireAuth>
-                  <Profile />
+                  <ProfileMain />
                </RequireAuth>
             }
          />
          <Route path="*" element={<Page404 />} />
+         
          {localStorage.getItem('token') || authUser || isLoading ? null : (
             <Route path="login" element={<Login />} />
          )}

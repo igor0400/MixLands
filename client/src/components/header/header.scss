@@ -82,19 +82,7 @@
             }
 
             .role {
-               width: fit-content;
                background: rgba(82, 82, 82, 0.3);
-               &__circle {
-                  display: flex;
-                  margin: auto;
-                  border-radius: 50%;
-                  width: 10px;
-                  height: 10px;
-                  margin-right: 5px;
-               }
-               h6 {
-                  font-size: 12px;
-               }
             }
          }
       }

@@ -33,7 +33,7 @@ const App: FC = () => {
                pauseOnFocusLoss
                draggable
                pauseOnHover
-               theme="colored"
+               theme="dark"
             />
          </main>
          <Footer />

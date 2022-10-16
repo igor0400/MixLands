@@ -10,7 +10,7 @@
          border: 1px solid $orangeBorder;
          margin: 1px;
          &::placeholder {
-            color: #785d3d;
+            color: $orangePlaceholderColor;
          }
          &:focus-visible {
             outline: none;

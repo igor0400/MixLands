@@ -12,6 +12,7 @@ import ProfileModal from './ProfileModal';
 
 const Header: FC = () => {
    const [isProfileHovered, setIsProfileHovered] = useState<boolean>(false);
+   const [isImgLoad, setIsImgLoad] = useState<boolean>(false);
 
    const { userData, userAuth, isLoading } = useSelector(
       (state: any) => state.user
@@ -55,15 +56,21 @@ const Header: FC = () => {
                      onMouseEnter={handleHover}
                   >
                      <img
-                        src={
-                           userData.NICKNAME
-                              ? `https://mc-heads.net/avatar/${userData.NICKNAME}`
-                              : faceDefault
-                        }
-                        onError={(e: any) => (e.target.src = faceDefault)}
-                        alt="avatar"
+                        src={faceDefault}
+                        alt="head"
+                        style={{ display: isImgLoad ? 'none' : 'block' }}
                         className="w-11 h-11 rounded-md cursor-pointer"
                      />
+                     <img
+                        src={`https://mc-heads.net/avatar/${
+                           userData.NICKNAME || 'что-то'
+                        }`}
+                        alt="head"
+                        style={{ display: isImgLoad ? 'block' : 'none' }}
+                        className="w-11 h-11 rounded-md cursor-pointer"
+                        onLoad={() => setIsImgLoad(true)}
+                     />
+
                      <svg
                         className={
                            isProfileHovered
@@ -78,9 +85,7 @@ const Header: FC = () => {
                      >
                         <path d="M15 12L9 6L3 12" stroke="#fff" />
                      </svg>
-                     <ProfileModal
-                        isProfileHovered={isProfileHovered}
-                     />
+                     <ProfileModal isProfileHovered={isProfileHovered} />
                   </div>
                ) : (
                   <Link to="/login">

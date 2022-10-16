@@ -1,7 +1,7 @@
 export const servers = [
-   'roleplay',
-   'creative',
-   'adventure',
-   'lobby',
-   'builders',
+   'RolePlay',
+   'Creative',
+   'Adventure',
+   'Lobby',
+   'Builders',
 ];

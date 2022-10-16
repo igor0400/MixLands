@@ -4,7 +4,7 @@ import { PrivateUserType } from '../utils/types';
 
 interface UserState {
    isUserAuth: boolean;
-   userData: PrivateUserType | {};
+   userData: any;
    isLoading: boolean;
    isError: boolean;
 }
@@ -36,11 +36,23 @@ export const userSlice = createSlice({
       setError: (state, action: PayloadAction<boolean>) => {
          state.isError = action.payload;
       },
+      changeUserSiteInfo: (
+         state,
+         action: PayloadAction<{ bio: string; lor: string }>
+      ) => {
+         state.userData.siteData.bio = action.payload.bio;
+         state.userData.siteData.lor = action.payload.lor;
+      },
    },
 });
 
-export const { userLogin, userLogout, setLoading, setError } =
-   userSlice.actions;
+export const {
+   userLogin,
+   userLogout,
+   setLoading,
+   setError,
+   changeUserSiteInfo,
+} = userSlice.actions;
 
 export const { selectAll } = userAdapter.getSelectors(
    (state: any) => state.user
