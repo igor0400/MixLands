@@ -17,16 +17,6 @@ import { DehashedPassword } from './models/dehashed-password.model';
   providers: [AuthService, TokensService, RefreshTokensRepository],
   imports: [
     ConfigModule.forRoot({ envFilePath: `.${process.env.NODE_ENV}.env` }),
-    SequelizeModule.forRoot({
-      dialect: 'mysql',
-      host: process.env.MYSQL_HOST,
-      port: Number(process.env.MYSQL_PORT),
-      username: process.env.MYSQL_USERNAME,
-      password: process.env.MYSQL_PASSWORD,
-      database: process.env.MYSQL_MAIN_DBNAME,
-      models: [User, PrivateUser, RefreshToken, DehashedPassword],
-      define: { timestamps: false },
-    }),
     forwardRef(() => UsersModule),
     JwtModule.register({
       secret: process.env.PRIVATE_KEY,
@@ -34,7 +24,12 @@ import { DehashedPassword } from './models/dehashed-password.model';
         expiresIn: '5m',
       },
     }),
-    SequelizeModule.forFeature([RefreshToken]),
+    SequelizeModule.forFeature([
+      User,
+      PrivateUser,
+      RefreshToken,
+      DehashedPassword,
+    ]),
   ],
   exports: [AuthService, JwtModule],
 })

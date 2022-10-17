@@ -1,9 +1,16 @@
-import {
-   UserType,
-   OnlineUserType,
-   UserTypeWithOnline,
-} from './types';
+import { UserType, OnlineUserType, UserTypeWithOnline } from './types';
 import { servers } from './someSettings';
+
+export const getSortedPosts = (posts: any[]) => {
+   if (posts.length) {
+      return posts.sort(
+         (a, b) =>
+            +b.date.replace(/ |\.|:/g, '') - +a.date.replace(/ |\.|:/g, '')
+      );
+   }
+
+   return [];
+};
 
 export function getSlicedNickname(
    nickname: string,

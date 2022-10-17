@@ -10,6 +10,7 @@ import {
   OnlineDataType,
   ServerInfoService,
 } from 'src/server-info/server-info.service';
+import { PostsService } from 'src/posts/posts.service';
 
 interface RoleType {
   name: string;
@@ -31,6 +32,7 @@ export class UsersService {
     @InjectModel(SiteUserData)
     private siteUserDataRepository: typeof SiteUserData,
     private serverInfoService: ServerInfoService,
+    private postsService: PostsService,
   ) {}
 
   async getAllUsers(): Promise<any[]> {
@@ -61,12 +63,15 @@ export class UsersService {
 
     const onlineUsers = await this.serverInfoService.getOnlineUsers();
 
+    const posts = await this.postsService.getAllPosts();
+
     const usersWithHours = [];
 
     users.forEach((user) => {
       let hours: number = 0;
       let siteData: any = undefined;
       let status: string = 'Неактивен';
+      const userPosts = [];
 
       usersHoursR.forEach((userHoursR) => {
         if (userHoursR.name === user.NICKNAME) {
@@ -93,11 +98,17 @@ export class UsersService {
         }
       });
 
+      posts.forEach((item) => {
+        if (item.author === user.NICKNAME) {
+          userPosts.push(item);
+        }
+      });
+
       const userRoles =
         roles && roles[user.NICKNAME] ? roles[user.NICKNAME] : [];
 
       usersWithHours.push(
-        this.getUserObj(user, hours, siteData, userRoles, status),
+        this.getUserObj(user, hours, siteData, userRoles, userPosts, status),
       );
     });
 
@@ -163,10 +174,12 @@ export class UsersService {
       user.NICKNAME,
     );
 
+    const posts = await this.postsService.getUserPosts(user.NICKNAME);
+
     const rTime = userHoursR?.time || 0;
     const cTime = userHoursC?.time || 0;
 
-    return this.getUserObj(user, rTime + cTime, siteData, roles, status);
+    return this.getUserObj(user, rTime + cTime, siteData, roles, posts, status);
   }
 
   private getUserObj(
@@ -174,6 +187,7 @@ export class UsersService {
     hours: number,
     siteData: any = undefined,
     roles: RoleType[] = undefined,
+    posts: any[] = undefined,
     status: string | boolean,
   ) {
     const defaultData = {
@@ -182,7 +196,7 @@ export class UsersService {
       REGDATE: user.REGDATE,
       HOURS: Math.ceil(hours / 3.6e6),
       STATUS: status,
-      siteData: { ...siteData?.dataValues, roles },
+      siteData: { ...siteData?.dataValues, roles, posts },
     };
 
     const data =

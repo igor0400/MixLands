@@ -34,6 +34,6 @@ export class UserDataService {
       newUserData.save();
     }
 
-    return 'Данные обновлены';
+    return { nickname, bio, lor };
   }
 }

@@ -94,9 +94,7 @@ const Users: FC<Props> = ({ inputValue, activeFilter }: Props) => {
                                    }
                                    key={i}
                                 >
-                                   <div
-                                      className={`user__active__circle`}
-                                   ></div>
+                                   <div className="user__active__circle"></div>
                                 </OverlayTrigger>
                              ) : null
                           )

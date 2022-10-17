@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
+import classNames from 'classnames';
 
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { navsItems } from './utils';
@@ -72,11 +73,9 @@ const Header: FC = () => {
                      />
 
                      <svg
-                        className={
-                           isProfileHovered
-                              ? 'cursor-pointer animated__profile-btn'
-                              : 'cursor-pointer'
-                        }
+                        className={classNames('cursor-pointer', {
+                           'animated__profile-btn': isProfileHovered,
+                        })}
                         width="18"
                         height="18"
                         viewBox="0 0 18 18"

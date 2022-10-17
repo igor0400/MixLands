@@ -10,10 +10,13 @@ import { UserHoursRolePlay } from './models/user-hours-roleplay.model';
 import { UserHoursCreative } from './models/user-hours-creative.model';
 import { SiteUserData } from './models/site-user-data.model';
 import { ServerInfoService } from 'src/server-info/server-info.service';
+import { PostsService } from 'src/posts/posts.service';
+import { UserPost } from 'src/posts/models/user-post.model';
+import { FilesService } from 'src/files/files.service';
 
 @Module({
   controllers: [UsersController],
-  providers: [UsersService, ServerInfoService],
+  providers: [UsersService, ServerInfoService, PostsService, FilesService],
   imports: [
     SequelizeModule.forFeature([
       User,
@@ -21,37 +24,9 @@ import { ServerInfoService } from 'src/server-info/server-info.service';
       UserHoursCreative,
       UserHoursRolePlay,
       SiteUserData,
+      RefreshToken,
+      UserPost,
     ]),
-    SequelizeModule.forRoot({
-      dialect: 'mysql',
-      host: process.env.MYSQL_HOST,
-      port: Number(process.env.MYSQL_PORT),
-      username: process.env.MYSQL_USERNAME,
-      password: process.env.MYSQL_PASSWORD,
-      database: process.env.MYSQL_MAIN_DBNAME,
-      models: [User, PrivateUser, RefreshToken, SiteUserData],
-      define: { timestamps: false },
-    }),
-    SequelizeModule.forRoot({
-      dialect: 'mysql',
-      host: process.env.MYSQL_HOST,
-      port: Number(process.env.MYSQL_PORT),
-      username: process.env.MYSQL_USERNAME,
-      password: process.env.MYSQL_PASSWORD,
-      database: process.env.MYSQL_CREATIVE_DBNAME,
-      models: [UserHoursCreative],
-      define: { timestamps: false },
-    }),
-    SequelizeModule.forRoot({
-      dialect: 'mysql',
-      host: process.env.MYSQL_HOST,
-      port: Number(process.env.MYSQL_PORT),
-      username: process.env.MYSQL_USERNAME,
-      password: process.env.MYSQL_PASSWORD,
-      database: process.env.MYSQL_ROLEPLAY_DBNAME,
-      models: [UserHoursRolePlay],
-      define: { timestamps: false },
-    }),
     forwardRef(() => AuthModule),
   ],
   exports: [UsersService],

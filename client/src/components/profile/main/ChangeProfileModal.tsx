@@ -2,10 +2,9 @@ import { useState } from 'react';
 import { FC } from 'react';
 import { Modal, Spinner } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
 
 import edit from '../../../images/icons/edit.svg';
-import { postUserSiteInfo } from './postChanged';
+import { postUserSiteInfo } from './postData';
 
 const ChangeProfileModal: FC = () => {
    const { userData } = useSelector((state: any) => state.user);
@@ -37,7 +36,6 @@ const ChangeProfileModal: FC = () => {
 
          setLoading(false);
          handleClose();
-         toast.success('Изменения сохранены')
       }
    };
 

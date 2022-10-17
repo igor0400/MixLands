@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import classNames from 'classnames';
 
 import Rules from './rules/Rules';
 import Faq from './faq/Faq';
@@ -8,9 +9,6 @@ import Plugins from './plugins/Plugins';
 import Servers from './servers/Servers';
 
 import './index.scss';
-
-const navClass =
-   'px-20 py-3 text-center rounded-lg duration-300 cursor-pointer font-medium';
 
 const navs = [
    { name: 'rules', text: 'Правила', component: <Rules /> },
@@ -48,11 +46,10 @@ const Wiki: FC = () => {
                <ul>
                   {navs.map(({ name, text }, i) => (
                      <li
-                        className={
-                           activeWiki === name
-                              ? navClass + ' active-nav'
-                              : navClass
-                        }
+                        className={classNames(
+                           'px-20 py-3 text-center rounded-lg duration-300 cursor-pointer font-medium',
+                           { 'active-nav': activeWiki === name }
+                        )}
                         onClick={() => setActiveWiki(name)}
                         key={i}
                      >

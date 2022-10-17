@@ -43,6 +43,12 @@ export const userSlice = createSlice({
          state.userData.siteData.bio = action.payload.bio;
          state.userData.siteData.lor = action.payload.lor;
       },
+      addUserPost: (state, action: PayloadAction<any>) => {
+         state.userData.siteData.posts = [
+            ...state.userData.siteData.posts,
+            action.payload,
+         ];
+      },
    },
 });
 
@@ -52,6 +58,7 @@ export const {
    setLoading,
    setError,
    changeUserSiteInfo,
+   addUserPost,
 } = userSlice.actions;
 
 export const { selectAll } = userAdapter.getSelectors(

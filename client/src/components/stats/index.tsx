@@ -1,12 +1,11 @@
 import { FC, useState } from 'react';
 import { filterButtons } from './settings';
+import classNames from 'classnames';
 
 import Graphics from './graphics/Graphics';
 import Users from './users/Users';
 
 import './index.scss';
-
-const navClass = 'users-serch__btn px-8 py-2 mt-2 font-semibold rounded-lg';
 
 const Stats: FC = () => {
    const [activeFilter, setActiveFilter] = useState<string>('all');
@@ -27,11 +26,10 @@ const Stats: FC = () => {
                   {filterButtons.map(({ name, text }, i) => (
                      <button
                         key={i}
-                        className={
-                           activeFilter === name
-                              ? navClass + ' active-nav'
-                              : navClass
-                        }
+                        className={classNames(
+                           'users-serch__btn px-8 py-2 mt-2 font-semibold rounded-lg',
+                           { 'active-nav': activeFilter === name }
+                        )}
                         onClick={() => setActiveFilter(name)}
                      >
                         {text}
