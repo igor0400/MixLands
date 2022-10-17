@@ -1,13 +1,21 @@
-import { IsNotEmpty, Min, Max } from 'class-validator';
+import { IsNotEmpty, MinLength, MaxLength } from 'class-validator';
 
 export class ChangeUserInfoRequest {
   @IsNotEmpty({ message: 'Поле bio обязательно' })
-  @Min(1)
-  @Max(200)
+  @MinLength(1, {
+    message: 'Поле bio должно быть не короче 1 символа',
+  })
+  @MaxLength(50, {
+    message: 'Поле bio должно быть не больше 200 символов',
+  })
   readonly bio: string;
 
   @IsNotEmpty({ message: 'Поле lor обязательно' })
-  @Min(1)
-  @Max(200)
+  @MinLength(1, {
+    message: 'Поле lor должно быть не короче 1 символа',
+  })
+  @MaxLength(200, {
+    message: 'Поле lor должно быть не больше 200 символов',
+  })
   readonly lor: string;
 }
