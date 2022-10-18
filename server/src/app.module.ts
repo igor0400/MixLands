@@ -22,7 +22,7 @@ import * as path from 'path';
   imports: [
     ConfigModule.forRoot({ envFilePath: `.${process.env.NODE_ENV}.env` }),
     ServeStaticModule.forRoot({
-      rootPath: path.resolve(__dirname, '../../dist/static'),
+      rootPath: path.resolve(__dirname, '../static'),
     }),
 
     SequelizeModule.forRoot({

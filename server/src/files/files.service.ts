@@ -28,7 +28,7 @@ export class FilesService {
 
     try {
       const fileName = uuid() + `.${fileFormat}`;
-      const filePath = path.resolve(__dirname, '../../../dist/static');
+      const filePath = path.resolve(__dirname, '../../static');
       if (!fs.existsSync(filePath)) {
         fs.mkdirSync(filePath, { recursive: true });
       }

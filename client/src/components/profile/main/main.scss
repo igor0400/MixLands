@@ -38,13 +38,20 @@
          padding: 8px 35px;
       }
       .support-btns {
-         img {
+         .sup-btn {
             width: 35px;
             height: 35px;
             padding: 10px;
             border: 1px solid $orangeBorder;
             border-radius: 8px;
             cursor: pointer;
+            z-index: 1;
+            &__close {
+               z-index: 10;
+               top: -5px;
+               right: -15px;
+               cursor: pointer;
+            }
          }
          .file-input-active {
             border: 1px solid $orangeBorderActive;

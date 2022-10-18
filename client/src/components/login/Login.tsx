@@ -2,7 +2,7 @@ import React, { useState, FC } from 'react';
 import { login } from '../../utils/auth';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router';
-import { userLogin } from '../../slices/userSlice';
+import { setError, userLogin } from '../../slices/userSlice';
 import { toast } from 'react-toastify';
 
 import LoginView from './LoginView';
@@ -41,6 +41,7 @@ const Login: FC = () => {
             setNickname('');
             setPassword('');
             dispatch(userLogin(data));
+            dispatch(setError(false));
          } else {
             if (typeof data === 'string') {
                toast.error(data);

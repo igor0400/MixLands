@@ -9,6 +9,7 @@ import copy from '../../../images/icons/copy.svg';
 import emoju from '../../../images/icons/emoju.svg';
 import file from '../../../images/icons/file.svg';
 import success from '../../../images/icons/check.svg';
+import close from '../../../images/icons/x-close.svg';
 
 const CreatePost: FC = () => {
    const { userData } = useSelector((state: any) => state.user);
@@ -64,18 +65,32 @@ const CreatePost: FC = () => {
                <img
                   src={copy}
                   alt="copy"
-                  className="default-background"
+                  className="sup-btn default-background"
                   onClick={copyText}
                />
-               <img src={emoju} alt="emoju" className="default-background" />
                <img
-                  src={fileValue ? success : file}
-                  alt="file"
-                  className={classNames('default-background', {
-                     'file-input-active': fileValue,
-                  })}
-                  onClick={openFileSelect}
+                  src={emoju}
+                  alt="emoju"
+                  className="sup-btn default-background"
                />
+               <div className="relative">
+                  <img
+                     src={fileValue ? success : file}
+                     alt="file"
+                     className={classNames('sup-btn default-background', {
+                        'file-input-active': fileValue,
+                     })}
+                     onClick={openFileSelect}
+                  />
+                  {fileValue ? (
+                     <img
+                        src={close}
+                        alt="close"
+                        className="w-4 h-4 absolute sup-btn__close"
+                        onClick={() => setFileValue(false)}
+                     />
+                  ) : null}
+               </div>
 
                <input
                   type="file"
