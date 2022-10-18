@@ -22,41 +22,41 @@ const defaultInfo = {
 };
 
 const Graphics: FC = () => {
-   const { data: rolePlayInfo = defaultInfo } = useGetOnlineCountQuery(
-      'RolePlay',
-      {
-         selectFromResult: ({ data }) => ({ data }),
-      }
-   );
-   const { data: creativeInfo = defaultInfo } = useGetOnlineCountQuery(
-      'Creative',
-      {
-         selectFromResult: ({ data }) => ({ data }),
-      }
-   );
-   const { data: adventureInfo = defaultInfo } = useGetOnlineCountQuery(
-      'Adventure',
-      {
-         selectFromResult: ({ data }) => ({ data }),
-      }
-   );
+   // const { data: rolePlayInfo = defaultInfo } = useGetOnlineCountQuery(
+   //    'RolePlay',
+   //    {
+   //       selectFromResult: ({ data }) => ({ data }),
+   //    }
+   // );
+   // const { data: creativeInfo = defaultInfo } = useGetOnlineCountQuery(
+   //    'Creative',
+   //    {
+   //       selectFromResult: ({ data }) => ({ data }),
+   //    }
+   // );
+   // const { data: adventureInfo = defaultInfo } = useGetOnlineCountQuery(
+   //    'Adventure',
+   //    {
+   //       selectFromResult: ({ data }) => ({ data }),
+   //    }
+   // );
 
    const servers = [
       {
          name: 'roleplay',
-         info: rolePlayInfo,
+         info: defaultInfo,
          textClass: 'orange-text',
          disableGraphic: false,
       },
       {
          name: 'creative',
-         info: creativeInfo,
+         info: defaultInfo,
          textClass: 'green-text',
          disableGraphic: false,
       },
       {
          name: 'adventure',
-         info: adventureInfo,
+         info: defaultInfo,
          textClass: 'purple-text',
          disableGraphic: false,
       },
