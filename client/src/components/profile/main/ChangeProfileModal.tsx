@@ -4,7 +4,7 @@ import { Modal, Spinner } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 
 import edit from '../../../images/icons/edit.svg';
-import { postUserSiteInfo } from './postData';
+import { postUserSiteInfo } from './sendData';
 
 const ChangeProfileModal: FC = () => {
    const { userData } = useSelector((state: any) => state.user);

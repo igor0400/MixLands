@@ -1,6 +1,10 @@
 import { toast } from 'react-toastify';
-import { addUserPost, changeUserSiteInfo } from '../../../slices/userSlice';
-import { postRequest } from '../../../utils/requests';
+import {
+   addUserPost,
+   changeUserSiteInfo,
+   removeUserPost,
+} from '../../../slices/userSlice';
+import { deleteRequest, postRequest } from '../../../utils/requests';
 
 export const postUserSiteInfo = async (
    nickname: string,
@@ -25,6 +29,17 @@ export const sendPost = async (
    try {
       const res = await postRequest(`posts/${nickname}`, data);
       dispatch(addUserPost(res));
+   } catch (e: any) {
+      console.log(e);
+      toast.error(e?.message || 'Ошибка, попробуйте позже');
+   }
+};
+
+export const deleteUserPost = async (id: string, dispatch: Function) => {
+   try {
+      await deleteRequest(`posts/${id}`);
+      toast.success('Пост удален');
+      dispatch(removeUserPost(id));
    } catch (e: any) {
       console.log(e);
       toast.error(e?.message || 'Ошибка, попробуйте позже');

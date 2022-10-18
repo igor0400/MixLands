@@ -61,6 +61,16 @@
          background: rgba(255, 122, 0, 0.04);
       }
    }
+
+   .user-post {
+      background: #24211e;
+      &__date {
+         color: #58524d;
+      }
+      &__content {
+         color: #c8bdb3;
+      }
+   }
 }
 
 .change-profile-modal {

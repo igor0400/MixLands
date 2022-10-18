@@ -6,7 +6,7 @@ import Home from '../home/Home';
 import Stats from '../stats';
 import Wiki from '../wiki';
 import Login from '../login/Login';
-import ProfileMain from '../profile/main/Main';
+import ProfileMain from '../profile/main';
 import Page404 from '../errors/Page404';
 import RequireAuth from '../../hooks/RequireAuth';
 

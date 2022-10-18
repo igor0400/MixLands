@@ -40,6 +40,14 @@ export class PostsService {
     return post;
   }
 
+  async delete(id: string) {
+    const post = await this.userPostRepository.destroy({
+      where: { id },
+    });
+
+    return post;
+  }
+
   async getUserPosts(nickname: string) {
     const posts = await this.userPostRepository.findAll({
       where: { author: nickname },

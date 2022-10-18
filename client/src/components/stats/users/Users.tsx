@@ -1,18 +1,13 @@
 import { FC } from 'react';
 import { useGetUsersQuery } from '../../../slices/usersSlice';
 import { useGetOnlineUsersQuery } from '../../../slices/serverInfoSlice';
-import { getSlicedNickname } from '../../../utils/supportFunctions';
 import { UserType, OnlineUserType } from '../../../utils/types';
 import { getFilteredUsers } from '../../../utils/supportFunctions';
 
-import { Link } from 'react-router-dom';
 import { CircularProgress, Box } from '@mui/material';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
-
-import faceDefault from '../../../images/face-default.png';
 
 import './users.scss';
+import UserCard from './UserCard';
 
 interface Props {
    inputValue: string;
@@ -70,48 +65,11 @@ const Users: FC<Props> = ({ inputValue, activeFilter }: Props) => {
          </p>
       );
    }
+
    return (
       <div className="users grid justify-center lg:justify-between">
          {filteredUsers.map((user: UserType, i: number) => (
-            <div className="user p-4 flex" key={i}>
-               <Link to={user.NICKNAME}>
-                  <div className="relative">
-                     <img
-                        src={`https://mc-heads.net/avatar/${user.NICKNAME}`}
-                        onError={(e: any) => (e.target.src = faceDefault)}
-                        alt="avatar"
-                        className="w-16 h-16 rounded"
-                     />
-                     {onlineUsers
-                        ? onlineUsers.map((player: OnlineUserType, i: number) =>
-                             user.NICKNAME === player.nickname ? (
-                                <OverlayTrigger
-                                   placement={'top'}
-                                   overlay={
-                                      <Tooltip id="tooltip-top">
-                                         <b>На сервере {player.server}</b>
-                                      </Tooltip>
-                                   }
-                                   key={i}
-                                >
-                                   <div className="user__active__circle"></div>
-                                </OverlayTrigger>
-                             ) : null
-                          )
-                        : null}
-                  </div>
-               </Link>
-
-               <div className="pl-4">
-                  <h4 className="text-lg">
-                     {getSlicedNickname(user.NICKNAME, 16, 13)}
-                  </h4>
-                  <p>
-                     <span className="text-gray-400">Наиграно:</span>{' '}
-                     {user.HOURS} ч.
-                  </p>
-               </div>
-            </div>
+            <UserCard user={user} onlineUsers={onlineUsers} key={i} />
          ))}
       </div>
    );

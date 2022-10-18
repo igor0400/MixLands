@@ -49,6 +49,11 @@ export const userSlice = createSlice({
             action.payload,
          ];
       },
+      removeUserPost: (state, action: PayloadAction<string>) => {
+         state.userData.siteData.posts = state.userData.siteData.posts.filter(
+            (item: any) => item.id !== action.payload
+         );
+      },
    },
 });
 
@@ -59,6 +64,7 @@ export const {
    setError,
    changeUserSiteInfo,
    addUserPost,
+   removeUserPost,
 } = userSlice.actions;
 
 export const { selectAll } = userAdapter.getSelectors(

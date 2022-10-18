@@ -58,7 +58,7 @@ const Header: FC = () => {
                   >
                      <img
                         src={faceDefault}
-                        alt="head"
+                        alt="avatar"
                         style={{ display: isImgLoad ? 'none' : 'block' }}
                         className="w-11 h-11 rounded-md cursor-pointer"
                      />
@@ -66,7 +66,7 @@ const Header: FC = () => {
                         src={`https://mc-heads.net/avatar/${
                            userData.NICKNAME || 'что-то'
                         }`}
-                        alt="head"
+                        alt="avatar"
                         style={{ display: isImgLoad ? 'block' : 'none' }}
                         className="w-11 h-11 rounded-md cursor-pointer"
                         onLoad={() => setIsImgLoad(true)}

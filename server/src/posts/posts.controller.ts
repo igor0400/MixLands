@@ -6,6 +6,7 @@ import {
   UploadedFile,
   Param,
   UseGuards,
+  Delete,
 } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { PostsService } from './posts.service';
@@ -25,5 +26,11 @@ export class PostsController {
     @Param('nickname') nickname: string,
   ) {
     return this.postService.create(data, image, nickname);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('/:id')
+  deletePost(@Param('id') id: string) {
+    return this.postService.delete(id);
   }
 }
